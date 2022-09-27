@@ -54,7 +54,7 @@ namespace DevCompilersLW2
             string[] parExpresionArray)
         {
 
-            using (StreamWriter writer = new StreamWriter(_tokenFileName, true)) 
+            using (StreamWriter writer = new StreamWriter(_tokenFileName)) 
             {
                 int id = 1;
                 for(var i=0; i<parExpresionArray.Length; i++)

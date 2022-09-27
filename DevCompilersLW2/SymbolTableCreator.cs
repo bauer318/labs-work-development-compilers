@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace DevCompilersLW2
@@ -23,7 +24,27 @@ namespace DevCompilersLW2
         {
             get
             {
-
+                return _symbolTableOutFileName;
+            }
+            set
+            {
+                _symbolTableOutFileName = value;
+            }
+        }
+        public SymbolTableCreator(LexicalErrorAnalyzer parLexicalErrorAnalyzer, string parSymbolTableOutFileName)
+        {
+            _lexicalErrorAnalyzer = parLexicalErrorAnalyzer;
+            _symbolTableOutFileName = parSymbolTableOutFileName;
+        }
+        public void CreateSymbolTableFile()
+        {
+            List<string> identificatorList = _lexicalErrorAnalyzer.CreateListExpresionAlphabet()[2];
+            using(StreamWriter writer = new StreamWriter(_symbolTableOutFileName))
+            {
+                for(var i=0; i<identificatorList.Count; i++)
+                {
+                    writer.WriteLine((i + 1) + " - " + identificatorList[i]);
+                }
             }
         }
     }

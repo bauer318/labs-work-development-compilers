@@ -41,6 +41,8 @@ namespace DevCompilersLW1
             {
                 TokenSequenceCreator tokenSequenceCreator = new TokenSequenceCreator(le, "text.txt");
                 tokenSequenceCreator.CreateTokenSequenceFile();
+                SymbolTableCreator symbolTableCreator = new SymbolTableCreator(le, "symbol.txt");
+                symbolTableCreator.CreateSymbolTableFile();
             }
 
         }
