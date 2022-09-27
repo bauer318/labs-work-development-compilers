@@ -1,30 +1,11 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {
-      "DevCompilersLW2/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "compile": {
-          "bin/placeholder/DevCompilersLW2.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/DevCompilersLW2.dll": {}
-        }
-      }
-    }
+    ".NETCoreApp,Version=v3.1": {}
   },
-  "libraries": {
-    "DevCompilersLW2/1.0.0": {
-      "type": "project",
-      "path": "../DevCompilersLW2/DevCompilersLW2.csproj",
-      "msbuildProject": "../DevCompilersLW2/DevCompilersLW2.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": [
-      "DevCompilersLW2 >= 1.0.0"
-    ]
+    ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
     "C:\\Users\\Bauer\\.nuget\\packages\\": {}
@@ -32,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW1\\DevCompilersLW1.csproj",
-      "projectName": "DevCompilersLW1",
-      "projectPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW1\\DevCompilersLW1.csproj",
+      "projectUniqueName": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW2\\DevCompilersLW2.csproj",
+      "projectName": "DevCompilersLW2",
+      "projectPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW2\\DevCompilersLW2.csproj",
       "packagesPath": "C:\\Users\\Bauer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW1\\obj\\",
+      "outputPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Bauer\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -52,11 +33,7 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {
-            "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW2\\DevCompilersLW2.csproj": {
-              "projectPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW2\\DevCompilersLW2.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -82,10 +59,6 @@
           {
             "name": "Microsoft.AspNetCore.App.Ref",
             "version": "[3.1.10, 3.1.10]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x86",
-            "version": "[3.1.24, 3.1.24]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevCompilersLW2;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace DevCompilersLW1
 
         static void Main(string[] args)
         {
-            _go = args.Length > 0;
+            /*_go = args.Length > 0;
             if (_go)
             {
                 SetParameterQuantity(args);
@@ -32,8 +33,14 @@ namespace DevCompilersLW1
             else
             {
                 Console.WriteLine("Execute me via CMD with input arguments -)");
-            }
+            }*/
+            string v = "va.r1_+(99..5.2-5var+.t-o.*(var2-0..658+.0))/_var3+1.*23.525+var2_+var_25e";
+            //string v = "var1+25*8(25-89)+2.9@";
+            LexicalErrorAnalyzer le = new LexicalErrorAnalyzer(v);
+            le.IsCorrectExpresionLexicaly();
             
+            //Console.WriteLine(le.SplitExpresion(le.Expresion).Length);
+
         }
         private static bool CheckInputData(string[] args)
         {
