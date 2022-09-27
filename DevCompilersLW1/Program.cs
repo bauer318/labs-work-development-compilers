@@ -34,12 +34,14 @@ namespace DevCompilersLW1
             {
                 Console.WriteLine("Execute me via CMD with input arguments -)");
             }*/
-            string v = "va.r1_+(99..5.2-5var+.t-o.*(var2-0..658+.0))/_var3+1.*23.525+var2_+var_25e";
-            //string v = "var1+25*8(25-89)+2.9@";
+            //string v = "va.r1_+(99..5.2-5var+.t-o.*(var2-0..658+.0))/_var3+1.*23.525+var2_+var_25e";
+            string v = "var1+(9.5-5*(var2-0.6))/var3";
             LexicalErrorAnalyzer le = new LexicalErrorAnalyzer(v);
-            le.IsCorrectExpresionLexicaly();
-            
-            //Console.WriteLine(le.SplitExpresion(le.Expresion).Length);
+            if (le.IsCorrectExpresionLexicaly())
+            {
+                TokenSequenceCreator tokenSequenceCreator = new TokenSequenceCreator(le, "text.txt");
+                tokenSequenceCreator.CreateTokenSequenceFile();
+            }
 
         }
         private static bool CheckInputData(string[] args)

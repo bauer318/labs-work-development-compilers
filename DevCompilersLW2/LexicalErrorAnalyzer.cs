@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -33,18 +34,48 @@ namespace DevCompilersLW2
                 Console.WriteLine("Error! Empty expresion");
                 return false;
             }
+
             Dictionary<string, string> dictionary = GetLexicalDictionary();
-            _expresion = ReplaceWhitespace(_expresion);
-            List<List<string>> list = CreateListExpresionAlphabet(SplitExpresion());
+            List<List<string>> list = CreateListExpresionAlphabet();
             if (HasInvalidCharacterInExpresion(dictionary))
             {
-                PrintInvaliCharacterInExpressionErrorMessage();
                 result = false;
             }
             if (AreInvalidIdentificatorOrDecimalConstant(list))
             {
                 PrintInvaliIdentificatorDecimalConstantErrorMessage(list);
                 result = false;
+            }
+            return result;
+        }
+        public string GetExpresionWithWhitespace()
+        {
+            string result = "";
+            for(var i=0; i<_expresion.Length; i++)
+            {
+                string currentText = _expresion.ElementAt(i).ToString();
+                if (IsExpresionSeparator(currentText))
+                {
+                    result += " " + currentText+" ";
+                }
+                else
+                {
+                    result += currentText;
+                }
+            }
+            return result.Trim();
+        }
+
+        private bool IsExpresionSeparator(string parText)
+        {
+            string[] separatorSymbolArray = { "+", "/", "*", "-", "(", ")" };
+            bool result = false;
+            for(var i = 0; i< separatorSymbolArray.Length; i++)
+            {
+                if (parText.Equals(separatorSymbolArray[i]))
+                {
+                    result = true;
+                }
             }
             return result;
         }
@@ -55,6 +86,7 @@ namespace DevCompilersLW2
             AddOperation(dictionary);
             AddSymboles(dictionary);
             AddNumbers(dictionary);
+            
             return dictionary;
         }
         private void AddAlphabet(Dictionary<string, string> parDictionary)
@@ -64,6 +96,7 @@ namespace DevCompilersLW2
                 parDictionary.Add(c.ToString(), c.ToString());
                 parDictionary.Add(c.ToString().ToLower(), c.ToString().ToLower());
             }
+            parDictionary.Add(" ", " ");
             
         }
         private void AddOperation(Dictionary<string, string> parDictionary)
@@ -95,12 +128,14 @@ namespace DevCompilersLW2
         {
             return Regex.Replace(input, @"\s+", "");
         }
-        private string[] SplitExpresion()
+        public string[] SplitExpresion()
         {
-            return _expresion.Split(new char[] { '+','-','/','*','(',')' });
+  
+            return _expresion.Split(new char[] { '+','-','/','*','(',')',' ' });
         }
-        public List<List<string>> CreateListExpresionAlphabet(string[] parSplitExpresion)
+        public List<List<string>> CreateListExpresionAlphabet()
         {
+            string[] expresionSplited = SplitExpresion();
             List<List<string>> result = new List<List<string>>();
             List<string> correctVariableNameList = new List<string>();
             List<string> incorrectVariableNameList = new List<string>();
@@ -108,12 +143,12 @@ namespace DevCompilersLW2
             List<string> incorrectDecimalConstantList = new List<string>();
             List<string> integerConstantList = new List<string>();
             Regex constantDecimalRegex = new Regex("^(\\.|\\d)+\\.+(\\.|\\d)+$");
-            Regex variableNameRegex = new Regex("([_a-zA-Z])");
+            Regex variableNameRegex = new Regex("^[_\\.a-zA-Z0-9]+$");
             Regex correctNameVariableRegex = new Regex("^([_a-zA-Z])+[^\\.]([_a-zA-Z0-9])+$");
             Regex correctConstantDecimalRegex = new Regex("^\\d+\\.{1}\\d+$");
-            for(var i=0; i < parSplitExpresion.Length; i++)
+            for(var i=0; i < expresionSplited.Length; i++)
             {
-                var currentText = parSplitExpresion[i];
+                var currentText = expresionSplited[i];
                 if (string.IsNullOrEmpty(currentText))
                 {
                     continue;
@@ -137,7 +172,8 @@ namespace DevCompilersLW2
                     integerConstantList.Add(currentText);
                     
                 }
-                if (variableNameRegex.IsMatch(currentText))
+                if (variableNameRegex.IsMatch(currentText) && !constantDecimalRegex.IsMatch(currentText) &&
+                    !int.TryParse(currentText, out var tempIntS))
                 {
                     if (correctNameVariableRegex.IsMatch(currentText))
                     {
@@ -164,14 +200,16 @@ namespace DevCompilersLW2
         
         private bool HasInvalidCharacterInExpresion(Dictionary<string, string> parDictionary)
         {
+            bool result = false;
             for (var i = 0; i < _expresion.Length; i++)
             {
                 if (!parDictionary.ContainsKey(_expresion.ElementAt(i).ToString()))
                 {
-                    return true;
+                    Console.WriteLine(GetInvalidCharacterErrorMessage(_expresion.ElementAt(i).ToString()));
+                    result = true;
                 }
             }
-            return false;
+            return result;
         }
         private string GetInvalidCharacterErrorMessage(string currentText)
         {
@@ -204,7 +242,7 @@ namespace DevCompilersLW2
                 {
                     result += " не может содержить символ точки ";
                 }
-                result += "на позиции " + _expresion.IndexOf(currentIdentificator)+"\n";
+                result += " на позиции " + _expresion.IndexOf(currentIdentificator)+"\n";
             }
             return result;
         }
