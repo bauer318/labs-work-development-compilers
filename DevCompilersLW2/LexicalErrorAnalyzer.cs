@@ -142,7 +142,7 @@ namespace DevCompilersLW2
             List<string> correctDecimalConstantList = new List<string>();
             List<string> incorrectDecimalConstantList = new List<string>();
             List<string> integerConstantList = new List<string>();
-            Regex constantDecimalRegex = new Regex("^(\\.|\\d)+\\.+(\\.|\\d)+$");
+            Regex constantDecimalRegex = new Regex("^(\\.|\\d)+\\.+(\\.|\\d)*$");
             Regex variableNameRegex = new Regex("^[_\\.a-zA-Z0-9]+$");
             Regex correctNameVariableRegex = new Regex("^([_a-zA-Z])+[^\\.]([_a-zA-Z0-9])+$");
             Regex correctConstantDecimalRegex = new Regex("^\\d+\\.{1}\\d+$");
@@ -214,13 +214,6 @@ namespace DevCompilersLW2
         private string GetInvalidCharacterErrorMessage(string currentText)
         {
             return "Лексическая ошибка! Недопустимый символ " +"\""+currentText+"\""+" на позиции "+_expresion.IndexOf(currentText);
-        }
-        private void PrintInvaliCharacterInExpressionErrorMessage()
-        {
-            for(var i=0; i<_expresion.Length; i++)
-            {
-                Console.WriteLine(GetInvalidCharacterErrorMessage(_expresion.ElementAt(i).ToString()));
-            }
         }
         private void PrintInvaliIdentificatorDecimalConstantErrorMessage(List<List<string>> list)
         {
