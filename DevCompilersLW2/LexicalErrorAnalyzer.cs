@@ -101,8 +101,8 @@ namespace DevCompilersLW2
         }
         private void AddOperation(Dictionary<string, string> parDictionary)
         {
-            string[] operationSymbols = { "+", "-", "*", "/" };
-            string[] operationNames = { "операция сложения", "операция вычитания", "операция умножения", "операция деления" };
+            string[] operationSymbols = { "=", "-", "*", "/","+" };
+            string[] operationNames = { "знак равенства", "операция вычитания", "операция умножения", "операция деления", "операция сложения" };
             for(var i = 0; i < operationSymbols.Length; i++)
             {
                 parDictionary.Add(operationSymbols[i], operationNames[i]);
@@ -131,7 +131,7 @@ namespace DevCompilersLW2
         public string[] SplitExpresion()
         {
   
-            return _expresion.Split(new char[] { '+','-','/','*','(',')',' ' });
+            return _expresion.Split(new char[] { '+','-','/','*','(',')',' ','=' });
         }
         public List<List<string>> CreateListExpresionAlphabet()
         {
