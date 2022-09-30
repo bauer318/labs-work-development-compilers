@@ -15,7 +15,7 @@ namespace DevCompilersLW2
             _tokenTextFileName = parTokenTextFileName;
             _symbolTableTextFileName = parSymbolTableTextFileName;
         }
-        public void WriteTokenTextFile(LexicalyErrorAnalyzer parTokenizer)
+        public void WriteTokenTextFile(LexicalErrorAnalyzer parTokenizer)
         {
             using (StreamWriter writer = new StreamWriter(_tokenTextFileName))
             {
@@ -35,7 +35,7 @@ namespace DevCompilersLW2
             }
              
         }
-        public void WriteSymbolTableTextFile(LexicalyErrorAnalyzer parTokenizer)
+        public void WriteSymbolTableTextFile(LexicalErrorAnalyzer parTokenizer)
         {
             using (StreamWriter writer = new StreamWriter(_symbolTableTextFileName))
             {

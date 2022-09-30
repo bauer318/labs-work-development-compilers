@@ -15,7 +15,7 @@ namespace DevCompilersLW1
                 if (CheckInputData(args))
                 {
                     string expresion = File.ReadAllText(args[0].ToString());
-                    LexicalyErrorAnalyzer lexicalErrorAnalyzer = new LexicalyErrorAnalyzer();
+                    LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
                     if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expresion))
                     {
                         OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(args[1].ToString(), args[2].ToString());
