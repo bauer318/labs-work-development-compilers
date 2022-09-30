@@ -43,7 +43,7 @@ namespace DevCompilersLW2
             {
                 for(var i=0; i<identificatorList.Count; i++)
                 {
-                    writer.WriteLine((i + 1) + " - " + identificatorList[i]);
+                    writer.WriteLine(_lexicalErrorAnalyzer.dic.GetValueOrDefault(identificatorList[i])+ " - " + identificatorList[i]);
                 }
             }
         }

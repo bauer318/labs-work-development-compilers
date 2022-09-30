@@ -62,8 +62,9 @@ namespace DevCompilersLW2
                     string currentExpresionElement = parExpresionArray[i];
                     if (parIdentificatorList.Contains(currentExpresionElement))
                     {
-                        writer.WriteLine("<id,"+id+"> - идентификатор с инменем "+currentExpresionElement);
-                        id++;
+                        
+                        writer.WriteLine("<id,"+_lexicalErrorAnalyzer.dic.GetValueOrDefault(currentExpresionElement)+"> - идентификатор с инменем "+currentExpresionElement);
+                        
                     }
                     if (parDecimalConstantList.Contains(currentExpresionElement))
                     {

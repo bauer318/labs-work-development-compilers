@@ -9,6 +9,7 @@ namespace DevCompilersLW2
     public class LexicalErrorAnalyzer
     {
         private string _expresion;
+        public Dictionary<string, int> dic = new Dictionary<string, int>();
 
         public string Expresion
         {
@@ -91,10 +92,12 @@ namespace DevCompilersLW2
         }
         private void AddAlphabet(Dictionary<string, string> parDictionary)
         {
-            for (char c = 'A'; c <= 'Z'; c++)
+            string[] str1 = {"A","B","C","D","E","F","G","H","I", "J", "K", "L",
+                "M","N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+            for (var i=0; i<str1.Length;i++)
             {
-                parDictionary.Add(c.ToString(), c.ToString());
-                parDictionary.Add(c.ToString().ToLower(), c.ToString().ToLower());
+                parDictionary.Add(str1[i], str1[i]);
+                parDictionary.Add(str1[i].ToLower(), str1[i].ToLower());
             }
             parDictionary.Add(" ", " ");
             
@@ -133,6 +136,7 @@ namespace DevCompilersLW2
   
             return _expresion.Split(new char[] { '+','-','/','*','(',')',' '});
         }
+        
         public List<List<string>> CreateListExpresionAlphabet()
         {
             string[] expresionSplited = SplitExpresion();
@@ -144,8 +148,9 @@ namespace DevCompilersLW2
             List<string> integerConstantList = new List<string>();
             Regex constantDecimalRegex = new Regex("^(\\.|\\d)+\\.+(\\.|\\d)*$");
             Regex variableNameRegex = new Regex("^[_\\.a-zA-Z0-9]+$");
-            Regex correctNameVariableRegex = new Regex("^([_a-zA-Z])+[^\\.]([_a-zA-Z0-9])+$");
+            Regex correctNameVariableRegex = new Regex("^[_a-zA-Z]");
             Regex correctConstantDecimalRegex = new Regex("^\\d+\\.{1}\\d+$");
+            var id = 1;
             for(var i=0; i < expresionSplited.Length; i++)
             {
                 var currentText = expresionSplited[i];
@@ -177,11 +182,24 @@ namespace DevCompilersLW2
                 {
                     if (correctNameVariableRegex.IsMatch(currentText))
                     {
-                        correctVariableNameList.Add(currentText);
+                        if (!correctVariableNameList.Contains(currentText))
+                        {
+                            correctVariableNameList.Add(currentText);
+                            if (!dic.ContainsKey(currentText))
+                            {
+                                dic.Add(currentText, id);
+                                id++;
+                            }
+                           
+                        }
                     }
                     else
                     {
-                        incorrectVariableNameList.Add(currentText);
+                        if (!incorrectVariableNameList.Contains(currentText))
+                        {
+                            incorrectVariableNameList.Add(currentText);
+                        }
+                        
                     }
                 }
             }
