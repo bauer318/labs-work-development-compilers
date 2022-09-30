@@ -150,6 +150,7 @@ namespace DevCompilersLW2
             Regex variableNameRegex = new Regex("^[_\\.a-zA-Z0-9]+$");
             Regex correctNameVariableRegex = new Regex("^[_a-zA-Z]");
             Regex correctConstantDecimalRegex = new Regex("^\\d+\\.{1}\\d+$");
+            List<Token> tokens = new List<Token>();
             var id = 1;
             for(var i=0; i < expresionSplited.Length; i++)
             {

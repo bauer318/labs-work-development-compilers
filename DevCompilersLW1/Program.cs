@@ -15,14 +15,13 @@ namespace DevCompilersLW1
                 if (CheckInputData(args))
                 {
                     string expresion = File.ReadAllText(args[0].ToString());
-                    LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer(expresion);
-                    if (lexicalErrorAnalyzer.IsCorrectExpresionLexicaly())
+                    LexicalyErrorAnalyzer lexicalErrorAnalyzer = new LexicalyErrorAnalyzer();
+                    if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expresion))
                     {
-                        TokenSequenceCreator tokenSequenceCreator = new TokenSequenceCreator(lexicalErrorAnalyzer, args[1].ToString());
-                        tokenSequenceCreator.CreateTokenSequenceFile();
-                        SymbolTableCreator symbolTableCreator = new SymbolTableCreator(lexicalErrorAnalyzer, args[2].ToString());
-                        symbolTableCreator.CreateSymbolTableFile();
-                    }
+                        OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(args[1].ToString(), args[2].ToString());
+                        outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
+                        outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
+                    }  
                 }
             }
             else if(args.Length==0)
@@ -45,7 +44,7 @@ namespace DevCompilersLW1
             }
             else if(!IsCorrectTextFileName(args[1].ToString()))
             {
-                Console.WriteLine("Incorrect input token's output text file name");
+                Console.WriteLine("Incorrect input Tokens's output text file name");
                 return false;
             }
             else if (!IsCorrectTextFileName(args[2].ToString()))
