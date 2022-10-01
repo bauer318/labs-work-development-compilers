@@ -8,7 +8,7 @@ namespace DevCompilersLW2
     public class TokenDefinition
     {
         private Regex _regex;
-        private readonly TokenType _returnsToken;
+        private TokenType _returnsToken;
         public TokenDefinition(TokenType returnsToken, string regexPattern)
         {
             _regex = new Regex(regexPattern, RegexOptions.IgnoreCase);

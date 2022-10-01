@@ -21,16 +21,7 @@ namespace DevCompilersLW2
             {
                 foreach (Token token in parTokenizer.Tokens)
                 {
-
-                    switch (token.TokenType)
-                    {
-                        case TokenType.CorrectIdentificator:
-                            writer.WriteLine("<" + token.GetTokenName() + "," + token.AttributeValue + ">");
-                            break;
-                        default:
-                            writer.WriteLine("<" + token.GetTokenName() + ">");
-                            break;
-                    }
+                    writer.WriteLine(token.TokenType.GetTokenTypeDescription(token));
                 }
             }
              

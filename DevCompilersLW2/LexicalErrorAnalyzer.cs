@@ -14,17 +14,17 @@ namespace DevCompilersLW2
         public LexicalErrorAnalyzer()
         {
             _tokenDefinitions = new List<TokenDefinition>();
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.AdditionSign, "^\\+$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.SoustractionSign, "^\\-$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.MultiplicationSign, "^\\*$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.DivisionSign, "^\\/$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.OpenParenthesis, "^\\($"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.CloseParenthesis, "^\\)$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.IntegerConstant, "^[0-9]+$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.IncorrectDecimalConstant, "^[0-9.]*\\.*\\..*\\..*[0-9.]*$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.CorrectDecimalConstant, "^\\d+\\.{1}\\d+$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.IncorrectIdentificator, "^[0-9]+[_a-zA-Z0-9]+$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.CorrectIdentificator, "^[_a-zA-Z]+[0-9]*$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.ADDITION_SIGN, "^\\+$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.SOUSTRACTION_SIGN, "^\\-$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.MULTIPLICATION_SIGN, "^\\*$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.DIVISION_SIGN, "^\\/$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.OPEN_PARENTHESIS, "^\\($"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.CLOSE_PARENTHESIS, "^\\)$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.INTEGER_CONSTANT, "^[0-9]+$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_DECIMAL_CONSTANT, "^[0-9.]*\\.*\\..*\\..*[0-9.]*$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_CONSTANT, "^\\d+\\.{1}\\d+$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_IDENTIFICATOR, "^[0-9]+[_a-zA-Z0-9]+$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*$"));
 
         }
         public string[] SplitExpresion(string parExpresion)
@@ -103,28 +103,21 @@ namespace DevCompilersLW2
             {
                 var currentText = expresionSplited[i];
                 var match = FindMatch(currentText);
-                var currentPosition = parExpresion.IndexOf(currentText);
                 switch (match.TokenType)
                 {
-                    case TokenType.IncorrectDecimalConstant:
-                        Console.WriteLine("Лексическая ошибка! неправильно задана константа <<" + currentText +
-                            ">> на позиции " + currentPosition);
+                    case TokenType.INCORRECT_DECIMAL_CONSTANT:
+                    case TokenType.INCORRECT_IDENTIFICATOR:
+                        Console.WriteLine(match.TokenType.GetIncorrectTokenTypeDescrition(currentText,parExpresion));
                         result = false;
                         break;
-                    case TokenType.IncorrectIdentificator:
-                        Console.WriteLine("Лексическая ошибка! Идентификатор <<" + currentText +
-                            ">> не может начиаться с цифры на позиции " + currentPosition);
-                        result = false;
-                        break;
-                    case TokenType.Invalid:
+                    case TokenType.INVALID:
                         if (!string.IsNullOrEmpty(currentText))
                         {
-                            Console.WriteLine("Лексическая ошибка! Недопустимый символ " + "\"" + currentText + "\"" + " на позиции "
-                                + currentPosition);
+                            Console.WriteLine(match.TokenType.GetIncorrectTokenTypeDescrition(currentText, parExpresion));
                             result = false;
                         }
                         break;
-                    case TokenType.CorrectIdentificator:
+                    case TokenType.CORRECT_IDENTIFICATOR:
                         if (!tokenLexemes.Contains(match.Lexeme))
                         {
                             attributeValue++;
