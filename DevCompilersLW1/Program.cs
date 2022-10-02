@@ -1,4 +1,5 @@
 ﻿using DevCompilersLW2;
+using DevCompilersLW3;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +11,7 @@ namespace DevCompilersLW1
     {
         static void Main(string[] args)
         {
-            if (args.Length==3)
+            /*if (args.Length==3)
             {
                 if (CheckInputData(args))
                 {
@@ -31,7 +32,30 @@ namespace DevCompilersLW1
             else
             {
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe inputExpr.txt tokens.txt symbols.txt");
+            }*/
+            Console.WriteLine("Welcome to Calcy, a nifty and easy to use math interpreter.");
+            while (true)
+            {
+                Console.Write(">> ");
+                string input = Console.ReadLine();
+
+                if (input == "exit()")
+                {
+                    break;
+                }
+                Console.WriteLine(">> {0}", input);
+                Lexer lexer = new Lexer(input);
+                List<Tokens> tokens = lexer.Get_Tokens();
+                Console.WriteLine(">> {0}", lexer.ToString());
+                Parser parser = new Parser(tokens);
+                AST astObj = parser.ParseExp();
+                if (astObj == null)
+                {
+                    continue;
+                }
+                Console.WriteLine(">> {0}", astObj.Eval());
             }
+            
         }
         
         private static bool CheckInputData(string[] args)

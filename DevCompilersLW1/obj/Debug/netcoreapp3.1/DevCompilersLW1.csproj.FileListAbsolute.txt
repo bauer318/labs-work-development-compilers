@@ -15,3 +15,5 @@ C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\obj\Debug\netcoreapp
 C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1\DevCompilersLW2.dll
 C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1\DevCompilersLW2.pdb
 C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\obj\Debug\netcoreapp3.1\DevCompilersLW1.csproj.CopyComplete
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1\DevCompilersLW3.dll
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1\DevCompilersLW3.pdb

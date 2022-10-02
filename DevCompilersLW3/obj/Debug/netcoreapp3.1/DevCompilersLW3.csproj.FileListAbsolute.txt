@@ -1,0 +1,10 @@
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW3\bin\Debug\netcoreapp3.1\DevCompilersLW3.deps.json
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW3\bin\Debug\netcoreapp3.1\DevCompilersLW3.dll
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW3\bin\Debug\netcoreapp3.1\DevCompilersLW3.pdb
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW3\obj\Debug\netcoreapp3.1\DevCompilersLW3.csproj.AssemblyReference.cache
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW3\obj\Debug\netcoreapp3.1\DevCompilersLW3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW3\obj\Debug\netcoreapp3.1\DevCompilersLW3.AssemblyInfoInputs.cache
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW3\obj\Debug\netcoreapp3.1\DevCompilersLW3.AssemblyInfo.cs
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW3\obj\Debug\netcoreapp3.1\DevCompilersLW3.csproj.CoreCompileInputs.cache
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW3\obj\Debug\netcoreapp3.1\DevCompilersLW3.dll
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW3\obj\Debug\netcoreapp3.1\DevCompilersLW3.pdb
