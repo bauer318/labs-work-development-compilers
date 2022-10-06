@@ -1,9 +1,401 @@
 ﻿using System;
+using System.Linq;
 
 namespace DevCompilersLW3
 {
     public class Class1
     {
+        char[] digits = { '0', '1', '2',
+            '3', '4', '5', '6', '7', '8', '9' };
+        char[] letters = {'_','A','B','C','D','E','F','G','H', 'I', 'J', 'K', 'L'
+        ,'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f'
+        ,'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+        char[] op = { '+','-','*','/'};
+        string s;
+        int i, k;
+        int stateFrom = 0;
         
+        int state;
+        public Class1(char[] parOp, char[] parLetters, char[] parDigits)
+        {
+            s = "(()(2+2+2-5)-()2+";
+            op = parOp;
+            letters = parLetters;
+            digits = parDigits;
+        }
+        private void Error()
+        {
+            Console.WriteLine("Error");
+        }
+        private void NextToken()
+        {
+            i++;
+        }
+        private bool InLetters(char parElement)
+        {
+            for(var i = 0; i < letters.Length; i++)
+            {
+                if (letters[i] == parElement)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool InDigits(char parElement)
+        {
+            for (var i = 0; i < digits.Length; i++)
+            {
+                if (digits[i] == parElement)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool InOperation(char parElement)
+        {
+            for (var i = 0; i < op.Length; i++)
+            {
+                if (op[i] == parElement)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private void Identifier()
+        {
+
+            while (i < s.Length && (InLetters(s.ElementAt(i+1)) || InDigits(s.ElementAt(i + 1))))
+            {
+                NextToken();
+            }
+        }
+        private void Number()
+        {
+            while(i<s.Length && InDigits(s.ElementAt(i)))
+            {
+                NextToken();
+            }
+        }
+        private bool IsOperationCharacterLeft(int parCurrentIndex)
+        {
+            bool result = false;
+            if (parCurrentIndex - 1 >= 0)
+            {
+                return InOperation(s.ElementAt(parCurrentIndex - 1));
+            }
+            return result;
+        }
+        private bool IsOpenedBraceLeft(int parCurrentIndex)
+        {
+            bool result = false;
+            if (parCurrentIndex - 1 >= 0)
+            {
+                return s.ElementAt(parCurrentIndex - 1)=='(';
+            }
+            return result;
+        }
+        private bool HasIdentificatorForEqualSymbol(int parCurrentIndex)
+        {
+
+            return parCurrentIndex - 1 == 0 && InLetters(s.ElementAt(parCurrentIndex - 1));
+           
+        }
+        
+        private int CountCLosedOpenedBrace()
+        {
+            var result = 0;
+            for(var i=0; i < s.Length; i++)
+            {
+                if (s.ElementAt(i) == '(')
+                {
+                    result++;
+                }
+                else if (s.ElementAt(i) == ')')
+                {
+                    result--;
+                }
+            }
+
+            return result;
+        }
+        //For k>0
+        private void PrintErrorNotClosedBrace()
+        {
+            var count = 0;
+            for(var j= s.Length - 1; j >= 0; j--)
+            {
+                if (s.ElementAt(j)==')')
+                {
+                    count++;
+                }
+                else if(s.ElementAt(j)=='(')
+                {
+                    count--;
+                    if (count < 0)
+                    {
+                        Console.WriteLine("Not closed brace for " + s.ElementAt(j)+" at "+j);
+                        count = 0;
+                    }
+                }
+            }  
+        }
+        //For k<0
+        private void PrintErrorNotOpenedBrace()
+        {
+            var count = 0;
+            for(var j = 0; j < s.Length; j++)
+            {
+                if (s.ElementAt(j) == '(')
+                {
+                    count++;
+                }
+                else if(s.ElementAt(j)==')')
+                {
+                    count--;
+                    if (count < 0)
+                    {
+                        Console.WriteLine("Not opened brace for " + s.ElementAt(j) + " at " + j);
+                        count = 0;
+                    }
+                }
+            }
+            
+        }
+        private int GetPositionLastOpenedBrace()
+        {
+            for(var i = s.Length - 1; i >= 0; i--)
+            {
+                if (s.ElementAt(i) == '(')
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public void MainMethode()
+        {
+            i = 0;
+            k = 0;
+            state = 0;
+            Console.WriteLine("Expression " + s);
+           /*if (CountCLosedOpenedBrace() < 0)
+            {
+                PrintErrorNotOpenedBrace();
+                Console.WriteLine("<");
+            }
+            else if (CountCLosedOpenedBrace() > 0)
+            {
+                PrintErrorNotClosedBrace();
+                Console.WriteLine(">");
+            }*/
+            while (state != 3)
+            {
+                switch (state)
+                {
+                    case 0:
+                        //Console.WriteLine("Case 0 --> " + s.ElementAt(i));
+                        if (i < s.Length-1)
+                        {
+                            if (s.ElementAt(i) == '(')
+                            {
+                                k++;
+                                NextToken();
+                            }
+                            else if(!(InDigits(s.ElementAt(i)) || InLetters(s.ElementAt(i))))
+                            {
+                                if (InOperation(s.ElementAt(i)))
+                                {
+                                    if (IsOperationCharacterLeft(i))
+                                    {
+                                        Console.WriteLine("Successive operation at "+i);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Not operand for " + s.ElementAt(i)+ " at "+i);
+                                    }
+                                }
+                                else if(s.ElementAt(i)=='=' && i != 1)
+                                {
+                                    Console.WriteLine("Need var = in position 0 and 1 , but not here");
+                                }
+                                else if (s.ElementAt(i) == ')')
+                                {
+                                    Console.WriteLine("Case 0");
+                                    k--;
+                                    if (k < 0)
+                                    {
+                                        //Console.WriteLine("Not opened brace for " + s.ElementAt(i) + " at " + i);
+                                        PrintErrorNotOpenedBrace();
+                                    }
+                                    else if (k == 0 || IsOpenedBraceLeft(i))
+                                    {
+                                        Console.WriteLine("Not need empty brace " + i);
+                                    }
+                                    if (IsOperationCharacterLeft(i))
+                                    {
+                                        Console.WriteLine("Not operand for " + s.ElementAt(i - 1)+" at "+i);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Not operation for  " + s.ElementAt(i+1)+" at "+i);
+                                    }
+                                   /* if(k!=0 && !IsOpenedBraceLeft(i))
+                                    {
+                                        Console.WriteLine("Not opened brace for " + s.ElementAt(i));
+                                    }else if(k==0 && IsOpenedBraceLeft(i))
+                                    {
+                                        Console.WriteLine("Not need this braces");
+                                    }
+                                    else if(IsOperationCharacterLeft(i))
+                                    {
+                                        Console.WriteLine("Not operand for " + s.ElementAt(i - 1));
+                                    }*/
+                                }
+                                NextToken();
+                            }
+                            else
+                            {
+                                if (InLetters(s.ElementAt(i)))
+                                {
+                                    Identifier();
+                                }
+                                else if(InDigits(s.ElementAt(i)))
+                                {
+                                    Number();
+                                }
+                                state = 1;
+                            }
+                        }
+                        else
+                        {
+                            state = 2;
+                            stateFrom = 0;
+                        }
+                        break;
+                    case 1:
+                        //Console.WriteLine("Case 1 --> " + s.ElementAt(i));
+                        if (i < s.Length-1)
+                        {
+                           
+                            if (s.ElementAt(i) == ')')
+                            {
+                                k--;
+                                if (k != 0)
+                                {
+                                    Error();
+                                    Console.WriteLine("Case 1");
+                                    //Console.WriteLine(" Not opened brace for current "+s.ElementAt(i)+" at "+i);
+                                    if (k > 0)
+                                    {
+                                        PrintErrorNotClosedBrace();
+                                    }
+                                    else
+                                    {
+                                        PrintErrorNotOpenedBrace();
+                                    }
+                                    k = 0;
+                                }
+                            } 
+                            else if (s.ElementAt(i) == '(')
+                            {
+                                k++;
+                                Console.WriteLine(" Not operation for this operand " + s.ElementAt(i) + " at " + i);
+                            }
+                            else
+                            {
+                                if (InOperation(s.ElementAt(i)))
+                                {
+                                    state = 0;
+                                }
+                                /*else if(s.ElementAt(i)=='=')
+                                {
+
+                                
+                                }
+                                else
+                                {
+                                    Error();
+                                    Console.WriteLine("We expected operation or closed parenthesis in place of "+s.ElementAt(i));
+                                    if (s.ElementAt(i)=='(')
+                                    {
+                                        k++;
+                                        
+                                    }
+                                }*/
+                            }
+                            NextToken();
+                        }
+                        else
+                        {
+                            state = 2;
+                            stateFrom = 1;
+                        }
+                        break;
+                    case 2:
+                        //Console.WriteLine("Case 2 --> " + s.ElementAt(i));
+                        if (s.ElementAt(i) == ')')
+                        {
+                            k--;
+                            if (k == 0)
+                            {
+                                Console.WriteLine("OKAY From state 1");
+                            }
+                            else 
+                            {
+                                k = 0;
+                                Error();
+                                Console.WriteLine("Not opened brace for current " + s.ElementAt(i)+" at "+i);
+                            }
+                        }
+                        else if (s.ElementAt(i) == '(')
+                        {
+                            Error();
+                            Console.WriteLine("Not closed brase for current " + s.ElementAt(i));
+                        }
+                        else if (k != 0)
+                        {
+                            Console.WriteLine("Not closed braced for ) at "+GetPositionLastOpenedBrace());
+                        }
+                        if (stateFrom == 1)
+                        {
+                            if(InOperation(s.ElementAt(i)) && !(s.ElementAt(i)=='='))
+                            {
+                                Error();
+                                Console.WriteLine("Not operand for current "+s.ElementAt(i));
+                            }
+                            else if(s.ElementAt(i) == '=')
+                            {
+                                Error();
+                                if (!HasIdentificatorForEqualSymbol(i))
+                                {
+                                    Console.WriteLine("Not identificator for current" + s.ElementAt(i));
+                                }
+                            }
+                        }
+                        else if(stateFrom==0)
+                        {
+                            if (InDigits(s.ElementAt(i)))
+                            {
+                                Console.WriteLine("OKAY From state 0");
+                            }
+                            else if(InOperation(s.ElementAt(i)))
+                            {
+                                Error();
+                                Console.WriteLine("Successive operation");
+                            }else if (s.ElementAt(i) == '=')
+                            {
+                                Error();
+                                Console.WriteLine("Not definition for " + s.ElementAt(i));
+                            }
+                        }
+                        state = 3;
+                        break;
+                }
+            }
+        }
     }
 }

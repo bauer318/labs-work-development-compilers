@@ -33,8 +33,8 @@ namespace DevCompilersLW1
             {
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe inputExpr.txt tokens.txt symbols.txt");
             }*/
-            Console.WriteLine("Welcome to Calcy, a nifty and easy to use math interpreter.");
-            while (true)
+            //Console.WriteLine("Welcome to Calcy, a nifty and easy to use math interpreter.");
+            /*while (true)
             {
                 Console.Write(">> ");
                 string input = Console.ReadLine();
@@ -54,7 +54,15 @@ namespace DevCompilersLW1
                     continue;
                 }
                 Console.WriteLine(">> {0}", astObj.Eval());
-            }
+            }*/
+            char[] digits = { '0', '1', '2',
+            '3', '4', '5', '6', '7', '8', '9' };
+            char[] letters = {'_','A','B','C','D','E','F','G','H', 'I', 'J', 'K', 'L'
+        ,'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f'
+        ,'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+            char[] op = { '+', '-', '*', '/' };
+            Class1 c = new Class1(op,letters,digits);
+            c.MainMethode();
             
         }
         
