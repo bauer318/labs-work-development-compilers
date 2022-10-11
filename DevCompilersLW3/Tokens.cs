@@ -6,10 +6,10 @@ namespace DevCompilersLW3
 {
     public class Tokens
     {
-        public readonly Token _tokenType;
+        public readonly TokenLab03 _tokenType;
         public readonly object _value;
 
-        public Tokens(Token tokenType, object value)
+        public Tokens(TokenLab03 tokenType, object value)
         {
             this._tokenType = tokenType;
             this._value = value;

@@ -51,43 +51,43 @@ namespace DevCompilersLW3
                 }
                 else if (curr_input == '+')
                 {
-                    Tokens additionToken = new Tokens(Token.ADD, null);
+                    Tokens additionToken = new Tokens(TokenLab03.ADD, null);
                     tokens.Add(additionToken);
                     Get_Next();
                 }
                 else if (curr_input == '-')
                 {
-                    Tokens minusToken = new Tokens(Token.MINUS, null);
+                    Tokens minusToken = new Tokens(TokenLab03.MINUS, null);
                     tokens.Add(minusToken);
                     Get_Next();
                 }
                 else if (curr_input == '*')
                 {
-                    Tokens multiplyToken = new Tokens(Token.MULTIPLY, null);
+                    Tokens multiplyToken = new Tokens(TokenLab03.MULTIPLY, null);
                     tokens.Add(multiplyToken);
                     Get_Next();
                 }
                 else if (curr_input == '/')
                 {
-                    Tokens divideToken = new Tokens(Token.DIVISION, null);
+                    Tokens divideToken = new Tokens(TokenLab03.DIVISION, null);
                     tokens.Add(divideToken);
                     Get_Next();
                 }
                 else if (curr_input == '(')
                 {
-                    Tokens lbraceToken = new Tokens(Token.LBRACE, null);
+                    Tokens lbraceToken = new Tokens(TokenLab03.LBRACE, null);
                     tokens.Add(lbraceToken);
                     Get_Next();
                 }
                 else if (curr_input == ')')
                 {
-                    Tokens rbraceToken = new Tokens(Token.RBRACE, null);
+                    Tokens rbraceToken = new Tokens(TokenLab03.RBRACE, null);
                     tokens.Add(rbraceToken);
                     Get_Next();
                 }
                 else if (curr_input == '\0')
                 {
-                    Tokens eofToken = new Tokens(Token.EOF, null);
+                    Tokens eofToken = new Tokens(TokenLab03.EOF, null);
                     tokens.Add(eofToken);
                     break;
                 }
@@ -133,7 +133,7 @@ namespace DevCompilersLW3
             {
                 ;
             }
-            return new Tokens(Token.NUMBER, val);
+            return new Tokens(TokenLab03.NUMBER, val);
         }
     }
 }

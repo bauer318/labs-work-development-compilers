@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DevCompilersLW3
 {
-    public enum Token
+    public enum TokenLab03
     {
         NUMBER = 0,
 

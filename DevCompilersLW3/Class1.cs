@@ -12,13 +12,13 @@ namespace DevCompilersLW3
         ,'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
         char[] op = { '+','-','*','/'};
         string s;
-        int i, k;
+        int i, k, e;
         int stateFrom = 0;
         
         int state;
         public Class1(char[] parOp, char[] parLetters, char[] parDigits)
         {
-            s = "(()(2+2+2-5)-()2+";
+            s = "=+)=";
             op = parOp;
             letters = parLetters;
             digits = parDigits;
@@ -84,7 +84,7 @@ namespace DevCompilersLW3
             bool result = false;
             if (parCurrentIndex - 1 >= 0)
             {
-                return InOperation(s.ElementAt(parCurrentIndex - 1));
+                return InOperation(s.ElementAt(parCurrentIndex - 1)) || s.ElementAt(i)=='=';
             }
             return result;
         }
@@ -175,23 +175,20 @@ namespace DevCompilersLW3
             }
             return -1;
         }
+        private bool IsCorrectPositionEgalSign(int i, int e)
+        {
+            return e == 1 && i == 1;
+        }
+
+        //private int CaseZeroRealize(int k, int i,string current,)
 
         public void MainMethode()
         {
             i = 0;
             k = 0;
             state = 0;
+            e = 0;
             Console.WriteLine("Expression " + s);
-           /*if (CountCLosedOpenedBrace() < 0)
-            {
-                PrintErrorNotOpenedBrace();
-                Console.WriteLine("<");
-            }
-            else if (CountCLosedOpenedBrace() > 0)
-            {
-                PrintErrorNotClosedBrace();
-                Console.WriteLine(">");
-            }*/
             while (state != 3)
             {
                 switch (state)
@@ -217,9 +214,23 @@ namespace DevCompilersLW3
                                         Console.WriteLine("Case 0 -- Not operand for " + s.ElementAt(i)+ " at "+i);
                                     }
                                 }
-                                else if(s.ElementAt(i)=='=' && i != 1)
+                                else if(s.ElementAt(i)=='=')
                                 {
-                                    Console.WriteLine("Case 0 -- Need var = in position 0 and 1 , but not here");
+                                    e++;
+                                    if (e > 1)
+                                    {
+                                        Console.WriteLine("Many sign = at " + i);
+                                    }
+                                    else if(IsCorrectPositionEgalSign(i,e))
+                                    {
+                                        Console.WriteLine("Not identificator for = at " + i);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Wrong position for " + s.ElementAt(i) + " at " + i +
+                                           "The egal sign must be after identificator and this identificator must be the first in expression");
+                                    }
+                                    
                                 }
                                 else if (s.ElementAt(i) == ')')
                                 {
@@ -249,10 +260,12 @@ namespace DevCompilersLW3
                             {
                                 if (InLetters(s.ElementAt(i)))
                                 {
+                                    Console.WriteLine("Ident ");
                                     Identifier();
                                 }
                                 else if(InDigits(s.ElementAt(i)))
                                 {
+                                    Console.WriteLine("Const ");
                                     Number();
                                 }
                                 state = 1;
@@ -293,15 +306,33 @@ namespace DevCompilersLW3
                             }
                             else
                             {
-                                if (InOperation(s.ElementAt(i)))
+                                if(s.ElementAt(i)=='=')
                                 {
-                                    state = 0;
+                                    e++;
+                                    if (IsCorrectPositionEgalSign(i,e))
+                                    {
+                                        if (!InLetters(s.ElementAt(i - 1)))
+                                        {
+                                            Console.WriteLine("Not identificator for " + s.ElementAt(i) + " at " + i);
+                                        }
+                                    }
+                                    else if (e > 1)
+                                    {
+                                        Console.WriteLine("Many sign 1" + s.ElementAt(i) + " at " + i);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Wrong position for " +s.ElementAt(i)+" at "+i+
+                                            "The egal sign must be after identificator and this identificator must be the first in expression");
+                                    }
                                 }
+                                state = 0;
                             }
                             NextToken();
                         }
                         else
                         {
+                            Console.WriteLine("Operation ");
                             state = 2;
                             stateFrom = 1;
                         }
@@ -317,14 +348,37 @@ namespace DevCompilersLW3
                             else 
                             {
                                 k = 0;
-                                //Error();
                                 Console.WriteLine("Case 2 -- Not opened brace for current " + s.ElementAt(i)+" at "+i);
                             }
                         }
                         else if (s.ElementAt(i) == '(')
                         {
-                            //Error();
                             Console.WriteLine("Case 2 -- Not closed brase for current " + s.ElementAt(i));
+                        }
+                        else if (s.ElementAt(i) == '=')
+                        {
+                            e++;
+                            if (IsCorrectPositionEgalSign(i,e))
+                            {
+                                if (InLetters(s.ElementAt(i - 1)))
+                                {
+                                    Console.WriteLine("Case 2 -- Not definition for " + s.ElementAt(i) + " at " + i);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Case 2 -- Not identificator for "+ s.ElementAt(i) + " at " + i);
+                                }
+                            }
+                            else if(e>1)
+                            {
+                                Console.WriteLine("Case 2 Many sign ");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wrong position for " + s.ElementAt(i) + " at " + i +
+                                           "The egal sign must be after identificator and this identificator must be the first in expression");
+                            }
+                            
                         }
                         else if (k != 0)
                         {
@@ -334,17 +388,9 @@ namespace DevCompilersLW3
                         {
                             if(InOperation(s.ElementAt(i)) && !(s.ElementAt(i)=='='))
                             {
-                                //Error();
                                 Console.WriteLine("Case 2 -- Not operand for current "+s.ElementAt(i));
                             }
-                            else if(s.ElementAt(i) == '=')
-                            {
-                                //Error();
-                                if (!HasIdentificatorForEqualSymbol(i))
-                                {
-                                    Console.WriteLine("Case 2 -- Not identificator for current" + s.ElementAt(i));
-                                }
-                            }
+                           
                         }
                         else if(stateFrom==0)
                         {
@@ -354,13 +400,9 @@ namespace DevCompilersLW3
                             }
                             else if(InOperation(s.ElementAt(i)))
                             {
-                                //Error();
                                 Console.WriteLine("Case 2 -- Successive operation");
-                            }else if (s.ElementAt(i) == '=')
-                            {
-                                //Error();
-                                Console.WriteLine("Case 2 -- Not definition for " + s.ElementAt(i));
                             }
+                            
                         }
                         state = 3;
                         break;

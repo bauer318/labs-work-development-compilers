@@ -28,6 +28,8 @@ namespace DevCompilersLW2
                     return "<" + parToken.Lexeme + "> - открывающая скобка";
                 case TokenType.SOUSTRACTION_SIGN:
                     return "<" + parToken.Lexeme + "> - операция вычитания";
+                case TokenType.EQUAL_SIGN:
+                    return "<" + parToken.Lexeme + "> - равенство ";
                 default:
                     return "INVALID TOKEN TYPE";
             }

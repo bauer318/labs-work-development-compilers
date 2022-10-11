@@ -6,8 +6,8 @@ namespace DevCompilersLW3
 {
     public class Parser
     {
-        private List<Token> TermItems = new List<Token>() { Token.ADD, Token.MINUS };
-        private List<Token> FactorItems = new List<Token>() { Token.MULTIPLY, Token.DIVISION };
+        private List<TokenLab03> TermItems = new List<TokenLab03>() { TokenLab03.ADD, TokenLab03.MINUS };
+        private List<TokenLab03> FactorItems = new List<TokenLab03>() { TokenLab03.MULTIPLY, TokenLab03.DIVISION };
         private readonly List<Tokens> _tokens;
         private int pos = 0;
         private Tokens curr_token = null;
@@ -31,16 +31,16 @@ namespace DevCompilersLW3
         public AST ParseExp()
         {
             AST result = Factor();
-            while (curr_token._tokenType != Token.EOF && result != null && TermItems.Contains(curr_token._tokenType))
+            while (curr_token._tokenType != TokenLab03.EOF && result != null && TermItems.Contains(curr_token._tokenType))
             {
-                if (curr_token._tokenType == Token.ADD)
+                if (curr_token._tokenType == TokenLab03.ADD)
                 {
                     Get_Next();
                     AST rigthNode = Factor();
                     //Ici on doit ajouter le noeud
                     result = new ASTPlus(result, rigthNode);
                 }
-                else if (curr_token._tokenType == Token.MINUS)
+                else if (curr_token._tokenType == TokenLab03.MINUS)
                 {
                     Get_Next();
                     AST rigthNode = Factor();
@@ -54,16 +54,16 @@ namespace DevCompilersLW3
         public AST Factor()
         {
             AST factor = Term();
-            while (curr_token._tokenType != Token.EOF && factor != null && FactorItems.Contains(curr_token._tokenType))
+            while (curr_token._tokenType != TokenLab03.EOF && factor != null && FactorItems.Contains(curr_token._tokenType))
             {
-                if (curr_token._tokenType == Token.MULTIPLY)
+                if (curr_token._tokenType == TokenLab03.MULTIPLY)
                 {
                     Get_Next();
                     AST rigthNode = Term();
                     //Ici on doit ajouter le noeud
                     factor = new ASTMultiply(factor, rigthNode);
                 }
-                else if (curr_token._tokenType == Token.DIVISION)
+                else if (curr_token._tokenType == TokenLab03.DIVISION)
                 {
                     Get_Next();
                     AST rigthNode = Term();
@@ -77,16 +77,16 @@ namespace DevCompilersLW3
         {
             AST term = null;
 
-            if (curr_token._tokenType == Token.LBRACE)
+            if (curr_token._tokenType == TokenLab03.LBRACE)
             {
                 Get_Next();
                 term = ParseExp();
-                if (curr_token._tokenType != Token.RBRACE)
+                if (curr_token._tokenType != TokenLab03.RBRACE)
                 {
                     Console.WriteLine("Missing )");
                 }
             }
-            else if (curr_token._tokenType == Token.NUMBER)
+            else if (curr_token._tokenType == TokenLab03.NUMBER)
             {
                 term = new ASTLeaf((decimal)curr_token._value);
             }

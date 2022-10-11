@@ -174,7 +174,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW2\\DevCompilersLW2.csproj": {
+                "projectPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW2\\DevCompilersLW2.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
