@@ -197,7 +197,6 @@ namespace DevCompilersLW3
                 switch (state)
                 {
                     case 0:
-                        //Console.WriteLine("Case 0 --> " + s.ElementAt(i));
                         if (i < s.Length-1)
                         {
                             if (s.ElementAt(i) == '(')
@@ -211,49 +210,38 @@ namespace DevCompilersLW3
                                 {
                                     if (IsOperationCharacterLeft(i))
                                     {
-                                        Console.WriteLine("Successive operation at "+i);
+                                        Console.WriteLine("Case 0 -- Successive operation at "+i);
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Not operand for " + s.ElementAt(i)+ " at "+i);
+                                        Console.WriteLine("Case 0 -- Not operand for " + s.ElementAt(i)+ " at "+i);
                                     }
                                 }
                                 else if(s.ElementAt(i)=='=' && i != 1)
                                 {
-                                    Console.WriteLine("Need var = in position 0 and 1 , but not here");
+                                    Console.WriteLine("Case 0 -- Need var = in position 0 and 1 , but not here");
                                 }
                                 else if (s.ElementAt(i) == ')')
                                 {
-                                    Console.WriteLine("Case 0");
                                     k--;
                                     if (k < 0)
                                     {
-                                        //Console.WriteLine("Not opened brace for " + s.ElementAt(i) + " at " + i);
+                                        Console.Write("Case 0 -- ");
                                         PrintErrorNotOpenedBrace();
                                     }
                                     else if (k == 0 || IsOpenedBraceLeft(i))
                                     {
-                                        Console.WriteLine("Not need empty brace " + i);
+                                        Console.WriteLine("Case 0 -- Not need empty brace " + i);
                                     }
                                     if (IsOperationCharacterLeft(i))
                                     {
-                                        Console.WriteLine("Not operand for " + s.ElementAt(i - 1)+" at "+i);
+                                        Console.WriteLine("Case 0 -- Not operand for " + s.ElementAt(i - 1)+" at "+i);
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Not operation for  " + s.ElementAt(i+1)+" at "+i);
+                                        Console.WriteLine("Case 0 -- Not operation for  " + s.ElementAt(i+1)+" at "+1);
                                     }
-                                   /* if(k!=0 && !IsOpenedBraceLeft(i))
-                                    {
-                                        Console.WriteLine("Not opened brace for " + s.ElementAt(i));
-                                    }else if(k==0 && IsOpenedBraceLeft(i))
-                                    {
-                                        Console.WriteLine("Not need this braces");
-                                    }
-                                    else if(IsOperationCharacterLeft(i))
-                                    {
-                                        Console.WriteLine("Not operand for " + s.ElementAt(i - 1));
-                                    }*/
+                                   state = 1;
                                 }
                                 NextToken();
                             }
@@ -277,7 +265,6 @@ namespace DevCompilersLW3
                         }
                         break;
                     case 1:
-                        //Console.WriteLine("Case 1 --> " + s.ElementAt(i));
                         if (i < s.Length-1)
                         {
                            
@@ -286,15 +273,14 @@ namespace DevCompilersLW3
                                 k--;
                                 if (k != 0)
                                 {
-                                    Error();
-                                    Console.WriteLine("Case 1");
-                                    //Console.WriteLine(" Not opened brace for current "+s.ElementAt(i)+" at "+i);
                                     if (k > 0)
                                     {
+                                        Console.Write("Case 1 -- ");
                                         PrintErrorNotClosedBrace();
                                     }
                                     else
                                     {
+                                        Console.Write("Case 1 -- ");
                                         PrintErrorNotOpenedBrace();
                                     }
                                     k = 0;
@@ -303,7 +289,7 @@ namespace DevCompilersLW3
                             else if (s.ElementAt(i) == '(')
                             {
                                 k++;
-                                Console.WriteLine(" Not operation for this operand " + s.ElementAt(i) + " at " + i);
+                                Console.WriteLine("Case 1 -- Not operation for this opened brace " + s.ElementAt(i) + " at " + i);
                             }
                             else
                             {
@@ -311,21 +297,6 @@ namespace DevCompilersLW3
                                 {
                                     state = 0;
                                 }
-                                /*else if(s.ElementAt(i)=='=')
-                                {
-
-                                
-                                }
-                                else
-                                {
-                                    Error();
-                                    Console.WriteLine("We expected operation or closed parenthesis in place of "+s.ElementAt(i));
-                                    if (s.ElementAt(i)=='(')
-                                    {
-                                        k++;
-                                        
-                                    }
-                                }*/
                             }
                             NextToken();
                         }
@@ -336,7 +307,6 @@ namespace DevCompilersLW3
                         }
                         break;
                     case 2:
-                        //Console.WriteLine("Case 2 --> " + s.ElementAt(i));
                         if (s.ElementAt(i) == ')')
                         {
                             k--;
@@ -347,32 +317,32 @@ namespace DevCompilersLW3
                             else 
                             {
                                 k = 0;
-                                Error();
-                                Console.WriteLine("Not opened brace for current " + s.ElementAt(i)+" at "+i);
+                                //Error();
+                                Console.WriteLine("Case 2 -- Not opened brace for current " + s.ElementAt(i)+" at "+i);
                             }
                         }
                         else if (s.ElementAt(i) == '(')
                         {
-                            Error();
-                            Console.WriteLine("Not closed brase for current " + s.ElementAt(i));
+                            //Error();
+                            Console.WriteLine("Case 2 -- Not closed brase for current " + s.ElementAt(i));
                         }
                         else if (k != 0)
                         {
-                            Console.WriteLine("Not closed braced for ) at "+GetPositionLastOpenedBrace());
+                            Console.WriteLine("Case 2 -- Not closed braced for ) at "+GetPositionLastOpenedBrace());
                         }
                         if (stateFrom == 1)
                         {
                             if(InOperation(s.ElementAt(i)) && !(s.ElementAt(i)=='='))
                             {
-                                Error();
-                                Console.WriteLine("Not operand for current "+s.ElementAt(i));
+                                //Error();
+                                Console.WriteLine("Case 2 -- Not operand for current "+s.ElementAt(i));
                             }
                             else if(s.ElementAt(i) == '=')
                             {
-                                Error();
+                                //Error();
                                 if (!HasIdentificatorForEqualSymbol(i))
                                 {
-                                    Console.WriteLine("Not identificator for current" + s.ElementAt(i));
+                                    Console.WriteLine("Case 2 -- Not identificator for current" + s.ElementAt(i));
                                 }
                             }
                         }
@@ -384,12 +354,12 @@ namespace DevCompilersLW3
                             }
                             else if(InOperation(s.ElementAt(i)))
                             {
-                                Error();
-                                Console.WriteLine("Successive operation");
+                                //Error();
+                                Console.WriteLine("Case 2 -- Successive operation");
                             }else if (s.ElementAt(i) == '=')
                             {
-                                Error();
-                                Console.WriteLine("Not definition for " + s.ElementAt(i));
+                                //Error();
+                                Console.WriteLine("Case 2 -- Not definition for " + s.ElementAt(i));
                             }
                         }
                         state = 3;
