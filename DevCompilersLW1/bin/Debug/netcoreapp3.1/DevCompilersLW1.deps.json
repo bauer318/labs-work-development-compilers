@@ -21,6 +21,9 @@
         }
       },
       "DevCompilersLW3/1.0.0": {
+        "dependencies": {
+          "DevCompilersLW2": "1.0.0"
+        },
         "runtime": {
           "DevCompilersLW3.dll": {}
         }

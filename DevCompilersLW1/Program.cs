@@ -55,15 +55,28 @@ namespace DevCompilersLW1
                 }
                 Console.WriteLine(">> {0}", astObj.Eval());
             }*/
+            string expr = "(a+b)=6+8";
             char[] digits = { '0', '1', '2',
             '3', '4', '5', '6', '7', '8', '9' };
             char[] letters = {'_','A','B','C','D','E','F','G','H', 'I', 'J', 'K', 'L'
         ,'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f'
         ,'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
             char[] op = { '+', '-', '*', '/' };
-            Class1 c = new Class1(op,letters,digits);
-            c.MainMethode();
-            
+            Class1 c2 = new Class1(op,letters,digits, expr);
+            c2.MainMethode();
+
+            //string expresion = File.ReadAllText(args[0].ToString());
+           
+            LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
+            if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expr))
+            {
+                //OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(args[1].ToString(), args[2].ToString());
+                //outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
+                //outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
+                Class1 c = new Class1(lexicalErrorAnalyzer.Tokens);
+                c.Rt();
+            }
+
         }
         
         private static bool CheckInputData(string[] args)

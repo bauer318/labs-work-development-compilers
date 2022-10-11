@@ -7,10 +7,26 @@ namespace DevCompilersLW3
 {
     public static class TokenWorker
     {
-        public static bool IsCorrectEqualSignPosition(int parCurrentTokenIndex, int parEqualSignCount)
+        public static bool IsCorrectEqualSignPosition(int parCurrentTokenIndex,List<Token> parTokens)
         {
-            return parCurrentTokenIndex == 1 && parEqualSignCount == 1;
+            int res = 0;
+            for(var i = parCurrentTokenIndex-1; i >= 0; i--)
+            {
+                if(parTokens[i].TokenType==TokenType.CORRECT_IDENTIFICATOR || parTokens[i].TokenType == TokenType.OPEN_PARENTHESIS)
+                {
+                    if(parTokens[i].TokenType == TokenType.CORRECT_IDENTIFICATOR)
+                    {
+                        res++;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return res == 1;
         }
+
         public static bool IsTokenTypeOperatorLeft(int parCurrentTokenIndex, List<Token> parTokens)
         {
             bool result = false;
@@ -98,7 +114,7 @@ namespace DevCompilersLW3
         
         public static void PrintMessage(string parMessage, int parCurrentTokenIndex, Token parToken)
         {
-            Console.WriteLine(parMessage + parToken + " at " + parCurrentTokenIndex);
+            Console.WriteLine(parMessage + parToken.Lexeme + " at " + parCurrentTokenIndex);
         }
         public static void PrintMessage(string parMessage, int parCurrentTokenIndex)
         {

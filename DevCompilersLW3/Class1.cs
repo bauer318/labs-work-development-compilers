@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevCompilersLW2;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DevCompilersLW3
@@ -14,14 +16,22 @@ namespace DevCompilersLW3
         string s;
         int i, k, e;
         int stateFrom = 0;
+        private List<Token> tokens = new List<Token>();
+        private AutomatState automatState;
         
         int state;
-        public Class1(char[] parOp, char[] parLetters, char[] parDigits)
+        public Class1(char[] parOp, char[] parLetters, char[] parDigits, string parS)
         {
-            s = "=+)=";
+            //s = "(()(2+2+2-5)+()2+";
+            s = parS;
             op = parOp;
             letters = parLetters;
             digits = parDigits;
+            //tokens = parTokens;
+        }
+        public Class1(List<Token> parTokens)
+        {
+            tokens = parTokens;
         }
         private void Error()
         {
@@ -33,9 +43,9 @@ namespace DevCompilersLW3
         }
         private bool InLetters(char parElement)
         {
-            for(var i = 0; i < letters.Length; i++)
+            for(var j = 0; j < letters.Length; j++)
             {
-                if (letters[i] == parElement)
+                if (letters[j] == parElement)
                 {
                     return true;
                 }
@@ -67,7 +77,7 @@ namespace DevCompilersLW3
         private void Identifier()
         {
 
-            while (i < s.Length && (InLetters(s.ElementAt(i+1)) || InDigits(s.ElementAt(i + 1))))
+            while (i < s.Length && (InLetters(s.ElementAt(i)) || InDigits(s.ElementAt(i))))
             {
                 NextToken();
             }
@@ -84,7 +94,7 @@ namespace DevCompilersLW3
             bool result = false;
             if (parCurrentIndex - 1 >= 0)
             {
-                return InOperation(s.ElementAt(parCurrentIndex - 1)) || s.ElementAt(i)=='=';
+                return InOperation(s.ElementAt(parCurrentIndex - 1)) || s.ElementAt(parCurrentIndex-1) =='=';
             }
             return result;
         }
@@ -180,7 +190,24 @@ namespace DevCompilersLW3
             return e == 1 && i == 1;
         }
 
-        //private int CaseZeroRealize(int k, int i,string current,)
+        public void Rt()
+        {
+            Console.WriteLine("Expression ");
+            for(var i = 0; i<tokens.Count;i++)
+            {
+                Console.Write(tokens[i].Lexeme);
+            }
+            Console.WriteLine(" ");
+            AutomateStateMethodes.e = 0;
+            AutomateStateMethodes.i = 0;
+            AutomateStateMethodes.k = 0;
+            automatState = AutomatState.OPENED_BRACE_OPERAND;
+            while (automatState != AutomatState.END_EXPRESSION)
+            {
+                automatState = automatState.Swip(tokens);
+            }
+        }
+
 
         public void MainMethode()
         {
@@ -198,8 +225,10 @@ namespace DevCompilersLW3
                         {
                             if (s.ElementAt(i) == '(')
                             {
+                                //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                 k++;
                                 NextToken();
+                                
                             }
                             else if(!(InDigits(s.ElementAt(i)) || InLetters(s.ElementAt(i))))
                             {
@@ -208,10 +237,12 @@ namespace DevCompilersLW3
                                     if (IsOperationCharacterLeft(i))
                                     {
                                         Console.WriteLine("Case 0 -- Successive operation at "+i);
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
                                     else
                                     {
                                         Console.WriteLine("Case 0 -- Not operand for " + s.ElementAt(i)+ " at "+i);
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
                                 }
                                 else if(s.ElementAt(i)=='=')
@@ -219,16 +250,19 @@ namespace DevCompilersLW3
                                     e++;
                                     if (e > 1)
                                     {
-                                        Console.WriteLine("Many sign = at " + i);
+                                        Console.WriteLine("Case 0 -- Many sign = at " + i);
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
                                     else if(IsCorrectPositionEgalSign(i,e))
                                     {
-                                        Console.WriteLine("Not identificator for = at " + i);
+                                        Console.WriteLine("Case 0*** -- Not identificator for = at " + i);
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
                                     else
                                     {
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                         Console.WriteLine("Wrong position for " + s.ElementAt(i) + " at " + i +
-                                           "The egal sign must be after identificator and this identificator must be the first in expression");
+                                        "The egal sign must be after identificator and this identificator must be the first in expression");
                                     }
                                     
                                 }
@@ -239,19 +273,25 @@ namespace DevCompilersLW3
                                     {
                                         Console.Write("Case 0 -- ");
                                         PrintErrorNotOpenedBrace();
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
                                     else if (k == 0 || IsOpenedBraceLeft(i))
                                     {
                                         Console.WriteLine("Case 0 -- Not need empty brace " + i);
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
+                                    //else if
                                     if (IsOperationCharacterLeft(i))
                                     {
                                         Console.WriteLine("Case 0 -- Not operand for " + s.ElementAt(i - 1)+" at "+i);
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Case 0 -- Not operation for  " + s.ElementAt(i+1)+" at "+1);
+                                        Console.WriteLine("Case 0 -- Not operator for  " + s.ElementAt(i+1)+" at "+i);
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
+                                   
                                    state = 1;
                                 }
                                 NextToken();
@@ -260,12 +300,12 @@ namespace DevCompilersLW3
                             {
                                 if (InLetters(s.ElementAt(i)))
                                 {
-                                    Console.WriteLine("Ident ");
+                                    //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     Identifier();
                                 }
                                 else if(InDigits(s.ElementAt(i)))
                                 {
-                                    Console.WriteLine("Const ");
+                                    //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     Number();
                                 }
                                 state = 1;
@@ -290,19 +330,25 @@ namespace DevCompilersLW3
                                     {
                                         Console.Write("Case 1 -- ");
                                         PrintErrorNotClosedBrace();
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
                                     else
                                     {
                                         Console.Write("Case 1 -- ");
                                         PrintErrorNotOpenedBrace();
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
                                     k = 0;
                                 }
                             } 
                             else if (s.ElementAt(i) == '(')
                             {
+                                //return state 0
                                 k++;
-                                Console.WriteLine("Case 1 -- Not operation for this opened brace " + s.ElementAt(i) + " at " + i);
+                                //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
+                                Console.WriteLine("Case 1 -- Not expression after " + s.ElementAt(i) + " at " + i);
+                                state = 0;
+                                
                             }
                             else
                             {
@@ -313,28 +359,33 @@ namespace DevCompilersLW3
                                     {
                                         if (!InLetters(s.ElementAt(i - 1)))
                                         {
-                                            Console.WriteLine("Not identificator for " + s.ElementAt(i) + " at " + i);
+                                            Console.WriteLine("Case 1 -- Not identificator for " + s.ElementAt(i) + " at " + i);
+                                            //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                         }
                                     }
                                     else if (e > 1)
                                     {
-                                        Console.WriteLine("Many sign 1" + s.ElementAt(i) + " at " + i);
+                                        Console.WriteLine("Case 1 -- Many sign 1" + s.ElementAt(i) + " at " + i);
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
                                     else
                                     {
                                         Console.WriteLine("Wrong position for " +s.ElementAt(i)+" at "+i+
                                             "The egal sign must be after identificator and this identificator must be the first in expression");
+                                        //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                     }
                                 }
+                                //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                 state = 0;
                             }
                             NextToken();
                         }
                         else
                         {
-                            Console.WriteLine("Operation ");
+                            //Console.WriteLine("Operation ");
                             state = 2;
                             stateFrom = 1;
+                            //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                         }
                         break;
                     case 2:
@@ -344,16 +395,19 @@ namespace DevCompilersLW3
                             if (k == 0)
                             {
                                 Console.WriteLine("OKAY From state 1");
+                                //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                             }
                             else 
                             {
                                 k = 0;
-                                Console.WriteLine("Case 2 -- Not opened brace for current " + s.ElementAt(i)+" at "+i);
+                                Console.WriteLine("Case 2 -- Not opened brace for " + s.ElementAt(i)+" at "+i);
+                                //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                             }
                         }
                         else if (s.ElementAt(i) == '(')
                         {
-                            Console.WriteLine("Case 2 -- Not closed brase for current " + s.ElementAt(i));
+                            Console.WriteLine("Case 2 -- Not closed brase for " + s.ElementAt(i));
+                            //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                         }
                         else if (s.ElementAt(i) == '=')
                         {
@@ -363,32 +417,38 @@ namespace DevCompilersLW3
                                 if (InLetters(s.ElementAt(i - 1)))
                                 {
                                     Console.WriteLine("Case 2 -- Not definition for " + s.ElementAt(i) + " at " + i);
+                                    //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                 }
                                 else
                                 {
                                     Console.WriteLine("Case 2 -- Not identificator for "+ s.ElementAt(i) + " at " + i);
+                                    //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                                 }
                             }
                             else if(e>1)
                             {
                                 Console.WriteLine("Case 2 Many sign ");
+                                //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                             }
                             else
                             {
                                 Console.WriteLine("Wrong position for " + s.ElementAt(i) + " at " + i +
                                            "The egal sign must be after identificator and this identificator must be the first in expression");
+                                //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                             }
                             
                         }
                         else if (k != 0)
                         {
                             Console.WriteLine("Case 2 -- Not closed braced for ) at "+GetPositionLastOpenedBrace());
+                            //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                         }
                         if (stateFrom == 1)
                         {
                             if(InOperation(s.ElementAt(i)) && !(s.ElementAt(i)=='='))
                             {
                                 Console.WriteLine("Case 2 -- Not operand for current "+s.ElementAt(i));
+                                //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                             }
                            
                         }
@@ -397,10 +457,12 @@ namespace DevCompilersLW3
                             if (InDigits(s.ElementAt(i)))
                             {
                                 Console.WriteLine("OKAY From state 0");
+                                //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                             }
                             else if(InOperation(s.ElementAt(i)))
                             {
-                                Console.WriteLine("Case 2 -- Successive operation");
+                                Console.WriteLine("Case 2 -- Not operand for "+s.ElementAt(i)+" at "+i);
+                                //Console.WriteLine("****** i:" + i + " lexem " + s.ElementAt(i) + " state " + state);
                             }
                             
                         }

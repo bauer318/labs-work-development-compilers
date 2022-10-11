@@ -25,6 +25,7 @@ namespace DevCompilersLW2
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_CONSTANT, "^\\d+\\.{1}\\d+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_IDENTIFICATOR, "^[0-9]+[_a-zA-Z0-9]+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.EQUAL_SIGN, "^\\=$"));
 
         }
         public string[] SplitExpresion(string parExpresion)
@@ -81,7 +82,7 @@ namespace DevCompilersLW2
         }
         private bool IsExpresionSeparator(string parText)
         {
-            string[] separatorSymbolArray = { "+", "/", "*", "-", ")", "(" };
+            string[] separatorSymbolArray = { "+", "/", "*", "-", ")", "(","=" };
             Dictionary<string, string> dictionary = GetLexicalDictionary();
             bool result = false;
             for (var i = 0; i < separatorSymbolArray.Length; i++)
