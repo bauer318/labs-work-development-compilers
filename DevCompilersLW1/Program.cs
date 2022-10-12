@@ -55,15 +55,15 @@ namespace DevCompilersLW1
                 }
                 Console.WriteLine(">> {0}", astObj.Eval());
             }*/
-            string expr = "6+8()+98*8((2+5)";
-            char[] digits = { '0', '1', '2',
+            string expr = "+";
+           /* char[] digits = { '0', '1', '2',
             '3', '4', '5', '6', '7', '8', '9' };
             char[] letters = {'_','A','B','C','D','E','F','G','H', 'I', 'J', 'K', 'L'
         ,'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f'
         ,'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
             char[] op = { '+', '-', '*', '/' };
             Class1 c2 = new Class1(op,letters,digits, expr);
-            c2.MainMethode();
+            c2.MainMethode();*/
 
             //string expresion = File.ReadAllText(args[0].ToString());
            

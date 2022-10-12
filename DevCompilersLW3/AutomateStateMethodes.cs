@@ -45,11 +45,10 @@ namespace DevCompilersLW3
                                     case TokenType.MULTIPLICATION_SIGN:
                                         if (TokenWorker.IsTokenTypeOperatorLeft(i, parTokens))
                                         {
-                                            TokenWorker.PrintMessage("Case 0 -- Successive operator at ", i);
+                                            TokenWorker.PrintMessage("Case 0 -- Successive operator ", i);
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Case 0 " + i);
                                             TokenWorker.PrintMessage("Case 0 -- Not operand for ", i, currentToken);
                                         }
                                         break;
@@ -72,16 +71,16 @@ namespace DevCompilersLW3
                                         CloseBrace();
                                         if (k < 0)
                                         {
-                                            TokenWorker.PrintErrorNotOpenedBrace(parTokens);
+                                            //TokenWorker.PrintErrorNotOpenedBrace(parTokens);
                                             k = 0;
                                         }
                                         else if (k == 0 || TokenWorker.IsOpenedBraceLeft(i, parTokens))
                                         {
                                             TokenWorker.PrintMessage("Case 0 -- Empty braces at ", i);
                                         }
-                                        if (TokenWorker.IsTokenTypeOperatorLeft(i, parTokens))
+                                        else if (TokenWorker.IsTokenTypeOperatorLeft(i, parTokens))
                                         {
-                                            TokenWorker.PrintMessage("Case *0 -- Not operand for ", i, parTokens[i - 1]);
+                                            TokenWorker.PrintMessage("Case 0 -- Not operand for ", i, parTokens[i - 1]);
                                         }
                                         else
                                         {
@@ -104,29 +103,28 @@ namespace DevCompilersLW3
                 case AutomatState.CLOSED_BRACE_OPERATOR:
                     if (i < tokensNumber - 1)
                     {
+                        //Console.WriteLine("Enter i: " + i + " token " + currentToken.Lexeme);
                         switch(currentTokenType)
                         {
                             case TokenType.CLOSE_PARENTHESIS:
                                 CloseBrace();
                                 if (k > 0)
                                 {
-                                    Console.Write("Case 1 -- ");
-                                    TokenWorker.PrintErrorNotClosedBrace(parTokens);
-                                    //k = 0;
+                                    //Console.Write("Case 1 -- ");
+                                    //TokenWorker.PrintErrorNotClosedBrace(parTokens);
                                     CannotGenerateSyntaxThree();
                                 }
                                 else if (k < 0)
                                 {
-                                    Console.Write("Case 1 -- ");
-                                    TokenWorker.PrintErrorNotOpenedBrace(parTokens);
-                                    //k = 0;
+                                    //Console.Write("Case 1 -- ");
+                                    //TokenWorker.PrintErrorNotOpenedBrace(parTokens);
                                     CannotGenerateSyntaxThree();
                                 }
                                 k = k != 0 ? 0 : k;
                                 break;
                             case TokenType.OPEN_PARENTHESIS:
-                                k++;
-                                TokenWorker.PrintMessage("Case 1 -- Not expression after ", i, currentToken);
+                                OpenBrace();
+                                TokenWorker.PrintMessage("Case 1 -- Not operator befor ", i, currentToken);
                                 nextAutomateState = AutomatState.OPENED_BRACE_OPERAND;
                                 CannotGenerateSyntaxThree();
                                 break;
@@ -172,12 +170,12 @@ namespace DevCompilersLW3
                             if (k != 0)
                             {
                                 CannotGenerateSyntaxThree();
-                                TokenWorker.PrintMessage("Case 2 -- Not opened brace for ", i, currentToken);
+                                //TokenWorker.PrintMessage("Case 2 -- Not opened brace for ", i, currentToken);
                             }
                             break;
                         case TokenType.OPEN_PARENTHESIS:
                             CannotGenerateSyntaxThree();
-                            TokenWorker.PrintMessage("Case 2 -- Not closed brace for ", i, currentToken);
+                            //TokenWorker.PrintMessage("Case 2 -- Not closed brace for ", i, currentToken);
                             break;
                         case TokenType.EQUAL_SIGN:
                             AddEqualSign();
@@ -207,10 +205,10 @@ namespace DevCompilersLW3
                     {
                         if (k > 0)
                         {
-                            var lastOpenedBraceIndex = TokenWorker.GetPositionLastOpenedBrace(parTokens);
-                            TokenWorker.PrintMessage("Case 2 -- Not closed brace for ", lastOpenedBraceIndex, parTokens[lastOpenedBraceIndex]);
+                            //var lastOpenedBraceIndex = TokenWorker.GetPositionLastOpenedBrace(parTokens);
+                            //TokenWorker.PrintMessage("Case 2 -- Not closed brace for ", lastOpenedBraceIndex, parTokens[lastOpenedBraceIndex]);
                     
-                            //TokenWorker.PrintErrorNotClosedBrace(parTokens);
+                            TokenWorker.PrintErrorNotClosedBrace(parTokens);
                         }
                         else
                         {
@@ -226,7 +224,7 @@ namespace DevCompilersLW3
                             if (TokenWorker.IsTokenTypeOperator(currentToken))
                             {
                                 CannotGenerateSyntaxThree();
-                                TokenWorker.PrintMessage("Case 2 -- Not operand for ", i, currentToken);
+                                TokenWorker.PrintMessage("Case 2 -- Successive operator ", i);
                             }
                             break;
                         case AutomatState.CLOSED_BRACE_OPERATOR:
