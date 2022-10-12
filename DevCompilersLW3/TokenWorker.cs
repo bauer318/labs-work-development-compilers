@@ -85,7 +85,7 @@ namespace DevCompilersLW3
                     count--;
                     if (count < 0)
                     {
-                        PrintMessage("Not opened brace for ", j, parTokens[j]);
+                        PrintMessage("lexical error! Not opened brace for ", j, parTokens[j]);
                         count = 0;
                     }
                 }
@@ -105,7 +105,7 @@ namespace DevCompilersLW3
                     count--;
                     if (count < 0)
                     {
-                        PrintMessage("Not closed brace for ", j, parTokens[j]);
+                        PrintMessage("lexical error! Not closed brace for ", j, parTokens[j]);
                         count = 0;
                     }
                 }
@@ -114,15 +114,15 @@ namespace DevCompilersLW3
         
         public static void PrintMessage(string parMessage, int parCurrentTokenIndex, Token parToken)
         {
-            Console.WriteLine(parMessage + parToken.Lexeme + " at " + parCurrentTokenIndex);
+            Console.WriteLine("lexical error! " + parMessage + parToken.Lexeme + " at " + parCurrentTokenIndex);
         }
         public static void PrintMessage(string parMessage, int parCurrentTokenIndex)
         {
-            Console.WriteLine(parMessage + " at " + parCurrentTokenIndex);
+            Console.WriteLine("lexical error! "+parMessage + " at " + parCurrentTokenIndex);
         }
         public static void PrintMessage(string parMessage)
         {
-            Console.WriteLine(parMessage);
+            Console.WriteLine("lexical error! "+parMessage);
         }
     }
 }

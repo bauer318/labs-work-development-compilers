@@ -10,7 +10,7 @@ namespace DevCompilersLW3
         public static int k = 0;
         public static int i = 0;
         public static int e = 0;
-        public static bool Can_Continue = true;
+        public static bool  Can_Continue = true;
         private static AutomatState AutomateStateFrom = AutomatState.OPENED_BRACE_OPERAND;
         private static AutomatState nextAutomateState = AutomatState.OPENED_BRACE_OPERAND;
         public static AutomatState Swip(this AutomatState parAutomatState,List<Token> parTokens)
@@ -45,26 +45,26 @@ namespace DevCompilersLW3
                                     case TokenType.MULTIPLICATION_SIGN:
                                         if (TokenWorker.IsTokenTypeOperatorLeft(i, parTokens))
                                         {
-                                            TokenWorker.PrintMessage("Case 0 -- Successive operator ", i);
+                                            TokenWorker.PrintMessage("Successive operator ", i);
                                         }
                                         else
                                         {
-                                            TokenWorker.PrintMessage("Case 0 -- Not operand for ", i, currentToken);
+                                            TokenWorker.PrintMessage("Not operand for ", i, currentToken);
                                         }
                                         break;
                                     case TokenType.EQUAL_SIGN:
                                         AddEqualSign();
                                         if (e > 1)
                                         {
-                                            TokenWorker.PrintMessage("Case 0 -- They are many equal sign in the expression ", i, currentToken);
+                                            TokenWorker.PrintMessage("They are many equal sign in the expression ", i, currentToken);
                                         }
                                         else if (TokenWorker.IsCorrectEqualSignPosition(i, parTokens))
                                         {
-                                            TokenWorker.PrintMessage("Case 0 -- Not identificator for ", i, currentToken);
+                                            TokenWorker.PrintMessage("Not identificator for ", i, currentToken);
                                         }
                                         else
                                         {
-                                            TokenWorker.PrintMessage("Case 0 -- Wrong possition for ", i, currentToken);
+                                            TokenWorker.PrintMessage("Wrong possition for ", i, currentToken);
                                         }
                                         break;
                                     case TokenType.CLOSE_PARENTHESIS:
@@ -75,15 +75,15 @@ namespace DevCompilersLW3
                                         }
                                         else if (k == 0 || TokenWorker.IsOpenedBraceLeft(i, parTokens))
                                         {
-                                            TokenWorker.PrintMessage("Case 0 -- Empty braces at ", i);
+                                            TokenWorker.PrintMessage("Empty braces at ", i);
                                         }
                                         else if (TokenWorker.IsTokenTypeOperatorLeft(i, parTokens))
                                         {
-                                            TokenWorker.PrintMessage("Case 0 -- Not operand for ", i, parTokens[i - 1]);
+                                            TokenWorker.PrintMessage("Not operand for ", i, parTokens[i - 1]);
                                         }
                                         else
                                         {
-                                            TokenWorker.PrintMessage("Case 0 -- Not operator for ", i, parTokens[i + 1]);
+                                            TokenWorker.PrintMessage("Not operator for ", i, parTokens[i + 1]);
                                         }
                                         nextAutomateState = AutomatState.CLOSED_BRACE_OPERATOR;
                                         break;
@@ -115,7 +115,7 @@ namespace DevCompilersLW3
                                 break;
                             case TokenType.OPEN_PARENTHESIS:
                                 OpenBrace();
-                                TokenWorker.PrintMessage("Case 1 -- Not operator befor ", i, currentToken);
+                                TokenWorker.PrintMessage("Not operator befor ", i, currentToken);
                                 nextAutomateState = AutomatState.OPENED_BRACE_OPERAND;
                                 CannotGenerateSyntaxThree();
                                 break;
@@ -128,18 +128,18 @@ namespace DevCompilersLW3
                                         if (parTokens[i - 1].TokenType != TokenType.CORRECT_IDENTIFICATOR)
                                         {
                                             CannotGenerateSyntaxThree();
-                                            TokenWorker.PrintMessage("Case 1 -- Not identificator for ", i, currentToken);
+                                            TokenWorker.PrintMessage("Not identificator for ", i, currentToken);
                                         }
                                     }
                                     else if (e > 1)
                                     {
                                         CannotGenerateSyntaxThree();
-                                        TokenWorker.PrintMessage("Case 1 -- They are many equal sign in the expression ", i, currentToken);
+                                        TokenWorker.PrintMessage("They are many equal sign in the expression ", i, currentToken);
                                     }
                                     else
                                     {
                                         CannotGenerateSyntaxThree();
-                                        TokenWorker.PrintMessage("Case 1 -- Not identificator for ", i, currentToken);
+                                        TokenWorker.PrintMessage("Not identificator for ", i, currentToken);
                                     }
                                 }
                                 nextAutomateState = AutomatState.OPENED_BRACE_OPERAND;
@@ -173,20 +173,20 @@ namespace DevCompilersLW3
                             {
                                 if (parTokens[i - 1].TokenType == TokenType.CORRECT_IDENTIFICATOR)
                                 {
-                                    TokenWorker.PrintMessage("Case 2 -- Not expression's definition for ", i, currentToken);
+                                    TokenWorker.PrintMessage("Not expression's definition for ", i, currentToken);
                                 }
                                 else
                                 {
-                                    TokenWorker.PrintMessage("Case 2 -- Not identificator for ", i, currentToken);
+                                    TokenWorker.PrintMessage("Not identificator for ", i, currentToken);
                                 }
                             }
                             else if (e > 1)
                             {
-                                TokenWorker.PrintMessage("Case 2 -- They are many equal sign in the expression ", i, currentToken);
+                                TokenWorker.PrintMessage("They are many equal sign in the expression ", i, currentToken);
                             }
                             else
                             {
-                                TokenWorker.PrintMessage("Case 2 -- Wrong possition for ", i, currentToken);
+                                TokenWorker.PrintMessage("Wrong possition for ", i, currentToken);
                             }
                             break;
                     }
@@ -210,14 +210,14 @@ namespace DevCompilersLW3
                             if (TokenWorker.IsTokenTypeOperator(currentToken))
                             {
                                 CannotGenerateSyntaxThree();
-                                TokenWorker.PrintMessage("Case 2 -- Successive operator ", i);
+                                TokenWorker.PrintMessage("Successive operator ", i);
                             }
                             break;
                         case AutomatState.CLOSED_BRACE_OPERATOR:
                             if (TokenWorker.IsTokenTypeOperator(currentToken) && currentTokenType != TokenType.EQUAL_SIGN)
                             {
                                 CannotGenerateSyntaxThree();
-                                TokenWorker.PrintMessage("Case 2 -- Not operand for ", i, currentToken);
+                                TokenWorker.PrintMessage("Not operand for ", i, currentToken);
                             }
                             break;
                     }

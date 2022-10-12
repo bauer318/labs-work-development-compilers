@@ -55,7 +55,7 @@ namespace DevCompilersLW1
                 }
                 Console.WriteLine(">> {0}", astObj.Eval());
             }*/
-            string expr = "_var4*2";
+            string expr = "_var4*";
            /* char[] digits = { '0', '1', '2',
             '3', '4', '5', '6', '7', '8', '9' };
             char[] letters = {'_','A','B','C','D','E','F','G','H', 'I', 'J', 'K', 'L'
@@ -73,8 +73,15 @@ namespace DevCompilersLW1
                 //OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(args[1].ToString(), args[2].ToString());
                 //outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
                 //outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
-                Class1 c = new Class1(lexicalErrorAnalyzer.Tokens);
-                c.Rt();
+                SyntaxicalErrorAnalyzer c = new SyntaxicalErrorAnalyzer(lexicalErrorAnalyzer.Tokens);
+                if (c.IsSyntaxicalyCorrectExpression())
+                {
+                    Console.WriteLine("Okay");
+                }
+                else
+                {
+                    Console.WriteLine("Negatif");
+                }
             }
 
         }
