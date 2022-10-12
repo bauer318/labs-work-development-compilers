@@ -55,7 +55,7 @@ namespace DevCompilersLW1
                 }
                 Console.WriteLine(">> {0}", astObj.Eval());
             }*/
-            string expr = "(a+b)=6+8";
+            string expr = "6+8()+98*8((2+5)";
             char[] digits = { '0', '1', '2',
             '3', '4', '5', '6', '7', '8', '9' };
             char[] letters = {'_','A','B','C','D','E','F','G','H', 'I', 'J', 'K', 'L'
