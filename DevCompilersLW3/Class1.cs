@@ -202,9 +202,16 @@ namespace DevCompilersLW3
             AutomateStateMethodes.i = 0;
             AutomateStateMethodes.k = 0;
             automatState = AutomatState.OPENED_BRACE_OPERAND;
-            while (automatState != AutomatState.END_EXPRESSION)
+            if (tokens.Count == 1)
             {
-                automatState = automatState.Swip(tokens);
+                AutomateStateMethodes.OneLexemeCase(tokens[i]);
+            }
+            else
+            {
+                while (automatState != AutomatState.END_EXPRESSION)
+                {
+                    automatState = automatState.Swip(tokens);
+                }
             }
         }
 
