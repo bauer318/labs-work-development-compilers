@@ -47,5 +47,22 @@ namespace DevCompilersLW2
                     return "Лексическая ошибка! Недопустимый символ " + "\"" + parCurrentLexeme + "\"" + " на позиции "+currentPosition;
             }
         }
+        public static string GetTokenNodeDescription(this TokenType parTokenType,Token parToken)
+        {
+            switch (parTokenType)
+            {
+                case TokenType.ADDITION_SIGN:
+                case TokenType.SOUSTRACTION_SIGN:
+                case TokenType.MULTIPLICATION_SIGN:
+                case TokenType.DIVISION_SIGN:
+                case TokenType.EQUAL_SIGN:
+                case TokenType.CORRECT_DECIMAL_CONSTANT:
+                case TokenType.INTEGER_CONSTANT:
+                    return "<"+parToken.Lexeme+">";
+                case TokenType.CORRECT_IDENTIFICATOR:
+                    return "<id, " + parToken.AttributeValue + ">";
+            }
+            return "";
+        }
     }
 }
