@@ -38,6 +38,7 @@ namespace DevCompilersLW3
             }
             return result;
         }
+        
         public static bool IsTokenTypeOperator(Token parToken)
         {
             TokenType tokenType = parToken.TokenType;
@@ -46,7 +47,7 @@ namespace DevCompilersLW3
                     tokenType == TokenType.MULTIPLICATION_SIGN ||
                     tokenType == TokenType.SOUSTRACTION_SIGN;
         }
-        public static bool IsTokenTypeConstIdentificator(TokenType parTokenType)
+        public static bool IsOperand(TokenType parTokenType)
         {
             return parTokenType == TokenType.CORRECT_IDENTIFICATOR ||
                 parTokenType == TokenType.CORRECT_DECIMAL_CONSTANT ||

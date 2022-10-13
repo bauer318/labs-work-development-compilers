@@ -108,8 +108,8 @@ namespace DevCompilersLW3
                                 CloseBrace();
                                 if (k != 0)
                                 {
-                                    CannotGenerateSyntaxThree();
-                                    k = 0;
+                                    //CannotGenerateSyntaxThree();
+                                    //k = 0;
                                 }
                              
                                 break;
@@ -161,6 +161,7 @@ namespace DevCompilersLW3
                             if (k != 0)
                             {
                                 CannotGenerateSyntaxThree();
+                                Console.WriteLine("Ici");
                             }
                             break;
                         case TokenType.OPEN_PARENTHESIS:
@@ -229,6 +230,7 @@ namespace DevCompilersLW3
         }
         public static void OneLexemeCase(Token parToken)
         {
+            CannotGenerateSyntaxThree();
             switch (parToken.TokenType)
             {
                 case TokenType.SOUSTRACTION_SIGN:

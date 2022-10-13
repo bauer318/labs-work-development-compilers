@@ -14,10 +14,24 @@ namespace DevCompilersLW3
             this._leftNode = leftNode;
             this._rightNode = rightNode;
         }
+        public override AST GetLeftNode()
+        {
+            return _leftNode;
+        }
+        public override AST GetRightNode()
+        {
+            return _rightNode;
+        }
         public override decimal Eval()
         {
             return this._leftNode.Eval() - this._rightNode.Eval();
         }
+
+        public override string GetNodeHead()
+        {
+            return "<->";
+        }
+
         public override string ToString()
         {
             return String.Format("({0} - {1})", this._leftNode.ToString(), this._rightNode.ToString());

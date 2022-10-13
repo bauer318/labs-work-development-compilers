@@ -16,6 +16,21 @@ namespace DevCompilersLW3
             return this._num;
         }
 
+        public override AST GetLeftNode()
+        {
+            return this;
+        }
+
+        public override string GetNodeHead()
+        {
+            return "leaf";
+        }
+
+        public override AST GetRightNode()
+        {
+            return this;
+        }
+
         public override string ToString()
         {
             return this._num.ToString();

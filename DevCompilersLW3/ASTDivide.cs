@@ -8,16 +8,34 @@ namespace DevCompilersLW3
     {
         public readonly AST _leftNode;
         public readonly AST _rightNode;
+        
 
         public ASTDivide(AST leftNode, AST rightNode)
         {
             this._leftNode = leftNode;
             this._rightNode = rightNode;
         }
+       
         public override decimal Eval()
         {
             return this._leftNode.Eval() / this._rightNode.Eval();
         }
+
+        public override AST GetLeftNode()
+        {
+            return _leftNode;
+        }
+        public override AST GetRightNode()
+        {
+            return _rightNode;
+        }
+
+        public override string GetNodeHead()
+        {
+            return "/";
+        }
+
+       
 
         public override string ToString()
         {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace DevCompilersLW1
 {
@@ -55,15 +56,14 @@ namespace DevCompilersLW1
                 }
                 Console.WriteLine(">> {0}", astObj.Eval());
             }*/
-            string expr = "_var4*";
-           /* char[] digits = { '0', '1', '2',
-            '3', '4', '5', '6', '7', '8', '9' };
-            char[] letters = {'_','A','B','C','D','E','F','G','H', 'I', 'J', 'K', 'L'
-        ,'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f'
-        ,'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
-            char[] op = { '+', '-', '*', '/' };
-            Class1 c2 = new Class1(op,letters,digits, expr);
-            c2.MainMethode();*/
+            string expr = "var2 = 2 * 8 - (2+cont)";
+            /*Lexer lexer = new Lexer(expr);
+            List<Tokens> tokens = lexer.Get_Tokens();*/
+            Parser parser = new Parser();
+            /*AST astobj = parser.ParseExp();
+            List<AST> aSTs = parser.asts;*/
+            //List<int> pos = parser.GetOperatorPos(expr);
+            //parser.Print(pos, expr);
 
             //string expresion = File.ReadAllText(args[0].ToString());
            
@@ -77,6 +77,9 @@ namespace DevCompilersLW1
                 if (c.IsSyntaxicalyCorrectExpression())
                 {
                     Console.WriteLine("Okay");
+                    List<int> pos = parser.GetOperatorsPosition(lexicalErrorAnalyzer.Tokens);
+                    parser.Print(pos, lexicalErrorAnalyzer.Tokens);
+
                 }
                 else
                 {
