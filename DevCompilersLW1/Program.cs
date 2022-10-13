@@ -34,38 +34,10 @@ namespace DevCompilersLW1
             {
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe inputExpr.txt tokens.txt symbols.txt");
             }*/
-            //Console.WriteLine("Welcome to Calcy, a nifty and easy to use math interpreter.");
-            /*while (true)
-            {
-                Console.Write(">> ");
-                string input = Console.ReadLine();
-
-                if (input == "exit()")
-                {
-                    break;
-                }
-                Console.WriteLine(">> {0}", input);
-                Lexer lexer = new Lexer(input);
-                List<Tokens> tokens = lexer.Get_Tokens();
-                Console.WriteLine(">> {0}", lexer.ToString());
-                Parser parser = new Parser(tokens);
-                AST astObj = parser.ParseExp();
-                if (astObj == null)
-                {
-                    continue;
-                }
-                Console.WriteLine(">> {0}", astObj.Eval());
-            }*/
+            
             string expr = "var2 = 2 * 8 - (2+cont)";
-            /*Lexer lexer = new Lexer(expr);
-            List<Tokens> tokens = lexer.Get_Tokens();*/
-            Parser parser = new Parser();
-            /*AST astobj = parser.ParseExp();
-            List<AST> aSTs = parser.asts;*/
-            //List<int> pos = parser.GetOperatorPos(expr);
-            //parser.Print(pos, expr);
-
-            //string expresion = File.ReadAllText(args[0].ToString());
+            
+            ASTWorker parser = new ASTWorker();
            
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
             if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expr))
@@ -76,7 +48,6 @@ namespace DevCompilersLW1
                 SyntaxicalErrorAnalyzer c = new SyntaxicalErrorAnalyzer(lexicalErrorAnalyzer.Tokens);
                 if (c.IsSyntaxicalyCorrectExpression())
                 {
-                    Console.WriteLine("Okay");
                     List<int> pos = parser.GetOperatorsPosition(lexicalErrorAnalyzer.Tokens);
                     parser.Print(pos, lexicalErrorAnalyzer.Tokens);
 
