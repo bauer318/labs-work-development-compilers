@@ -35,7 +35,7 @@ namespace DevCompilersLW1
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe inputExpr.txt tokens.txt symbols.txt");
             }*/
             
-            string expr = "var2 = 2 * 8 - (2+cont)";
+            string expr = "h = b+c*60";
             
             ASTWorker parser = new ASTWorker();
            
