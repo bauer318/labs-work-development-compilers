@@ -11,23 +11,23 @@ namespace DevCompilersLW2
             switch (parTokenType)
             {
                 case TokenType.ADDITION_SIGN:
-                    return "<" + parToken.Lexeme + "> - операция сложения";
+                    return "<" + parToken.name + "> - операция сложения";
                 case TokenType.CLOSE_PARENTHESIS:
-                    return "<" + parToken.Lexeme + "> - закрывающая скобка";
+                    return "<" + parToken.name + "> - закрывающая скобка";
                 case TokenType.CORRECT_DECIMAL_CONSTANT:
-                    return "<" + parToken.Lexeme + "> - константа вещественного типа";
+                    return "<" + parToken.name + "> - константа вещественного типа";
                 case TokenType.CORRECT_IDENTIFICATOR:
-                    return "<id, "+parToken.AttributeValue+"> - идентификатор с именем "+parToken.Lexeme;
+                    return "<id, "+parToken.AttributeValue+"> - идентификатор с именем "+parToken.name;
                 case TokenType.DIVISION_SIGN:
-                    return "<" + parToken.Lexeme + "> - операция деления";
+                    return "<" + parToken.name + "> - операция деления";
                 case TokenType.INTEGER_CONSTANT:
-                    return "<" + parToken.Lexeme + "> - константа целого типа";
+                    return "<" + parToken.name + "> - константа целого типа";
                 case TokenType.MULTIPLICATION_SIGN:
-                    return "<" + parToken.Lexeme + "> - операция умножения";
+                    return "<" + parToken.name + "> - операция умножения";
                 case TokenType.OPEN_PARENTHESIS:
-                    return "<" + parToken.Lexeme + "> - открывающая скобка";
+                    return "<" + parToken.name + "> - открывающая скобка";
                 case TokenType.SOUSTRACTION_SIGN:
-                    return "<" + parToken.Lexeme + "> - операция вычитания";
+                    return "<" + parToken.name + "> - операция вычитания";
                 default:
                     return "INVALID TOKEN TYPE";
             }

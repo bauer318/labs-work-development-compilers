@@ -32,7 +32,7 @@ namespace DevCompilersLW2
             {
                 foreach (SymbolTable symbolTable in parTokenizer.SymbolTables)
                 {
-                    writer.WriteLine(symbolTable.Token.AttributeValue + " - " + symbolTable.Token.Lexeme);
+                    writer.WriteLine(symbolTable.Token.AttributeValue + " - " + symbolTable.Token.name);
                 }
             }
 
