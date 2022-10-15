@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "8Hxo5qTBFLEOmxJdKwV5SYGQf8GjinOrOifWOQkuQb+EN6Ib859rz5QAatWcMfo1GvCLd6UkmOuB4iFojJ/kqg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW3\\DevCompilersLW3.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Bauer\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "C:\\Users\\Bauer\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\Bauer\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}

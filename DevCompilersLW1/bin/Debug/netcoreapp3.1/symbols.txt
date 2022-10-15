@@ -1,4 +1,2 @@
-1 - _Hg
-2 - var1
-3 - rt
-4 - var5
+1 - var2
+2 - ter

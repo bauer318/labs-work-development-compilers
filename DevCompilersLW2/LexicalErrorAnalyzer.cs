@@ -10,7 +10,7 @@ namespace DevCompilersLW2
     {
         private List<TokenDefinition> _tokenDefinitions;
         public readonly List<Token> Tokens = new List<Token>();
-        public readonly List<SymbolTable> SymbolTables = new List<SymbolTable>();
+        public SymbolTable SymbolTable;
         public LexicalErrorAnalyzer()
         {
             _tokenDefinitions = new List<TokenDefinition>();
@@ -99,6 +99,7 @@ namespace DevCompilersLW2
             string[] expresionSplited = SplitExpresion(parExpresion);
             var attributeValue = 0;
             List<string> tokenLexemes = new List<string>();
+            List<AttributeVariable> attributeVariables = new List<AttributeVariable>();
             for (var i = 0; i < expresionSplited.Length; i++)
             {
                 var currentText = expresionSplited[i];
@@ -122,7 +123,7 @@ namespace DevCompilersLW2
                         {
                             attributeValue++;
                             tokenLexemes.Add(match.Lexeme);
-                            SymbolTables.Add(new SymbolTable(new Token(match.TokenType, match.Lexeme, attributeValue)));
+                            attributeVariables.Add(new AttributeVariable(attributeValue, match.Lexeme));
                         }
                         Tokens.Add(new Token(match.TokenType, match.Lexeme, attributeValue));
                         break;
@@ -131,6 +132,7 @@ namespace DevCompilersLW2
                         break;
                 }
             }
+            SymbolTable = new SymbolTable(attributeVariables);
             return result;
         }
 

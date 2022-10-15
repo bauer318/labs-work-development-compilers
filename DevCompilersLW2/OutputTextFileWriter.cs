@@ -30,9 +30,9 @@ namespace DevCompilersLW2
         {
             using (StreamWriter writer = new StreamWriter(_symbolTableTextFileName))
             {
-                foreach (SymbolTable symbolTable in parTokenizer.SymbolTables)
+                foreach (AttributeVariable attributeVariable in parTokenizer.SymbolTable.AttributeVariables)
                 {
-                    writer.WriteLine(symbolTable.Token.AttributeValue + " - " + symbolTable.Token.name);
+                    writer.WriteLine(attributeVariable.Id + " - " + attributeVariable.Name);
                 }
             }
 
