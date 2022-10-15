@@ -9,7 +9,7 @@ namespace DevCompilersLW2
     {
         private string _tokenTextFileName;
         private string _symbolTableTextFileName;
-        
+
         public OutputTextFileWriter(string parTokenTextFileName, string parSymbolTableTextFileName)
         {
             _tokenTextFileName = parTokenTextFileName;
@@ -24,15 +24,15 @@ namespace DevCompilersLW2
                     writer.WriteLine(token.TokenType.GetTokenTypeDescription(token));
                 }
             }
-             
+
         }
         public void WriteSymbolTableTextFile(LexicalErrorAnalyzer parTokenizer)
         {
             using (StreamWriter writer = new StreamWriter(_symbolTableTextFileName))
             {
-                foreach (SymbolTable symbolTable in parTokenizer.SymbolTables)
+                foreach (AttributeVariable attributeVariable in parTokenizer.SymbolTable.AttributeVariables)
                 {
-                    writer.WriteLine(symbolTable.Token.AttributeValue + " - " + symbolTable.Token.Lexeme);
+                    writer.WriteLine(attributeVariable.Id + " - " + attributeVariable.Name);
                 }
             }
 

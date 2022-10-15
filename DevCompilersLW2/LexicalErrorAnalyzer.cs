@@ -10,7 +10,7 @@ namespace DevCompilersLW2
     {
         private List<TokenDefinition> _tokenDefinitions;
         public readonly List<Token> Tokens = new List<Token>();
-        public readonly List<SymbolTable> SymbolTables = new List<SymbolTable>();
+        public SymbolTable SymbolTable;
         public LexicalErrorAnalyzer()
         {
             _tokenDefinitions = new List<TokenDefinition>();
@@ -25,7 +25,6 @@ namespace DevCompilersLW2
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_CONSTANT, "^\\d+\\.{1}\\d+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_IDENTIFICATOR, "^[0-9]+[_a-zA-Z0-9]+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.EQUAL_SIGN, "^\\=$"));
 
         }
         public string[] SplitExpresion(string parExpresion)
@@ -82,7 +81,7 @@ namespace DevCompilersLW2
         }
         private bool IsExpresionSeparator(string parText)
         {
-            string[] separatorSymbolArray = { "+", "/", "*", "-", ")", "(","=" };
+            string[] separatorSymbolArray = { "+", "/", "*", "-", ")", "(" };
             Dictionary<string, string> dictionary = GetLexicalDictionary();
             bool result = false;
             for (var i = 0; i < separatorSymbolArray.Length; i++)
@@ -100,6 +99,7 @@ namespace DevCompilersLW2
             string[] expresionSplited = SplitExpresion(parExpresion);
             var attributeValue = 0;
             List<string> tokenLexemes = new List<string>();
+            List<AttributeVariable> attributeVariables = new List<AttributeVariable>();
             for (var i = 0; i < expresionSplited.Length; i++)
             {
                 var currentText = expresionSplited[i];
@@ -108,7 +108,7 @@ namespace DevCompilersLW2
                 {
                     case TokenType.INCORRECT_DECIMAL_CONSTANT:
                     case TokenType.INCORRECT_IDENTIFICATOR:
-                        Console.WriteLine(match.TokenType.GetIncorrectTokenTypeDescrition(currentText,parExpresion));
+                        Console.WriteLine(match.TokenType.GetIncorrectTokenTypeDescrition(currentText, parExpresion));
                         result = false;
                         break;
                     case TokenType.INVALID:
@@ -123,7 +123,7 @@ namespace DevCompilersLW2
                         {
                             attributeValue++;
                             tokenLexemes.Add(match.Lexeme);
-                            SymbolTables.Add(new SymbolTable(new Token(match.TokenType, match.Lexeme, attributeValue)));
+                            attributeVariables.Add(new AttributeVariable(attributeValue, match.Lexeme));
                         }
                         Tokens.Add(new Token(match.TokenType, match.Lexeme, attributeValue));
                         break;
@@ -132,6 +132,7 @@ namespace DevCompilersLW2
                         break;
                 }
             }
+            SymbolTable = new SymbolTable(attributeVariables);
             return result;
         }
 
