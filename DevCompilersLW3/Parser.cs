@@ -7,137 +7,132 @@ namespace DevCompilersLW3
 {
     public class Parser
     {
-        private List<TokenLab03> TermItems = new List<TokenLab03>() { TokenLab03.ADD, TokenLab03.MINUS };
-        private List<TokenLab03> FactorItems = new List<TokenLab03>() { TokenLab03.MULTIPLY, TokenLab03.DIVISION };
-        private readonly List<Tokens> _tokens;
-        private int pos = 0;
-        private Tokens curr_token = null;
-        private List<Node<String>> nodes = new List<Node<String>>();
-        private int white_space_count = 0;
-        private Node<String> root = null;
+        private List<TokenType> _termItems = new List<TokenType>() { TokenType.ADDITION_SIGN, TokenType.SOUSTRACTION_SIGN };
+        private List<TokenType> _factorItems = new List<TokenType>() { TokenType.MULTIPLICATION_SIGN, TokenType.DIVISION_SIGN};
+        private readonly List<Token> _tokens;
+        private int _currentTokenIndex = 0;
+        private Token _currentToken = null;
+        private List<TokenNode<Token>> _tokenNodes = new List<TokenNode<Token>>();
+        private int whiteSpaceCount = 0;
+        private TokenNode<Token> _abstractSyntaxTree = null;
+        
 
-        public Parser(List<Tokens> tokens)
+        public Parser(List<Token> tokens)
         {
-            this._tokens = tokens;
-            Get_Next();
+            _tokens = tokens;
+            GetNextToken();
         }
 
-        private void Get_Next()
+        private void GetNextToken()
         {
-            if (pos < this._tokens.Count)
+            if (_currentTokenIndex < _tokens.Count)
             {
-                curr_token = this._tokens[pos];
-                pos++;
+                _currentToken = _tokens[_currentTokenIndex];
+                _currentTokenIndex++;
             }
         }
-        public TokenNode ParseExp()
+        public TokenNode<Token> ParseExp()
         {
-            TokenNode result = Factor();
-            while (curr_token._tokenType != TokenLab03.EOF && result != null && TermItems.Contains(curr_token._tokenType))
+            TokenNode<Token> result = Factor();
+            while (result != null && _termItems.Contains(_currentToken.TokenType))
             {
-                if (curr_token._tokenType == TokenLab03.ADD)
+                if (_currentToken.TokenType == TokenType.ADDITION_SIGN)
                 {
-                    Get_Next();
-                    TokenNode rigthNode = Factor();
-                    nodes.Add(new Node<String>("+",result,rigthNode));
-                    result = new NodeAll("+",result, rigthNode); ;
+                    GetNextToken();
+                    TokenNode<Token> rigthNode = Factor();
+                    Token tokenPlus = new Token(TokenType.ADDITION_SIGN, "+");
+                    result = new TokenNode<Token>(tokenPlus, result, rigthNode);
+                    _tokenNodes.Add(result);
                 }
-                else if (curr_token._tokenType == TokenLab03.MINUS)
+                else if (_currentToken.TokenType == TokenType.SOUSTRACTION_SIGN)
                 {
-                    Get_Next();
-                    TokenNode rigthNode = Factor();
-                    nodes.Add(new Node<String>("-", result, rigthNode));
-                    result = new NodeAll("-",result, rigthNode);
+                    GetNextToken();
+                    TokenNode<Token> rigthNode = Factor();
+                    Token tokenMinus = new Token(TokenType.SOUSTRACTION_SIGN, "-");
+                    result = new TokenNode<Token>(tokenMinus, result, rigthNode);
+                    _tokenNodes.Add(result);
                 }
             }
 
             return result;
         }
-        public TokenNode Factor()
+        public TokenNode<Token> Factor()
         {
-            TokenNode factor = Term();
-            while (curr_token._tokenType != TokenLab03.EOF && factor != null && FactorItems.Contains(curr_token._tokenType))
+            TokenNode<Token> factor = Term();
+            while (factor != null && _factorItems.Contains(_currentToken.TokenType))
             {
-                if (curr_token._tokenType == TokenLab03.MULTIPLY)
+                if (_currentToken.TokenType == TokenType.MULTIPLICATION_SIGN)
                 {
-                    
-                    Get_Next();
-                    TokenNode rigthNode = Term();
-                    nodes.Add(new Node<String>("*", factor, rigthNode));
-                    factor = new NodeAll("*",factor, rigthNode);
+                    GetNextToken();
+                    TokenNode<Token> rigthNode = Term();
+                    Token tokenMultiply = new Token(TokenType.MULTIPLICATION_SIGN, "*");
+                    factor = new TokenNode<Token>(tokenMultiply, factor, rigthNode);
+                    _tokenNodes.Add(factor);
                 }
-                else if (curr_token._tokenType == TokenLab03.DIVISION)
+                else if (_currentToken.TokenType == TokenType.DIVISION_SIGN)
                 {
-                    Get_Next();
-                    TokenNode rigthNode = Term();
-                    nodes.Add(new Node<String>("/", factor, rigthNode));
-                    factor = new NodeAll("/",factor, rigthNode);
+                    GetNextToken();
+                    TokenNode<Token> rigthNode = Term();
+                    Token tokenDivision = new Token(TokenType.DIVISION_SIGN, "/");
+                    factor = new TokenNode<Token>(tokenDivision, factor, rigthNode);
+                    _tokenNodes.Add(factor);
                 }
             }
             return factor;
         }
-        public TokenNode Term()
+        public TokenNode<Token> Term()
         {
-            TokenNode term = null;
-            if (curr_token._tokenType == TokenLab03.LBRACE)
+            TokenNode<Token> term = null;
+            if (_currentToken.TokenType == TokenType.OPEN_PARENTHESIS)
             {
-                Get_Next();
+                GetNextToken();
                 term = ParseExp();
             }
-            else if (curr_token._tokenType == TokenLab03.NUMBER)
+            else if (TokenWorker.IsOperand(_currentToken.TokenType))
             {
-                term = new ASTLeaf(curr_token._value.ToString());   
+                term = new TokenNode<Token>(_currentToken);   
             }
-            Get_Next();
+            GetNextToken();
             return term;
-        }
-        public void Print()
-        {
-            for(var i = 0; i < nodes.Count; i++)
-            {
-                Console.WriteLine("Noeud "+i+" value "+nodes[i].value+ " Left "+nodes[i]._leftNode+" Right "+nodes[i]._rightNode);
-                Console.WriteLine("Left is leaf : " + Node<String>.isLeaf(nodes[i]._leftNode)+ " Rigth is leaf : " + Node<String>.isLeaf(nodes[i]._rightNode));
-            }
         }
         public void Print2()
         {
-            root = Builde(nodes[nodes.Count - 1]);
+            _abstractSyntaxTree = BuildeTree(_tokenNodes[_tokenNodes.Count - 1]);
             StringBuilder sb = new StringBuilder();
-            TraverserPreOrder(sb,"","" ,root);
+            TraverserPreOrder(sb,"","" ,_abstractSyntaxTree);
             Console.WriteLine(sb);
         }
-        private Node<String> Builde(TokenNode node)
+        private TokenNode<Token> BuildeTree(TokenNode<Token> parNode)
         {
-            if (Node<String>.isLeaf(node))
+            if (TokenNode<Token>.IsLeafToken(parNode))
             {
-                ASTLeaf l = (ASTLeaf)node;
-                return l.last;
+                return new TokenNode<Token>(parNode.Value);
             }
-            Node<String> next = new Node<string>(node.value);
-            next._leftNode = Builde(node._leftNode);
-            next._rightNode = Builde(node._rightNode);
+            TokenNode<Token> next = new TokenNode<Token>(parNode.Value);
+            next.LeftNode = BuildeTree(parNode.LeftNode);
+            next.RightNode = BuildeTree(parNode.RightNode);
             return next;
         }
         
-        private void TraverserPreOrder(StringBuilder parSb, string padding, string pointer, TokenNode parTree)
+        private void TraverserPreOrder(StringBuilder parSb, string parPadding, string parPointer, TokenNode<Token> parTree)
         {
             if(parTree != null)
             {
-                parSb.Append(padding);
-                parSb.Append(pointer);
-                parSb.Append(parTree.value);
+                parSb.Append(parPadding);
+                parSb.Append(parPointer);
+                parSb.Append(parTree.Value.TokenType.GetTokenNodeDescription(parTree.Value));
                 parSb.Append("\n");
-                StringBuilder paddingBuilder = new StringBuilder(padding);
-                if (white_space_count > 0)
+                StringBuilder paddingBuilder = new StringBuilder(parPadding);
+                if (whiteSpaceCount > 0)
                 {
-                    paddingBuilder.Append("    ");
+                    paddingBuilder.Append("     ");
                 }
-                white_space_count++;
-                String paddingForBoth = paddingBuilder.ToString();
-                String pointerForRight = "|---";
-                String pointerForLeft = "|---";
-                TraverserPreOrder(parSb,paddingForBoth,pointerForLeft, parTree._leftNode);
-                TraverserPreOrder(parSb, paddingForBoth, pointerForRight, parTree._rightNode); ;
+                whiteSpaceCount++;
+                string paddingForBoth = paddingBuilder.ToString();
+                string pointerForRight = " |---";
+                string pointerForLeft = " |---";
+                TraverserPreOrder(parSb,paddingForBoth,pointerForLeft, parTree.LeftNode);
+                TraverserPreOrder(parSb, paddingForBoth, pointerForRight, parTree.RightNode); ;
             }
         }
 

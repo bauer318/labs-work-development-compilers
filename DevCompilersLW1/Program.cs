@@ -35,9 +35,9 @@ namespace DevCompilersLW1
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe inputExpr.txt tokens.txt symbols.txt");
             }*/
 
-            /*string expr = "(2+5)-9";
+            string expr = "2+((2+5)+(6/8))";
             
-            ASTWorker parser = new ASTWorker();
+            //ASTWorker parser = new ASTWorker();
            
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
             if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expr))
@@ -48,23 +48,16 @@ namespace DevCompilersLW1
                 SyntaxicalErrorAnalyzer c = new SyntaxicalErrorAnalyzer(lexicalErrorAnalyzer.Tokens);
                 if (c.IsSyntaxicalyCorrectExpression())
                 {
-                    List<int> pos = parser.GetOperatorsPosition(lexicalErrorAnalyzer.Tokens);
-                    parser.Print(pos, lexicalErrorAnalyzer.Tokens);
+                    Parser parser = new Parser(lexicalErrorAnalyzer.Tokens);
+                    parser.ParseExp();
+                    parser.Print2();
 
                 }
                 else
                 {
                     Console.WriteLine("Negatif");
                 }
-            }*/
-            string expr = "7 + 3 * (10 / (12 / (3 + 1) - 1))";
-            Lexer lexer = new Lexer(expr);
-            List<Tokens> tokens = lexer.Get_Tokens();
-            Parser parser = new Parser(tokens);
-            TokenNode aST = parser.ParseExp();
-            //Console.WriteLine(aST.Eval());
-            parser.Print2();
-
+            }
 
         }
         

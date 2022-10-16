@@ -4,26 +4,26 @@ using System.Text;
 
 namespace DevCompilersLW3
 {
-    public class TokenNode
+    public class TokenNode<Token>
     {
-        public TokenNode _leftNode { get; set; }
-        public TokenNode _rightNode { get; set; }
-        public string value { get; set; }
-        public TokenNode(string parValue, TokenNode parLeftNode, TokenNode parRightNode)
+        public TokenNode<Token> LeftNode { get; set; }
+        public TokenNode<Token> RightNode { get; set; }
+        public Token Value { get; set; }
+        public TokenNode(Token parValue, TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
         {
-            _leftNode = parLeftNode;
-            _rightNode = parRightNode;
-            this.value = parValue;
+            LeftNode = parLeftNode;
+            RightNode = parRightNode;
+            Value = parValue;
         }
-        public TokenNode(string parValue)
+        public TokenNode(Token parValue)
         {
-            value = parValue;
-            _leftNode = null;
-            _rightNode = null;
+            Value = parValue;
+            LeftNode = null;
+            RightNode = null;
         }
-        public TokenNode()
+        public static bool IsLeafToken(TokenNode<Token> parToken)
         {
-
+            return parToken.LeftNode == null && parToken.RightNode == null;
         }
     }
 }
