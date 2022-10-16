@@ -12,24 +12,13 @@ namespace DevCompilersLW3
         private readonly List<Tokens> _tokens;
         private int pos = 0;
         private Tokens curr_token = null;
-        public List<AST> asts = new List<AST>();
         private List<Node<String>> nodes = new List<Node<String>>();
         private int white_space_count = 0;
         private Node<String> root = null;
 
-        private string GetWhitspace()
-        {
-            string result = "";
-            for (var i=0; i < white_space_count; i++)
-            {
-                result += " ";
-            }
-            return result;
-        }
         public Parser(List<Tokens> tokens)
         {
             this._tokens = tokens;
-            // set the current token
             Get_Next();
         }
 
@@ -41,81 +30,63 @@ namespace DevCompilersLW3
                 pos++;
             }
         }
-        public AST ParseExp()
+        public TokenNode ParseExp()
         {
-            AST result = Factor();
+            TokenNode result = Factor();
             while (curr_token._tokenType != TokenLab03.EOF && result != null && TermItems.Contains(curr_token._tokenType))
             {
                 if (curr_token._tokenType == TokenLab03.ADD)
                 {
                     Get_Next();
-                    AST rigthNode = Factor();
-                    //Ici on doit ajouter le noeud
-                    asts.Add(new ASTPlus(result, rigthNode));
-                    //Console.WriteLine("+ L: " + result + " R " + rigthNode);
+                    TokenNode rigthNode = Factor();
                     nodes.Add(new Node<String>("+",result,rigthNode));
-                    result = new ASTPlus(result, rigthNode);
+                    result = new NodeAll("+",result, rigthNode); ;
                 }
                 else if (curr_token._tokenType == TokenLab03.MINUS)
                 {
                     Get_Next();
-                    AST rigthNode = Factor();
-                    //Ici on doit ajouter le noeud
-                    asts.Add(new ASTMinus(result, rigthNode));
-                    //Console.WriteLine("- L: " + result + " R " + rigthNode);
+                    TokenNode rigthNode = Factor();
                     nodes.Add(new Node<String>("-", result, rigthNode));
-                    result = new ASTMinus(result, rigthNode);
+                    result = new NodeAll("-",result, rigthNode);
                 }
             }
 
             return result;
         }
-        public AST Factor()
+        public TokenNode Factor()
         {
-            AST factor = Term();
+            TokenNode factor = Term();
             while (curr_token._tokenType != TokenLab03.EOF && factor != null && FactorItems.Contains(curr_token._tokenType))
             {
                 if (curr_token._tokenType == TokenLab03.MULTIPLY)
                 {
                     
                     Get_Next();
-                    AST rigthNode = Term();
-                    //Ici on doit ajouter le noeud
-                    asts.Add(new ASTMultiply(factor, rigthNode));
-                    //Console.WriteLine("* L: " + factor + " R " + rigthNode);
+                    TokenNode rigthNode = Term();
                     nodes.Add(new Node<String>("*", factor, rigthNode));
-                    factor = new ASTMultiply(factor, rigthNode);
+                    factor = new NodeAll("*",factor, rigthNode);
                 }
                 else if (curr_token._tokenType == TokenLab03.DIVISION)
                 {
                     Get_Next();
-                    AST rigthNode = Term();
-                    //Ici on doit ajouter le noeud
-                    asts.Add(new ASTPlus(factor, rigthNode));
-                    //Console.WriteLine("/ L: " + factor + " R " + rigthNode);
+                    TokenNode rigthNode = Term();
                     nodes.Add(new Node<String>("/", factor, rigthNode));
-                    factor = new ASTDivide(factor, rigthNode);
+                    factor = new NodeAll("/",factor, rigthNode);
                 }
             }
             return factor;
         }
-        public AST Term()
+        public TokenNode Term()
         {
-            //white_space_count++;
-            AST term = null;
-
+            TokenNode term = null;
             if (curr_token._tokenType == TokenLab03.LBRACE)
             {
                 Get_Next();
                 term = ParseExp();
-                if (curr_token._tokenType != TokenLab03.RBRACE)
-                {
-                    Console.WriteLine("Missing )");
-                }
             }
             else if (curr_token._tokenType == TokenLab03.NUMBER)
             {
-                term = new ASTLeaf((decimal)curr_token._value);   
+                term = new ASTLeaf(curr_token._value.ToString());   
             }
             Get_Next();
             return term;
@@ -124,7 +95,7 @@ namespace DevCompilersLW3
         {
             for(var i = 0; i < nodes.Count; i++)
             {
-                Console.WriteLine("Noeud "+i+" Operator "+nodes[i].Operator+ " Left "+nodes[i]._leftNode+" Right "+nodes[i]._rightNode);
+                Console.WriteLine("Noeud "+i+" value "+nodes[i].value+ " Left "+nodes[i]._leftNode+" Right "+nodes[i]._rightNode);
                 Console.WriteLine("Left is leaf : " + Node<String>.isLeaf(nodes[i]._leftNode)+ " Rigth is leaf : " + Node<String>.isLeaf(nodes[i]._rightNode));
             }
         }
@@ -135,26 +106,26 @@ namespace DevCompilersLW3
             TraverserPreOrder(sb,"","" ,root);
             Console.WriteLine(sb);
         }
-        private Node<String> Builde(AST node)
+        private Node<String> Builde(TokenNode node)
         {
             if (Node<String>.isLeaf(node))
             {
                 ASTLeaf l = (ASTLeaf)node;
                 return l.last;
             }
-            Node<String> next = new Node<string>(node.Operator);
+            Node<String> next = new Node<string>(node.value);
             next._leftNode = Builde(node._leftNode);
             next._rightNode = Builde(node._rightNode);
             return next;
         }
         
-        private void TraverserPreOrder(StringBuilder parSb, string padding, string pointer, AST parTree)
+        private void TraverserPreOrder(StringBuilder parSb, string padding, string pointer, TokenNode parTree)
         {
             if(parTree != null)
             {
                 parSb.Append(padding);
                 parSb.Append(pointer);
-                parSb.Append(parTree.Operator);
+                parSb.Append(parTree.value);
                 parSb.Append("\n");
                 StringBuilder paddingBuilder = new StringBuilder(padding);
                 if (white_space_count > 0)
@@ -164,7 +135,7 @@ namespace DevCompilersLW3
                 white_space_count++;
                 String paddingForBoth = paddingBuilder.ToString();
                 String pointerForRight = "|---";
-                String pointerForLeft = "|---"; //(parTree._rightNode != null) ? "├──" : "└──";
+                String pointerForLeft = "|---";
                 TraverserPreOrder(parSb,paddingForBoth,pointerForLeft, parTree._leftNode);
                 TraverserPreOrder(parSb, paddingForBoth, pointerForRight, parTree._rightNode); ;
             }

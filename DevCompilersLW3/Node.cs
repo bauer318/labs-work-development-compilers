@@ -4,25 +4,20 @@ using System.Text;
 
 namespace DevCompilersLW3
 {
-    public class Node<String>:AST
+    public class Node<String>:TokenNode
     {
-        public Node(string parOperator,AST parLeft, AST parRight):base(parOperator, parLeft,parRight)
+        public Node(string parOperator,TokenNode parLeft, TokenNode parRight):base(parOperator, parLeft,parRight)
         {
            
         }
         public Node(string parOperator)
         {
-            Operator = parOperator;
+            value = parOperator;
             
         }
-        public static bool isLeaf(AST parAST)
+        public static bool isLeaf(TokenNode parAST)
         {
             return parAST.GetType()==typeof(ASTLeaf);
-        }
-
-        public override decimal Eval()
-        {
-            throw new NotImplementedException();
         }
     }
 }

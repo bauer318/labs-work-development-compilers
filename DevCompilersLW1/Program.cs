@@ -61,8 +61,8 @@ namespace DevCompilersLW1
             Lexer lexer = new Lexer(expr);
             List<Tokens> tokens = lexer.Get_Tokens();
             Parser parser = new Parser(tokens);
-            AST aST = parser.ParseExp();
-            Console.WriteLine(aST.Eval());
+            TokenNode aST = parser.ParseExp();
+            //Console.WriteLine(aST.Eval());
             parser.Print2();
 
 
