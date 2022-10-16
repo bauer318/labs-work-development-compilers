@@ -14,10 +14,18 @@ namespace DevCompilersLW3
         private Tokens curr_token = null;
         public List<AST> asts = new List<AST>();
         private List<Node<String>> nodes = new List<Node<String>>();
-        private int it = 0;
+        private int white_space_count = 0;
         private Node<String> root = null;
 
-
+        private string GetWhitspace()
+        {
+            string result = "";
+            for (var i=0; i < white_space_count; i++)
+            {
+                result += " ";
+            }
+            return result;
+        }
         public Parser(List<Tokens> tokens)
         {
             this._tokens = tokens;
@@ -93,7 +101,7 @@ namespace DevCompilersLW3
         }
         public AST Term()
         {
-            it++;
+            //white_space_count++;
             AST term = null;
 
             if (curr_token._tokenType == TokenLab03.LBRACE)
@@ -123,7 +131,6 @@ namespace DevCompilersLW3
         public void Print2()
         {
             root = Builde(nodes[nodes.Count - 1]);
-            //Console.WriteLine(root._rightNode._rightNode._rightNode._leftNode._rightNode._leftNode.Operator);
             StringBuilder sb = new StringBuilder();
             TraverserPreOrder(sb,"","" ,root);
             Console.WriteLine(sb);
@@ -140,6 +147,7 @@ namespace DevCompilersLW3
             next._rightNode = Builde(node._rightNode);
             return next;
         }
+        
         private void TraverserPreOrder(StringBuilder parSb, string padding, string pointer, AST parTree)
         {
             if(parTree != null)
@@ -149,10 +157,14 @@ namespace DevCompilersLW3
                 parSb.Append(parTree.Operator);
                 parSb.Append("\n");
                 StringBuilder paddingBuilder = new StringBuilder(padding);
-                paddingBuilder.Append("│  ");
+                if (white_space_count > 0)
+                {
+                    paddingBuilder.Append("    ");
+                }
+                white_space_count++;
                 String paddingForBoth = paddingBuilder.ToString();
-                String pointerForRight = "└──";
-                String pointerForLeft = (parTree._rightNode != null) ? "├──" : "└──";
+                String pointerForRight = "|---";
+                String pointerForLeft = "|---"; //(parTree._rightNode != null) ? "├──" : "└──";
                 TraverserPreOrder(parSb,paddingForBoth,pointerForLeft, parTree._leftNode);
                 TraverserPreOrder(parSb, paddingForBoth, pointerForRight, parTree._rightNode); ;
             }
