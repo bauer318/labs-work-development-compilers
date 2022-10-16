@@ -34,8 +34,8 @@ namespace DevCompilersLW1
             {
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe inputExpr.txt tokens.txt symbols.txt");
             }*/
-            
-            string expr = "h = b+c*60";
+
+            /*string expr = "(2+5)-9";
             
             ASTWorker parser = new ASTWorker();
            
@@ -56,7 +56,15 @@ namespace DevCompilersLW1
                 {
                     Console.WriteLine("Negatif");
                 }
-            }
+            }*/
+            string expr = "7 + 3 * (10 / (12 / (3 + 1) - 1))";
+            Lexer lexer = new Lexer(expr);
+            List<Tokens> tokens = lexer.Get_Tokens();
+            Parser parser = new Parser(tokens);
+            AST aST = parser.ParseExp();
+            Console.WriteLine(aST.Eval());
+            parser.Print2();
+
 
         }
         
