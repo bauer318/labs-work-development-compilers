@@ -123,7 +123,10 @@ namespace DevCompilersLW3
         public void Print2()
         {
             root = Builde(nodes[nodes.Count - 1]);
-            Console.WriteLine(root._rightNode._rightNode._rightNode._leftNode._rightNode._leftNode.Operator);
+            //Console.WriteLine(root._rightNode._rightNode._rightNode._leftNode._rightNode._leftNode.Operator);
+            StringBuilder sb = new StringBuilder();
+            TraverserPreOrder(sb,"","" ,root);
+            Console.WriteLine(sb);
         }
         private Node<String> Builde(AST node)
         {
@@ -136,6 +139,23 @@ namespace DevCompilersLW3
             next._leftNode = Builde(node._leftNode);
             next._rightNode = Builde(node._rightNode);
             return next;
+        }
+        private void TraverserPreOrder(StringBuilder parSb, string padding, string pointer, AST parTree)
+        {
+            if(parTree != null)
+            {
+                parSb.Append(padding);
+                parSb.Append(pointer);
+                parSb.Append(parTree.Operator);
+                parSb.Append("\n");
+                StringBuilder paddingBuilder = new StringBuilder(padding);
+                paddingBuilder.Append("│  ");
+                String paddingForBoth = paddingBuilder.ToString();
+                String pointerForRight = "└──";
+                String pointerForLeft = (parTree._rightNode != null) ? "├──" : "└──";
+                TraverserPreOrder(parSb,paddingForBoth,pointerForLeft, parTree._leftNode);
+                TraverserPreOrder(parSb, paddingForBoth, pointerForRight, parTree._rightNode); ;
+            }
         }
 
     }
