@@ -32,13 +32,13 @@ namespace DevCompilersLW1
             }
             else
             {
-                Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe inputExpr.txt tokens.txt symbols.txt");
+                Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe inputExpr.txt Tokens.txt symbols.txt");
             }*/
 
-            string expr = "2+((2+5)+(6/8))";
-            
+            string expr = "2-(3+5)*4+(2+5)"; //And 2+(2+5)+(6/8) (((2-5)+2*(4-6))-3+5/(4/2))
+
             //ASTWorker parser = new ASTWorker();
-           
+
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
             if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expr))
             {
@@ -49,8 +49,30 @@ namespace DevCompilersLW1
                 if (c.IsSyntaxicalyCorrectExpression())
                 {
                     Parser parser = new Parser(lexicalErrorAnalyzer.Tokens);
-                    parser.ParseExp();
-                    parser.Print2();
+                    parser.DoTask();
+                    /*Console.Write("Before ");
+                    parser.PrintList(parser._tokens);
+                    Console.WriteLine();
+                    parser.SetTokenPriority();
+                    Console.WriteLine("Prio seted");
+                    parser.PrintList(parser._tokens);
+                    parser.SortByPriority();
+                    Console.WriteLine("Sorted");
+                    parser.PrintList(parser._tokens);*/
+                    // parser.CreateByPriority();
+                    //parser.DoTask();
+                    //Console.Write("After ");
+                    //parser.PrintList(parser._tokens);
+                    //Console.WriteLine();
+                    /*Console.WriteLine("Can Arrange "+parser.CanArrangeExpression(lexicalErrorAnalyzer.Tokens));
+                    Console.WriteLine("Can Delete " + parser.CanDeleteBrace(lexicalErrorAnalyzer.Tokens));
+                    List<Token> l = parser.DeleteExternDoubleBrace(lexicalErrorAnalyzer.Tokens);
+                    parser.PrintList(l);*/
+                    //parser.Test(lexicalErrorAnalyzer.Tokens, 0);
+                    //parser.Do();
+                    //parser.ParseExp();
+                    //parser.Print2();
+                    //parser.Print();
 
                 }
                 else
