@@ -1,19 +1,26 @@
-﻿using System;
+﻿using DevCompilersLW2;
+using DevCompilersLW3;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace DevCompilersLW2
+namespace CommonWorks
 {
     public class OutputTextFileWriter
     {
         private string _tokenTextFileName;
         private string _symbolTableTextFileName;
+        private string _syntaxTreeTextFileName;
 
         public OutputTextFileWriter(string parTokenTextFileName, string parSymbolTableTextFileName)
         {
-            _tokenTextFileName = parTokenTextFileName;
-            _symbolTableTextFileName = parSymbolTableTextFileName;
+            _tokenTextFileName = string.IsNullOrEmpty(parTokenTextFileName)? "tokens.txt":parTokenTextFileName;
+            _symbolTableTextFileName = string.IsNullOrEmpty(parSymbolTableTextFileName)? "symbols.txt" :parSymbolTableTextFileName;
+        }
+        public OutputTextFileWriter(string parSyntaxTreeTextFileName)
+        {
+            _syntaxTreeTextFileName = string.IsNullOrEmpty(parSyntaxTreeTextFileName)? "syntax_tree.txt" : parSyntaxTreeTextFileName;
         }
         public void WriteTokenTextFile(LexicalErrorAnalyzer parTokenizer)
         {
@@ -35,7 +42,13 @@ namespace DevCompilersLW2
                     writer.WriteLine(attributeVariable.Id + " - " + attributeVariable.Name);
                 }
             }
-
+        }
+        public void WriteAbstractSyntaxTreeTextFile(Parser parParser)
+        {
+            using (StreamWriter writer = new StreamWriter(_syntaxTreeTextFileName))
+            {
+                writer.WriteLine(parParser.GetSyntaxTreeText());
+            }
         }
     }
 }

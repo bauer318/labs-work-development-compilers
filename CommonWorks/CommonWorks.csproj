@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DevCompilersLW2\DevCompilersLW2.csproj" />
+    <ProjectReference Include="..\DevCompilersLW3\DevCompilersLW3.csproj" />
+  </ItemGroup>
+
+</Project>
