@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevCompilersLW2", "DevCompi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevCompilersLW3", "DevCompilersLW3\DevCompilersLW3.csproj", "{EAF5786B-4166-41B3-A3E0-070BB76CF9A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonWorks", "CommonWorks\CommonWorks.csproj", "{CEDC25AD-01F3-4D0C-9303-E359E31E2CD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonWorks", "CommonWorks\CommonWorks.csproj", "{CEDC25AD-01F3-4D0C-9303-E359E31E2CD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevCompilersLW4", "DevCompilersLW4\DevCompilersLW4.csproj", "{982C76E7-3DCC-4344-A95F-AE2BA06FA5F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{CEDC25AD-01F3-4D0C-9303-E359E31E2CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEDC25AD-01F3-4D0C-9303-E359E31E2CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEDC25AD-01F3-4D0C-9303-E359E31E2CD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{982C76E7-3DCC-4344-A95F-AE2BA06FA5F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{982C76E7-3DCC-4344-A95F-AE2BA06FA5F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{982C76E7-3DCC-4344-A95F-AE2BA06FA5F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{982C76E7-3DCC-4344-A95F-AE2BA06FA5F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
