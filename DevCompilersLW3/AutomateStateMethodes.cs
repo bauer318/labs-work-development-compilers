@@ -7,83 +7,77 @@ namespace DevCompilersLW3
 {
     public static class AutomateStateMethodes
     {
-        public static int k = 0;
-        public static int i = 0;
-        public static int e = 0;
+        public static int braceCount = 0;
+        public static int currentTokenIndex = 0;
         public static bool  Can_Continue = true;
         private static AutomatState AutomateStateFrom = AutomatState.OPENED_BRACE_OPERAND;
         private static AutomatState nextAutomateState = AutomatState.OPENED_BRACE_OPERAND;
         public static AutomatState Swip(this AutomatState parAutomatState,List<Token> parTokens)
         {
-            Token currentToken = parTokens[i];
+            Token currentToken = parTokens[currentTokenIndex];
             TokenType currentTokenType = currentToken.TokenType;
             var tokensNumber = parTokens.Count;
             switch (parAutomatState)
             {
                 case AutomatState.OPENED_BRACE_OPERAND:
-                    if (i < tokensNumber - 1)
+                    if (currentTokenIndex < tokensNumber - 1)
                     {
                         switch (currentTokenType)
                         {
                             case TokenType.OPEN_PARENTHESIS:
                                 OpenBrace();
                                 NextToken();
+                                AutomateStateFrom = AutomatState.OPENED_BRACE_OPERAND;
                                 break;
                             case TokenType.CORRECT_DECIMAL_CONSTANT:
                             case TokenType.CORRECT_IDENTIFICATOR:
                             case TokenType.INTEGER_CONSTANT:
                                 NextToken();
                                 nextAutomateState = AutomatState.CLOSED_BRACE_OPERATOR;
+                                AutomateStateFrom = AutomatState.CLOSED_BRACE_OPERATOR;
                                 break;
                             default:
                                 CannotGenerateSyntaxThree();
+                                AutomateStateFrom = AutomatState.CLOSED_BRACE_OPERATOR;
                                 switch (currentTokenType)
                                 {
                                     case TokenType.ADDITION_SIGN:
                                     case TokenType.SOUSTRACTION_SIGN:
                                     case TokenType.DIVISION_SIGN:
                                     case TokenType.MULTIPLICATION_SIGN:
-                                        if (TokenWorker.IsTokenTypeOperatorLeft(i, parTokens))
+                                        if (TokenWorker.IsTokenTypeOperatorLeft(currentTokenIndex, parTokens))
                                         {
-                                            TokenWorker.PrintMessage("Successive operator ", i);
+                                            TokenWorker.PrintMessage("последовательные операторы друг за другом ", currentTokenIndex);
                                         }
                                         else
                                         {
-                                            TokenWorker.PrintMessage("Not operand for ", i, currentToken);
-                                        }
-                                        break;
-                                    case TokenType.EQUAL_SIGN:
-                                        AddEqualSign();
-                                        if (e > 1)
-                                        {
-                                            TokenWorker.PrintMessage("They are many equal sign in the expression ", i, currentToken);
-                                        }
-                                        else if (TokenWorker.IsCorrectEqualSignPosition(i, parTokens))
-                                        {
-                                            TokenWorker.PrintMessage("Not identificator for ", i, currentToken);
-                                        }
-                                        else
-                                        {
-                                            TokenWorker.PrintMessage("Wrong possition for ", i, currentToken);
+                                            
+                                            TokenWorker.PrintMessage("У операция ", " отсутствует операнд", currentTokenIndex, currentToken);
                                         }
                                         break;
                                     case TokenType.CLOSE_PARENTHESIS:
                                         CloseBrace();
-                                        if (k < 0)
+                                        if (braceCount < 0)
                                         {
-                                            k = 0;
+                                            braceCount = 0;
                                         }
-                                        else if (k == 0 || TokenWorker.IsOpenedBraceLeft(i, parTokens))
+                                        else if (braceCount == 0 || TokenWorker.IsOpenedBraceLeft(currentTokenIndex, parTokens))
                                         {
-                                            TokenWorker.PrintMessage("Empty braces at ", i);
+                                            TokenWorker.PrintMessage("Пустые скобки ", currentTokenIndex);
                                         }
-                                        else if (TokenWorker.IsTokenTypeOperatorLeft(i, parTokens))
+                                        else if (TokenWorker.IsTokenTypeOperatorLeft(currentTokenIndex, parTokens))
                                         {
-                                            TokenWorker.PrintMessage("Not operand for ", i, parTokens[i - 1]);
+                                            TokenWorker.PrintMessage("У операция ", " отсутствует операнд", currentTokenIndex, parTokens[currentTokenIndex - 1]);
                                         }
                                         else
                                         {
-                                            TokenWorker.PrintMessage("Not operator for ", i, parTokens[i + 1]);
+                                            var helpText = "у константа";
+                                            if (currentToken.TokenType == TokenType.CORRECT_IDENTIFICATOR)
+                                            {
+                                                helpText = "у идентификатора ";
+                                            }
+
+                                            TokenWorker.PrintMessage(helpText, " отсутвует операция ", currentTokenIndex, parTokens[currentTokenIndex + 1]);
                                         }
                                         nextAutomateState = AutomatState.CLOSED_BRACE_OPERATOR;
                                         break;
@@ -96,53 +90,29 @@ namespace DevCompilersLW3
                     else
                     {
                         nextAutomateState = AutomatState.CLOSED_BRACE_OPERAND;
-                        AutomateStateFrom = AutomatState.OPENED_BRACE_OPERAND;
+                        //AutomateStateFrom = AutomatState.OPENED_BRACE_OPERAND;
                     }
                     break;
                 case AutomatState.CLOSED_BRACE_OPERATOR:
-                    if (i < tokensNumber - 1)
+                    
+                    if (currentTokenIndex < tokensNumber - 1)
                     {
                         switch(currentTokenType)
                         {
                             case TokenType.CLOSE_PARENTHESIS:
                                 CloseBrace();
-                                if (k != 0)
-                                {
-                                    //CannotGenerateSyntaxThree();
-                                    //k = 0;
-                                }
-                             
+                                AutomateStateFrom = AutomatState.CLOSED_BRACE_OPERATOR;
                                 break;
                             case TokenType.OPEN_PARENTHESIS:
                                 OpenBrace();
-                                TokenWorker.PrintMessage("Not operator befor ", i, currentToken);
+                                TokenWorker.PrintMessage("перед отрывающей скобки ", " отсутвует операция ", currentTokenIndex, currentToken);
                                 nextAutomateState = AutomatState.OPENED_BRACE_OPERAND;
+                                AutomateStateFrom = AutomatState.OPENED_BRACE_OPERAND;
                                 CannotGenerateSyntaxThree();
                                 break;
                             default:
-                                if (currentTokenType == TokenType.EQUAL_SIGN)
-                                {
-                                    AddEqualSign();
-                                    if (TokenWorker.IsCorrectEqualSignPosition(i, parTokens))
-                                    {
-                                        if (parTokens[i - 1].TokenType != TokenType.CORRECT_IDENTIFICATOR)
-                                        {
-                                            CannotGenerateSyntaxThree();
-                                            TokenWorker.PrintMessage("Not identificator for ", i, currentToken);
-                                        }
-                                    }
-                                    else if (e > 1)
-                                    {
-                                        CannotGenerateSyntaxThree();
-                                        TokenWorker.PrintMessage("They are many equal sign in the expression ", i, currentToken);
-                                    }
-                                    else
-                                    {
-                                        CannotGenerateSyntaxThree();
-                                        TokenWorker.PrintMessage("Not identificator for ", i, currentToken);
-                                    }
-                                }
                                 nextAutomateState = AutomatState.OPENED_BRACE_OPERAND;
+                                AutomateStateFrom = AutomatState.OPENED_BRACE_OPERAND;
                                 break;
                         }
                         NextToken();
@@ -150,7 +120,7 @@ namespace DevCompilersLW3
                     else
                     {
                         nextAutomateState = AutomatState.CLOSED_BRACE_OPERAND;
-                        AutomateStateFrom = AutomatState.CLOSED_BRACE_OPERATOR;
+                        //AutomateStateFrom = AutomatState.CLOSED_BRACE_OPERATOR;
                     }
                     break;
                 case AutomatState.CLOSED_BRACE_OPERAND:
@@ -158,42 +128,19 @@ namespace DevCompilersLW3
                     {
                         case TokenType.CLOSE_PARENTHESIS:
                             CloseBrace();
-                            if (k != 0)
+                            if (braceCount != 0)
                             {
                                 CannotGenerateSyntaxThree();
-                                Console.WriteLine("Ici");
                             }
                             break;
                         case TokenType.OPEN_PARENTHESIS:
+                            OpenBrace();
                             CannotGenerateSyntaxThree();
-                            break;
-                        case TokenType.EQUAL_SIGN:
-                            AddEqualSign();
-                            CannotGenerateSyntaxThree();
-                            if (TokenWorker.IsCorrectEqualSignPosition(i, parTokens))
-                            {
-                                if (parTokens[i - 1].TokenType == TokenType.CORRECT_IDENTIFICATOR)
-                                {
-                                    TokenWorker.PrintMessage("Not expression's definition for ", i, currentToken);
-                                }
-                                else
-                                {
-                                    TokenWorker.PrintMessage("Not identificator for ", i, currentToken);
-                                }
-                            }
-                            else if (e > 1)
-                            {
-                                TokenWorker.PrintMessage("They are many equal sign in the expression ", i, currentToken);
-                            }
-                            else
-                            {
-                                TokenWorker.PrintMessage("Wrong possition for ", i, currentToken);
-                            }
                             break;
                     }
-                    if (k != 0)
+                    if (braceCount != 0)
                     {
-                        if (k > 0)
+                        if (braceCount > 0)
                         {
                             TokenWorker.PrintErrorNotClosedBrace(parTokens);
                         }
@@ -202,23 +149,47 @@ namespace DevCompilersLW3
                            
                             TokenWorker.PrintErrorNotOpenedBrace(parTokens);
                         }
-                        
                         CannotGenerateSyntaxThree();
                     }
                     switch (AutomateStateFrom)
                     {
                         case AutomatState.OPENED_BRACE_OPERAND:
-                            if (TokenWorker.IsTokenTypeOperator(currentToken))
-                            {
+                            if (!TokenWorker.IsOperand(currentToken.TokenType))
+                            { 
                                 CannotGenerateSyntaxThree();
-                                TokenWorker.PrintMessage("Successive operator ", i);
+                                if (currentToken.TokenType == TokenType.CLOSE_PARENTHESIS)
+                                {
+                                    TokenWorker.PrintMessage("Перед закрывающей скобке ", " отсутствует операнд ", currentTokenIndex, currentToken);
+                                }
+                                else if (currentToken.TokenType == TokenType.OPEN_PARENTHESIS)
+                                {
+                                    TokenWorker.PrintMessage("Перед открывающей скобке ", " отсутствует операнд ", currentTokenIndex, currentToken);
+                                }
+                                else if (TokenWorker.IsOperand(currentToken.TokenType))
+                                {
+                                    TokenWorker.PrintMessage("последовательные операторы друг за другом ", currentTokenIndex);
+                                }
                             }
                             break;
                         case AutomatState.CLOSED_BRACE_OPERATOR:
-                            if (TokenWorker.IsTokenTypeOperator(currentToken) && currentTokenType != TokenType.EQUAL_SIGN)
+                            if (currentToken.TokenType != TokenType.CLOSE_PARENTHESIS)
                             {
                                 CannotGenerateSyntaxThree();
-                                TokenWorker.PrintMessage("Not operand for ", i, currentToken);
+                                if (TokenWorker.IsOperand(currentToken.TokenType))
+                                {
+                                    
+                                    TokenWorker.PrintMessage("У операнда ", " отсутствует операция ", currentTokenIndex, currentToken);
+                                }
+                                else if (TokenWorker.IsTokenTypeOperator(currentToken))
+                                {
+                                    
+                                    TokenWorker.PrintMessage("У операция ", " отсутствует операнд ", currentTokenIndex, currentToken);
+                                }
+                                else if (currentToken.TokenType == TokenType.OPEN_PARENTHESIS)
+                                {
+                                    
+                                    TokenWorker.PrintMessage("Перед открывающей скобке ", " отсутствует операция ", currentTokenIndex, currentToken);
+                                }
                             }
                             break;
                     }
@@ -237,17 +208,22 @@ namespace DevCompilersLW3
                 case TokenType.ADDITION_SIGN:
                 case TokenType.DIVISION_SIGN:
                 case TokenType.MULTIPLICATION_SIGN:
-                case TokenType.EQUAL_SIGN:
-                    TokenWorker.PrintMessage("Not operand for ", i, parToken);
+                    TokenWorker.PrintMessage("У операция ", " отсутствует операнд", currentTokenIndex, parToken);
                     break;
                 case TokenType.OPEN_PARENTHESIS:
                 case TokenType.CLOSE_PARENTHESIS:
-                    TokenWorker.PrintMessage("Not expression for ", i, parToken);
+                    TokenWorker.PrintMessage("У скобки ", " отсутствует выражение ", currentTokenIndex, parToken);
                     break;
                 case TokenType.CORRECT_DECIMAL_CONSTANT:
                 case TokenType.CORRECT_IDENTIFICATOR:
                 case TokenType.INTEGER_CONSTANT:
-                    TokenWorker.PrintMessage("Not operator for ", i, parToken);
+                    var helpText = "у константа ";
+                    if (parToken.TokenType == TokenType.CORRECT_IDENTIFICATOR)
+                    {
+                        helpText = "у идентификатора ";
+                    }
+                    TokenWorker.PrintMessage(helpText, " отсутвует операция ", currentTokenIndex, parToken);
+                    //TokenWorker.PrintMessage("Нет оператора для ", currentTokenIndex, parToken);
                     break;
 
             }
@@ -258,19 +234,15 @@ namespace DevCompilersLW3
         }
         private static void NextToken()
         {
-            i++;
+            currentTokenIndex++;
         }
         private static void OpenBrace()
         {
-            k++;
+            braceCount++;
         }
         private static void CloseBrace()
         {
-            k--;
-        }
-        private static void AddEqualSign()
-        {
-            e++;
+            braceCount--;
         }
       
     }

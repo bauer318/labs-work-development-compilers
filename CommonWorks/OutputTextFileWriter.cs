@@ -15,7 +15,7 @@ namespace CommonWorks
 
         public OutputTextFileWriter(string parTokenTextFileName, string parSymbolTableTextFileName)
         {
-            _tokenTextFileName = string.IsNullOrEmpty(parTokenTextFileName)? "tokens.txt":parTokenTextFileName;
+            _tokenTextFileName = string.IsNullOrEmpty(parTokenTextFileName)? "Tokens.txt":parTokenTextFileName;
             _symbolTableTextFileName = string.IsNullOrEmpty(parSymbolTableTextFileName)? "symbols.txt" :parSymbolTableTextFileName;
         }
         public OutputTextFileWriter(string parSyntaxTreeTextFileName)
@@ -47,7 +47,8 @@ namespace CommonWorks
         {
             using (StreamWriter writer = new StreamWriter(_syntaxTreeTextFileName))
             {
-                writer.WriteLine(parParser.GetSyntaxTreeText());
+                foreach(string nodeText in parParser.GetSyntaxTreeNodeTextArray())
+                writer.WriteLine(nodeText);
             }
         }
     }

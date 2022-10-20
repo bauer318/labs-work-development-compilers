@@ -11,6 +11,7 @@ namespace DevCompilersLW2
         private List<TokenDefinition> _tokenDefinitions;
         public readonly List<Token> Tokens = new List<Token>();
         public SymbolTable SymbolTable;
+        public bool CanBuildSyntaxTree = false;
         public LexicalErrorAnalyzer()
         {
             _tokenDefinitions = new List<TokenDefinition>();
@@ -25,7 +26,6 @@ namespace DevCompilersLW2
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_CONSTANT, "^\\d+\\.{1}\\d+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_IDENTIFICATOR, "^[0-9]+[_a-zA-Z0-9]+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.EQUAL_SIGN, "^\\=$"));
 
         }
         public string[] SplitExpresion(string parExpresion)
@@ -134,6 +134,7 @@ namespace DevCompilersLW2
                 }
             }
             SymbolTable = new SymbolTable(attributeVariables);
+            CanBuildSyntaxTree = result;
             return result;
         }
 

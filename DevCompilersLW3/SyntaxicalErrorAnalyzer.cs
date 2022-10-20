@@ -7,34 +7,29 @@ namespace DevCompilersLW3
 {
     public class SyntaxicalErrorAnalyzer
     {
-        private List<Token> tokens = new List<Token>();
+        public List<Token> Tokens = new List<Token>();
+        public SymbolTable SymbolTable;
         private AutomatState automatState;
            
-        public SyntaxicalErrorAnalyzer(List<Token> parTokens)
+        public SyntaxicalErrorAnalyzer(List<Token> parTokens, SymbolTable parSymbolTable)
         {
-            tokens = parTokens;
+            Tokens = parTokens;
+            SymbolTable = parSymbolTable;
         }
         public bool IsSyntaxicalyCorrectExpression()
         {
-            Console.WriteLine("Expression ");
-            for(var i = 0; i<tokens.Count;i++)
-            {
-                Console.Write(tokens[i].Lexeme);
-            }
-            Console.WriteLine(" ");
-            AutomateStateMethodes.e = 0;
-            AutomateStateMethodes.i = 0;
-            AutomateStateMethodes.k = 0;
+            AutomateStateMethodes.currentTokenIndex = 0;
+            AutomateStateMethodes.braceCount = 0;
             automatState = AutomatState.OPENED_BRACE_OPERAND;
-            if (tokens.Count == 1)
+            if (Tokens.Count == 1)
             {
-                AutomateStateMethodes.OneLexemeCase(tokens[0]);
+                AutomateStateMethodes.OneLexemeCase(Tokens[0]);
             }
             else
             {
                 while (automatState != AutomatState.END_EXPRESSION)
                 {
-                    automatState = automatState.Swip(tokens);
+                    automatState = automatState.Swip(Tokens);
                 }
             }
             return AutomateStateMethodes.Can_Continue;

@@ -33,8 +33,7 @@ namespace DevCompilersLW3
             
             if (parCurrentTokenIndex - 1 >= 0)
             {
-                return IsTokenTypeOperator(parTokens[parCurrentTokenIndex - 1]) ||
-                    parTokens[parCurrentTokenIndex - 1].TokenType == TokenType.EQUAL_SIGN;
+                return IsTokenTypeOperator(parTokens[parCurrentTokenIndex - 1]);
             }
             return result;
         }
@@ -86,7 +85,7 @@ namespace DevCompilersLW3
                     count--;
                     if (count < 0)
                     {
-                        PrintMessage("lexical error! Not opened brace for ", j, parTokens[j]);
+                        PrintMessage("У закрывающей скобки ", "отсутвует открывающая скобка", j, parTokens[j]);
                         count = 0;
                     }
                 }
@@ -106,24 +105,25 @@ namespace DevCompilersLW3
                     count--;
                     if (count < 0)
                     {
-                        PrintMessage("lexical error! Not closed brace for ", j, parTokens[j]);
+                        PrintMessage("У открывающей скобки ","отсутвует закрывающая скобка", j, parTokens[j]);
                         count = 0;
                     }
                 }
             }
         }
         
-        public static void PrintMessage(string parMessage, int parCurrentTokenIndex, Token parToken)
+        public static void PrintMessage(string parBeginErrorMessage,string parEndErrorMessage, int parCurrentTokenIndex, Token parToken)
         {
-            Console.WriteLine("lexical error! " + parMessage + parToken.Lexeme + " at " + parCurrentTokenIndex);
+            Console.WriteLine("Синтаксическая ошибка! " + parBeginErrorMessage + parToken.TokenType.GetTokenNodeDescription(parToken) +
+                " на позиции " + parCurrentTokenIndex+" "+parEndErrorMessage);
         }
         public static void PrintMessage(string parMessage, int parCurrentTokenIndex)
         {
-            Console.WriteLine("lexical error! "+parMessage + " at " + parCurrentTokenIndex);
+            Console.WriteLine("Синтаксическая ошибка! " + parMessage + " на позиции " + parCurrentTokenIndex);
         }
         public static void PrintMessage(string parMessage)
         {
-            Console.WriteLine("lexical error! "+parMessage);
+            Console.WriteLine("Синтаксическая ошибка! " + parMessage);
         }
     }
 }

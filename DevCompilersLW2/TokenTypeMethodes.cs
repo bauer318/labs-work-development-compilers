@@ -28,8 +28,6 @@ namespace DevCompilersLW2
                     return "<" + parToken.Lexeme + "> - открывающая скобка";
                 case TokenType.SOUSTRACTION_SIGN:
                     return "<" + parToken.Lexeme + "> - операция вычитания";
-                case TokenType.EQUAL_SIGN:
-                    return "<" + parToken.Lexeme + "> - равенство ";
                 default:
                     return "INVALID TOKEN TYPE";
             }
@@ -55,9 +53,10 @@ namespace DevCompilersLW2
                 case TokenType.SOUSTRACTION_SIGN:
                 case TokenType.MULTIPLICATION_SIGN:
                 case TokenType.DIVISION_SIGN:
-                case TokenType.EQUAL_SIGN:
                 case TokenType.CORRECT_DECIMAL_CONSTANT:
                 case TokenType.INTEGER_CONSTANT:
+                case TokenType.OPEN_PARENTHESIS:
+                case TokenType.CLOSE_PARENTHESIS:
                     return "<"+parToken.Lexeme+">";
                 case TokenType.CORRECT_IDENTIFICATOR:
                     return "<id, " + parToken.AttributeValue + ">";

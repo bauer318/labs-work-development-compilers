@@ -9,25 +9,35 @@ namespace CommonWorks
         public static void RealizeLexicalSyntaxicalAnalysis(string parExpression, InputParametersChecker parInputParametersChecker)
         {
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
-            if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression))
+            switch (parInputParametersChecker.GetAnalysisRegime())
             {
-                string tokenTextFileName = parInputParametersChecker.GetTextFileOrEmpty(2);
-                string symbolTableTextFileName = parInputParametersChecker.GetTextFileOrEmpty(3);
-                OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(tokenTextFileName, symbolTableTextFileName);
-                outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
-                outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
-                if (parInputParametersChecker.GetAnalysisRegime() == 1)
-                {
-                    RealizeSyntaxicalAnalysis(lexicalErrorAnalyzer, parInputParametersChecker);
-                }
+                case 0:
+                    if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression))
+                    {
+                        string tokenTextFileName = parInputParametersChecker.GetTextFileOrEmpty(2);
+                        string symbolTableTextFileName = parInputParametersChecker.GetTextFileOrEmpty(3);
+                        OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(tokenTextFileName, symbolTableTextFileName);
+                        outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
+                        outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
+                    }
+                    break;
+                case 1:
+                    lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression);
+                    SyntaxicalErrorAnalyzer syntaxicalErrorAnalyser = 
+                        new SyntaxicalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
+                    TryToBuildSyntaxTree(syntaxicalErrorAnalyser, parInputParametersChecker,lexicalErrorAnalyzer.CanBuildSyntaxTree);
+                    break;
+
             }
         }
-        public static void RealizeSyntaxicalAnalysis(LexicalErrorAnalyzer parLexicalErrorAnalyzer, InputParametersChecker parInputParametersChecker)
+        public static void TryToBuildSyntaxTree(SyntaxicalErrorAnalyzer parSyntaxicalErrorAnalyzer,
+            InputParametersChecker parInputParametersChecker,
+            bool parIsLexicalyCorrectExpression)
         {
-            SyntaxicalErrorAnalyzer syntaxicalErrorAnalyser = new SyntaxicalErrorAnalyzer(parLexicalErrorAnalyzer.Tokens);
-            if (syntaxicalErrorAnalyser.IsSyntaxicalyCorrectExpression())
+            
+            if (parSyntaxicalErrorAnalyzer.IsSyntaxicalyCorrectExpression() && parIsLexicalyCorrectExpression)
             {
-                Parser parser = new Parser(parLexicalErrorAnalyzer.Tokens, parLexicalErrorAnalyzer.SymbolTable);
+                Parser parser = new Parser(parSyntaxicalErrorAnalyzer);
                 parser.ParseExpression();
                 string syntaxTreeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(4);
                 OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(syntaxTreeTextFileName);

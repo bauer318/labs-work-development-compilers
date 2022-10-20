@@ -1,2 +1,2 @@
 source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1
-DevCompilersLW1.exe inputExpr.txt tokens.txt symbols.txt
+DevCompilersLW1.exe syn inputExpr.txt tokens.txt symbols.txt

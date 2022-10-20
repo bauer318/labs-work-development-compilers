@@ -10,18 +10,17 @@ namespace DevCompilersLW3
         private List<TokenType> _termItems = new List<TokenType>() { TokenType.ADDITION_SIGN, TokenType.SOUSTRACTION_SIGN };
         private List<TokenType> _factorItems = new List<TokenType>() { TokenType.MULTIPLICATION_SIGN, TokenType.DIVISION_SIGN};
         private List<Token> _tokens;
-        private SymbolTable _symbolTable;
 
         private int _currentTokenIndex = 0;
         private Token _currentToken = null;
         private List<TokenNode<Token>> _tokenNodes = new List<TokenNode<Token>>();
         private int whiteSpaceCount = 0;
         public TokenNode<Token> AbstractSyntaxTree = null;
+        private List<string> _astTexts = new List<string>();
         
-        public Parser(List<Token> parTokens, SymbolTable parSymbolTable)
+        public Parser(SyntaxicalErrorAnalyzer parSyntaxicalErrorAnalyzer)
         {
-            _tokens = parTokens;
-            _symbolTable = parSymbolTable;
+            _tokens = parSyntaxicalErrorAnalyzer.Tokens;
             GetNextToken();
         }
         
@@ -97,13 +96,13 @@ namespace DevCompilersLW3
             GetNextToken();
             return term;
         }
-       public String GetSyntaxTreeText()
+       public List<string> GetSyntaxTreeNodeTextArray()
         {
             AbstractSyntaxTree = BuildTreeRecursive(_tokenNodes[_tokenNodes.Count - 1]);
-            StringBuilder sb = new StringBuilder();
-            TraverserPreOrder(sb,"","" ,AbstractSyntaxTree);
-            return sb.ToString();
+            TraverserPreOrder("","" ,AbstractSyntaxTree);
+            return _astTexts;
         }
+        
         private TokenNode<Token> BuildTreeRecursive(TokenNode<Token> parNode)
         {
             if (TokenNode<Token>.IsLeafToken(parNode))
@@ -116,14 +115,11 @@ namespace DevCompilersLW3
             return next;
         }
         
-        private void TraverserPreOrder(StringBuilder parSb, string parPadding, string parPointer, TokenNode<Token> parAbstractSyntaxTree)
+        private void TraverserPreOrder(string parPadding, string parPointer, TokenNode<Token> parAbstractSyntaxTree)
         {
             if(parAbstractSyntaxTree != null)
             {
-                parSb.Append(parPadding);
-                parSb.Append(parPointer);
-                parSb.Append(parAbstractSyntaxTree.Value.TokenType.GetTokenNodeDescription(parAbstractSyntaxTree.Value));
-                parSb.Append("\n");
+                _astTexts.Add(parPadding+parPointer+ parAbstractSyntaxTree.Value.TokenType.GetTokenNodeDescription(parAbstractSyntaxTree.Value));
                 StringBuilder paddingBuilder = new StringBuilder(parPadding);
                 if (whiteSpaceCount > 0)
                 {
@@ -133,8 +129,8 @@ namespace DevCompilersLW3
                 string paddingForBoth = paddingBuilder.ToString();
                 string pointerForRight = " |---";
                 string pointerForLeft = " |---";
-                TraverserPreOrder(parSb,paddingForBoth,pointerForLeft, parAbstractSyntaxTree.LeftNode);
-                TraverserPreOrder(parSb, paddingForBoth, pointerForRight, parAbstractSyntaxTree.RightNode); ;
+                TraverserPreOrder(paddingForBoth,pointerForLeft, parAbstractSyntaxTree.LeftNode);
+                TraverserPreOrder(paddingForBoth, pointerForRight, parAbstractSyntaxTree.RightNode); ;
             }
         }
 
