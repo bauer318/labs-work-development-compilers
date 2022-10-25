@@ -15,14 +15,7 @@ namespace DevCompilersLW2
             TokenType = parTokenType;
             Lexeme = parLexeme;
             AttributeValue = parAttributeValue;
-            TokenPriority = 0;
         }
-        public Token(Token parToken, int parPriority)
-        {
-            TokenType = parToken.TokenType;
-            Lexeme = parToken.Lexeme;
-            AttributeValue = parToken.AttributeValue;
-            TokenPriority = parPriority;
-        }
+        
     }
 }
