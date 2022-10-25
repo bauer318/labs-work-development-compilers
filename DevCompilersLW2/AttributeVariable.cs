@@ -8,6 +8,7 @@ namespace DevCompilersLW2
     {
         private int _id;
         private string _name;
+        private TokenType _tokenType;
         public int Id
         {
             get
@@ -30,10 +31,25 @@ namespace DevCompilersLW2
                 _name = value;
             }
         }
+        public TokenType TokenType
+        {
+            get
+            {
+                return _tokenType;
+            }
+            set
+            {
+                _tokenType = value;
+            }
+        }
         public AttributeVariable(int parId, string parName)
         {
             _id = parId;
             _name = parName;
+        }
+        public AttributeVariable(int parId, string parName, TokenType parTokenType):this(parId,parName)
+        {
+            _tokenType = parTokenType;
         }
     }
 }

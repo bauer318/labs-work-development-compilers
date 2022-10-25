@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace DevCompilersLW3
 {
-    public class SyntaxicalErrorAnalyzer
+    public class SyntacticalErrorAnalyzer
     {
         public List<Token> Tokens = new List<Token>();
         public SymbolTable SymbolTable;
         private AutomatState automatState;
            
-        public SyntaxicalErrorAnalyzer(List<Token> parTokens, SymbolTable parSymbolTable)
+        public SyntacticalErrorAnalyzer(List<Token> parTokens, SymbolTable parSymbolTable)
         {
             Tokens = parTokens;
             SymbolTable = parSymbolTable;

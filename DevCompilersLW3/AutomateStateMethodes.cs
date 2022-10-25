@@ -90,7 +90,7 @@ namespace DevCompilersLW3
                     else
                     {
                         nextAutomateState = AutomatState.CLOSED_BRACE_OPERAND;
-                        //AutomateStateFrom = AutomatState.OPENED_BRACE_OPERAND;
+                       
                     }
                     break;
                 case AutomatState.CLOSED_BRACE_OPERATOR:
@@ -120,7 +120,6 @@ namespace DevCompilersLW3
                     else
                     {
                         nextAutomateState = AutomatState.CLOSED_BRACE_OPERAND;
-                        //AutomateStateFrom = AutomatState.CLOSED_BRACE_OPERATOR;
                     }
                     break;
                 case AutomatState.CLOSED_BRACE_OPERAND:
@@ -223,7 +222,6 @@ namespace DevCompilersLW3
                         helpText = "у идентификатора ";
                     }
                     TokenWorker.PrintMessage(helpText, " отсутвует операция ", currentTokenIndex, parToken);
-                    //TokenWorker.PrintMessage("Нет оператора для ", currentTokenIndex, parToken);
                     break;
 
             }

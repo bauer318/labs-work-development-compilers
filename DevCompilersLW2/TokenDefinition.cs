@@ -19,11 +19,17 @@ namespace DevCompilersLW2
             var match = _regex.Match(inputString);
             if (match.Success)
             {
+                var bracketIndex = match.Value.IndexOf('[');
+                var lex = match.Value;
+                if (bracketIndex != -1)
+                {
+                    lex = lex.Remove(bracketIndex);
+                }
                 return new TokenMatch()
                 {
                     IsMatch = true,
                     TokenType = _returnsToken,
-                    Lexeme = match.Value
+                    Lexeme = lex
                 };
             }
             else

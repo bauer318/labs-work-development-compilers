@@ -25,19 +25,20 @@ namespace DevCompilersLW2
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_DECIMAL_CONSTANT, "^[0-9.]*\\.*\\..*\\..*[0-9.]*$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_CONSTANT, "^\\d+\\.{1}\\d+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_DEFAULT_IDENTIFICATOR, "^[0-9]+[_a-zA-Z0-9]+(\\[i\\])*(\\[f\\])*$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DEFAULT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DEFAULT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*\\[\\]$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_INTEGER_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*\\[i\\]$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*\\[f\\]$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_TYPE_IDENTIFICATOR, "(^([_a-zA-Z]+[0-9]*)(\\[+[^i]+\\]+$|\\[+[^f]+\\]+)$)"));//^\\[+\\]+$
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_TYPE_IDENTIFICATOR, 
+                "(^([_a-zA-Z]+[0-9]*)(\\[+[^i]+[_a-zA-Z0-9]*\\]+$|\\[+[^f]+[_a-zA-Z0-9]*\\]+|\\[+\\]+)$)"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.OPEN_SQUARE_BRAKET, "^\\[+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CLOSE_SQUARE_BRAKET, "^\\]+$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.IDENTIFICATOR_WITHOUT_TYPE, "^[_a-zA-Z]+[0-9]*$"));
 
 
         }
         public string[] SplitExpresion(string parExpresion)
         {
-            //return PutWhitespace(RemoveAllWhitespace(parExpresion)).Split(new char[] { ' ' });
-            return parExpresion.Split(new char[] { ' ','+','/','*','-','(',')' });
+            return PutWhitespace(RemoveAllWhitespace(parExpresion)).Split(new char[] { ' ' });
         }
         public string RemoveAllWhitespace(string parExpresion)
         {
@@ -118,10 +119,11 @@ namespace DevCompilersLW2
                 {
                     case TokenType.INCORRECT_DECIMAL_CONSTANT:
                     case TokenType.INCORRECT_DEFAULT_IDENTIFICATOR:
-                        Console.WriteLine(match.TokenType.GetIncorrectTokenTypeDescrition(currentText, parExpresion));
-                        result = false;
-                        break;
                     case TokenType.INVALID:
+                    case TokenType.INCORRECT_TYPE_IDENTIFICATOR:
+                    case TokenType.OPEN_SQUARE_BRAKET:
+                    case TokenType.CLOSE_SQUARE_BRAKET:
+                    case TokenType.IDENTIFICATOR_WITHOUT_TYPE:
                         if (!string.IsNullOrEmpty(currentText))
                         {
                             Console.WriteLine(match.TokenType.GetIncorrectTokenTypeDescrition(currentText, parExpresion));
@@ -129,29 +131,33 @@ namespace DevCompilersLW2
                         }
                         break;
                     case TokenType.CORRECT_DEFAULT_IDENTIFICATOR:
-                        Console.WriteLine("Default ident " + currentText);
+                    case TokenType.CORRECT_DECIMAL_IDENTIFICATOR:
+                    case TokenType.CORRECT_INTEGER_IDENTIFICATOR:
+                        match.TokenType = match.TokenType.GetIdentificatorTokenType();
                         if (!tokenLexemes.Contains(match.Lexeme))
                         {
                             attributeValue++;
                             tokenLexemes.Add(match.Lexeme);
-                            attributeVariables.Add(new AttributeVariable(attributeValue, match.Lexeme));
+                            attributeVariables.Add(new AttributeVariable(attributeValue, match.Lexeme,match.TokenType));
                         }
-                        Tokens.Add(new Token(match.TokenType, match.Lexeme, attributeValue));
-                        break;
-                    case TokenType.CORRECT_DECIMAL_IDENTIFICATOR:
-                        Console.WriteLine("Decimal ident " + currentText);
-                        break;
-                    case TokenType.CORRECT_INTEGER_IDENTIFICATOR:
-                        Console.WriteLine("Integer ident " + currentText);
-                        break;
-                    case TokenType.INCORRECT_TYPE_IDENTIFICATOR:
-                        Console.WriteLine("###Incorrect type " + currentText);
-                        result = false;
-                        break;
-                    case TokenType.OPEN_SQUARE_BRAKET:
-                    case TokenType.CLOSE_SQUARE_BRAKET:
-                        Console.WriteLine("Empty square bracket " + currentText);
-                        result = false;
+                        else
+                        {
+                            SymbolTableWorker.SymbolTable = new SymbolTable(attributeVariables);
+                            int predTokenId = SymbolTableWorker.GetVariableIdByName(match.Lexeme);
+                            if (predTokenId != 0)
+                            {
+                                TokenType predTokenType = SymbolTableWorker.GetVariableTypeById(predTokenId);
+                                if (predTokenType != match.TokenType)
+                                {
+                                    Console.WriteLine("Семантическая ошибка! Разные типы для идентификатора " + currentText + " на позиции " + parExpresion.IndexOf(currentText));
+                                    result = false;
+                                }
+                            }
+                        }
+                        if (result)
+                        {
+                            Tokens.Add(new Token(match.TokenType, match.Lexeme, attributeValue));
+                        }
                         break;
                     default:
                         Tokens.Add(new Token(match.TokenType, match.Lexeme));

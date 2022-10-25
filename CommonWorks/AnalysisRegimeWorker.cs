@@ -23,21 +23,21 @@ namespace CommonWorks
                     break;
                 case 1:
                     lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression);
-                    SyntaxicalErrorAnalyzer syntaxicalErrorAnalyser = 
-                        new SyntaxicalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
-                    TryToBuildSyntaxTree(syntaxicalErrorAnalyser, parInputParametersChecker,lexicalErrorAnalyzer.CanBuildSyntaxTree);
+                    SyntacticalErrorAnalyzer syntacticalErrorAnalyser = 
+                        new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
+                    TryToBuildSyntaxTree(syntacticalErrorAnalyser, parInputParametersChecker,lexicalErrorAnalyzer.CanBuildSyntaxTree);
                     break;
 
             }
         }
-        public static void TryToBuildSyntaxTree(SyntaxicalErrorAnalyzer parSyntaxicalErrorAnalyzer,
+        public static void TryToBuildSyntaxTree(SyntacticalErrorAnalyzer parSyntacticalErrorAnalyzer,
             InputParametersChecker parInputParametersChecker,
             bool parIsLexicalyCorrectExpression)
         {
             
-            if (parSyntaxicalErrorAnalyzer.IsSyntaxicalyCorrectExpression() && parIsLexicalyCorrectExpression)
+            if (parSyntacticalErrorAnalyzer.IsSyntaxicalyCorrectExpression() && parIsLexicalyCorrectExpression)
             {
-                Parser parser = new Parser(parSyntaxicalErrorAnalyzer);
+                Parser parser = new Parser(parSyntacticalErrorAnalyzer);
                 parser.ParseExpression();
                 string syntaxTreeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(4);
                 OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(syntaxTreeTextFileName);

@@ -39,7 +39,7 @@ namespace CommonWorks
             {
                 foreach (AttributeVariable attributeVariable in parTokenizer.SymbolTable.AttributeVariables)
                 {
-                    writer.WriteLine(attributeVariable.Id + " - " + attributeVariable.Name);
+                    writer.WriteLine(attributeVariable.Id + " - " + attributeVariable.Name+attributeVariable.TokenType.GetIdentificatorTypeInBracketDescription());
                 }
             }
         }
