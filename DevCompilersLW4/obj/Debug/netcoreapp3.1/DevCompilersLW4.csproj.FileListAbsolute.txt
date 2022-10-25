@@ -1,0 +1,15 @@
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\obj\Debug\netcoreapp3.1\DevCompilersLW4.csproj.AssemblyReference.cache
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\obj\Debug\netcoreapp3.1\DevCompilersLW4.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\obj\Debug\netcoreapp3.1\DevCompilersLW4.AssemblyInfoInputs.cache
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\obj\Debug\netcoreapp3.1\DevCompilersLW4.AssemblyInfo.cs
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\obj\Debug\netcoreapp3.1\DevCompilersLW4.csproj.CoreCompileInputs.cache
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\bin\Debug\netcoreapp3.1\DevCompilersLW4.deps.json
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\bin\Debug\netcoreapp3.1\DevCompilersLW4.dll
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\bin\Debug\netcoreapp3.1\DevCompilersLW4.pdb
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\bin\Debug\netcoreapp3.1\DevCompilersLW2.dll
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\bin\Debug\netcoreapp3.1\DevCompilersLW3.dll
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\bin\Debug\netcoreapp3.1\DevCompilersLW3.pdb
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\bin\Debug\netcoreapp3.1\DevCompilersLW2.pdb
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\obj\Debug\netcoreapp3.1\DevCompilersLW4.csproj.CopyComplete
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\obj\Debug\netcoreapp3.1\DevCompilersLW4.dll
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW4\obj\Debug\netcoreapp3.1\DevCompilersLW4.pdb

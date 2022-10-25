@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DevCompilersLW3\DevCompilersLW3.csproj" />
+  </ItemGroup>
+
 </Project>

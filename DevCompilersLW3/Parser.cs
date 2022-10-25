@@ -81,6 +81,7 @@ namespace DevCompilersLW3
             }
             return factor;
         }
+        
         private TokenNode<Token> Term()
         {
             TokenNode<Token> term = null;
@@ -96,9 +97,13 @@ namespace DevCompilersLW3
             GetNextToken();
             return term;
         }
+        public TokenNode<Token> GetAbstractSyntaxTree()
+        {
+            return BuildTreeRecursive(_tokenNodes[_tokenNodes.Count - 1]);
+        }
        public List<string> GetSyntaxTreeNodeTextArray()
         {
-            AbstractSyntaxTree = BuildTreeRecursive(_tokenNodes[_tokenNodes.Count - 1]);
+            AbstractSyntaxTree = GetAbstractSyntaxTree();
             TraverserPreOrder("","" ,AbstractSyntaxTree);
             return _astTexts;
         }

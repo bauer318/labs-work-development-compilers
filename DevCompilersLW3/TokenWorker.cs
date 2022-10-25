@@ -48,7 +48,8 @@ namespace DevCompilersLW3
         }
         public static bool IsOperand(TokenType parTokenType)
         {
-            return parTokenType == TokenType.CORRECT_DEFAULT_IDENTIFICATOR ||
+            return parTokenType == TokenType.CORRECT_DECIMAL_IDENTIFICATOR ||
+                parTokenType == TokenType.CORRECT_INTEGER_IDENTIFICATOR||
                 parTokenType == TokenType.CORRECT_DECIMAL_CONSTANT ||
                 parTokenType == TokenType.INTEGER_CONSTANT;
         }
