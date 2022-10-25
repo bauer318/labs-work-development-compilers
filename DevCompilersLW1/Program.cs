@@ -12,7 +12,7 @@ namespace DevCompilersLW1
     {
         static void Main(string[] args)
         {
-            InputParametersChecker inputParametersChecker = new InputParametersChecker(args);
+            /*InputParametersChecker inputParametersChecker = new InputParametersChecker(args);
             if (inputParametersChecker.CheckInputData())
             {
                 string expresion = File.ReadAllText(args[1].ToString());
@@ -33,6 +33,12 @@ namespace DevCompilersLW1
             {
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe LEX or lex inputExpr.txt [Tokens.txt] [symbols.txt] for lexical analysis\n" +
                     "programe.exe SYN or syn inputExpr.txt [Tokens.txt] [symbols.txt] [syntax_tree.txt] for syntaxical analysis\n");
+            }*/
+            string expression = "var1[F]+var2*60++var[i]";
+            LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
+            if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expression))
+            {
+                Console.WriteLine("OK");
             }
         }
     }

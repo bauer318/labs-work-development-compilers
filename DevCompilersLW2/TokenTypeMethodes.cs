@@ -16,7 +16,7 @@ namespace DevCompilersLW2
                     return "<" + parToken.Lexeme + "> - закрывающая скобка";
                 case TokenType.CORRECT_DECIMAL_CONSTANT:
                     return "<" + parToken.Lexeme + "> - константа вещественного типа";
-                case TokenType.CORRECT_IDENTIFICATOR:
+                case TokenType.CORRECT_DEFAULT_IDENTIFICATOR:
                     return "<id, "+parToken.AttributeValue+"> - идентификатор с именем "+parToken.Lexeme;
                 case TokenType.DIVISION_SIGN:
                     return "<" + parToken.Lexeme + "> - операция деления";
@@ -35,14 +35,22 @@ namespace DevCompilersLW2
         public static string GetIncorrectTokenTypeDescrition(this TokenType parTokenType, string parCurrentLexeme, string inputExpresion)
         {
             var currentPosition = inputExpresion.IndexOf(parCurrentLexeme);
+            if (currentPosition == -1)
+            {
+                //Console.WriteLine(parCurrentLexeme.Split(new char[] { '0','','','','','','','','','','','' })[0]);
+                currentPosition = 0;// inputExpresion.IndexOf(parCurrentLexeme.Split(new char[] { ' ' })[0]);
+            }
             switch (parTokenType)
             {
             case TokenType.INCORRECT_DECIMAL_CONSTANT:
                     return "Лексическая ошибка! Неправильно задана константа <<"+parCurrentLexeme+">> на позиции "+currentPosition;
-                case TokenType.INCORRECT_IDENTIFICATOR:
+                case TokenType.INCORRECT_DEFAULT_IDENTIFICATOR:
                     return "Лексическая ошибка! Идентификатор <<"+parCurrentLexeme+">> не может начинаться с цифры на позиции " + currentPosition;
                 default:
-                    return "Лексическая ошибка! Недопустимый символ " + "\"" + parCurrentLexeme + "\"" + " на позиции "+currentPosition;
+                    if (parCurrentLexeme.Length == 1)
+                        return "Лексическая ошибка! Недопустимый символ " + "\"" + parCurrentLexeme + "\"" + " на позиции " + currentPosition;
+                    else
+                        return "Неправильное имя переменной или неправильый тип переменной <<"+parCurrentLexeme+">> на позиции "+currentPosition;
             }
         }
         public static string GetTokenNodeDescription(this TokenType parTokenType,Token parToken)
@@ -58,7 +66,7 @@ namespace DevCompilersLW2
                 case TokenType.OPEN_PARENTHESIS:
                 case TokenType.CLOSE_PARENTHESIS:
                     return "<"+parToken.Lexeme+">";
-                case TokenType.CORRECT_IDENTIFICATOR:
+                case TokenType.CORRECT_DEFAULT_IDENTIFICATOR:
                     return "<id, " + parToken.AttributeValue + ">";
             }
             return "";

@@ -24,13 +24,20 @@ namespace DevCompilersLW2
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INTEGER_CONSTANT, "^[0-9]+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_DECIMAL_CONSTANT, "^[0-9.]*\\.*\\..*\\..*[0-9.]*$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_CONSTANT, "^\\d+\\.{1}\\d+$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_IDENTIFICATOR, "^[0-9]+[_a-zA-Z0-9]+$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_DEFAULT_IDENTIFICATOR, "^[0-9]+[_a-zA-Z0-9]+(\\[i\\])*(\\[f\\])*$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DEFAULT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_INTEGER_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*\\[i\\]$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*\\[f\\]$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_TYPE_IDENTIFICATOR, "(^([_a-zA-Z]+[0-9]*)(\\[+[^i]+\\]+$|\\[+[^f]+\\]+)$)"));//^\\[+\\]+$
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.OPEN_SQUARE_BRAKET, "^\\[+$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.CLOSE_SQUARE_BRAKET, "^\\]+$"));
+
 
         }
         public string[] SplitExpresion(string parExpresion)
         {
-            return PutWhitespace(RemoveAllWhitespace(parExpresion)).Split(new char[] { ' ' });
+            //return PutWhitespace(RemoveAllWhitespace(parExpresion)).Split(new char[] { ' ' });
+            return parExpresion.Split(new char[] { ' ','+','/','*','-','(',')' });
         }
         public string RemoveAllWhitespace(string parExpresion)
         {
@@ -71,6 +78,8 @@ namespace DevCompilersLW2
             }
             parDictionary.Add(".", ".");
             parDictionary.Add("_", "_");
+            parDictionary.Add("[", "[");
+            parDictionary.Add("]", "]");
 
         }
         private void AddNumbers(Dictionary<string, string> parDictionary)
@@ -82,7 +91,7 @@ namespace DevCompilersLW2
         }
         private bool IsExpresionSeparator(string parText)
         {
-            string[] separatorSymbolArray = { "+", "/", "*", "-", ")", "(" };
+            string[] separatorSymbolArray = { "+", "/", "*", "-", ")", "("};
             Dictionary<string, string> dictionary = GetLexicalDictionary();
             bool result = false;
             for (var i = 0; i < separatorSymbolArray.Length; i++)
@@ -108,7 +117,7 @@ namespace DevCompilersLW2
                 switch (match.TokenType)
                 {
                     case TokenType.INCORRECT_DECIMAL_CONSTANT:
-                    case TokenType.INCORRECT_IDENTIFICATOR:
+                    case TokenType.INCORRECT_DEFAULT_IDENTIFICATOR:
                         Console.WriteLine(match.TokenType.GetIncorrectTokenTypeDescrition(currentText, parExpresion));
                         result = false;
                         break;
@@ -119,7 +128,8 @@ namespace DevCompilersLW2
                             result = false;
                         }
                         break;
-                    case TokenType.CORRECT_IDENTIFICATOR:
+                    case TokenType.CORRECT_DEFAULT_IDENTIFICATOR:
+                        Console.WriteLine("Default ident " + currentText);
                         if (!tokenLexemes.Contains(match.Lexeme))
                         {
                             attributeValue++;
@@ -127,6 +137,21 @@ namespace DevCompilersLW2
                             attributeVariables.Add(new AttributeVariable(attributeValue, match.Lexeme));
                         }
                         Tokens.Add(new Token(match.TokenType, match.Lexeme, attributeValue));
+                        break;
+                    case TokenType.CORRECT_DECIMAL_IDENTIFICATOR:
+                        Console.WriteLine("Decimal ident " + currentText);
+                        break;
+                    case TokenType.CORRECT_INTEGER_IDENTIFICATOR:
+                        Console.WriteLine("Integer ident " + currentText);
+                        break;
+                    case TokenType.INCORRECT_TYPE_IDENTIFICATOR:
+                        Console.WriteLine("###Incorrect type " + currentText);
+                        result = false;
+                        break;
+                    case TokenType.OPEN_SQUARE_BRAKET:
+                    case TokenType.CLOSE_SQUARE_BRAKET:
+                        Console.WriteLine("Empty square bracket " + currentText);
+                        result = false;
                         break;
                     default:
                         Tokens.Add(new Token(match.TokenType, match.Lexeme));

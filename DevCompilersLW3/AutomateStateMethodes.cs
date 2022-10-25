@@ -30,7 +30,7 @@ namespace DevCompilersLW3
                                 AutomateStateFrom = AutomatState.OPENED_BRACE_OPERAND;
                                 break;
                             case TokenType.CORRECT_DECIMAL_CONSTANT:
-                            case TokenType.CORRECT_IDENTIFICATOR:
+                            case TokenType.CORRECT_DEFAULT_IDENTIFICATOR:
                             case TokenType.INTEGER_CONSTANT:
                                 NextToken();
                                 nextAutomateState = AutomatState.CLOSED_BRACE_OPERATOR;
@@ -72,7 +72,7 @@ namespace DevCompilersLW3
                                         else
                                         {
                                             var helpText = "у константа";
-                                            if (currentToken.TokenType == TokenType.CORRECT_IDENTIFICATOR)
+                                            if (currentToken.TokenType == TokenType.CORRECT_DEFAULT_IDENTIFICATOR)
                                             {
                                                 helpText = "у идентификатора ";
                                             }
@@ -215,10 +215,10 @@ namespace DevCompilersLW3
                     TokenWorker.PrintMessage("У скобки ", " отсутствует выражение ", currentTokenIndex, parToken);
                     break;
                 case TokenType.CORRECT_DECIMAL_CONSTANT:
-                case TokenType.CORRECT_IDENTIFICATOR:
+                case TokenType.CORRECT_DEFAULT_IDENTIFICATOR:
                 case TokenType.INTEGER_CONSTANT:
                     var helpText = "у константа ";
-                    if (parToken.TokenType == TokenType.CORRECT_IDENTIFICATOR)
+                    if (parToken.TokenType == TokenType.CORRECT_DEFAULT_IDENTIFICATOR)
                     {
                         helpText = "у идентификатора ";
                     }

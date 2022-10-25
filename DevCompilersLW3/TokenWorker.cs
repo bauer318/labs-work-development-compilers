@@ -12,9 +12,9 @@ namespace DevCompilersLW3
             int res = 0;
             for(var i = parCurrentTokenIndex-1; i >= 0; i--)
             {
-                if(parTokens[i].TokenType==TokenType.CORRECT_IDENTIFICATOR || parTokens[i].TokenType == TokenType.OPEN_PARENTHESIS)
+                if(parTokens[i].TokenType==TokenType.CORRECT_DEFAULT_IDENTIFICATOR || parTokens[i].TokenType == TokenType.OPEN_PARENTHESIS)
                 {
-                    if(parTokens[i].TokenType == TokenType.CORRECT_IDENTIFICATOR)
+                    if(parTokens[i].TokenType == TokenType.CORRECT_DEFAULT_IDENTIFICATOR)
                     {
                         res++;
                     }
@@ -48,7 +48,7 @@ namespace DevCompilersLW3
         }
         public static bool IsOperand(TokenType parTokenType)
         {
-            return parTokenType == TokenType.CORRECT_IDENTIFICATOR ||
+            return parTokenType == TokenType.CORRECT_DEFAULT_IDENTIFICATOR ||
                 parTokenType == TokenType.CORRECT_DECIMAL_CONSTANT ||
                 parTokenType == TokenType.INTEGER_CONSTANT;
         }
