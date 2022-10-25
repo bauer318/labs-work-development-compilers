@@ -18,9 +18,9 @@ namespace DevCompilersLW3
         public TokenNode<Token> AbstractSyntaxTree = null;
         private List<string> _astTexts = new List<string>();
         
-        public Parser(SyntaxicalErrorAnalyzer parSyntaxicalErrorAnalyzer)
+        public Parser(SyntacticalErrorAnalyzer parSyntacticalErrorAnalyzer)
         {
-            _tokens = parSyntaxicalErrorAnalyzer.Tokens;
+            _tokens = parSyntacticalErrorAnalyzer.Tokens;
             GetNextToken();
         }
         
