@@ -9,6 +9,7 @@ namespace DevCompilersLW4
     public class SemanticErrorAnalyzer
     {
         private TokenNode<Token> _modifiedSyntaxTree;
+        public bool CanWriteSyntaxTreeModFileText = true;
         public SemanticErrorAnalyzer(TokenNode<Token> parModifiedSyntaxTree)
         {
             _modifiedSyntaxTree = parModifiedSyntaxTree;
@@ -39,6 +40,12 @@ namespace DevCompilersLW4
         {
             return IsTokenDivOperator(parTokenNode) && IsTokenConstantZero(parTokenNode.RightNode);
         }
+        private bool IsZeroDivideByZero(TokenNode<Token> parTokenNode)
+        {
+            return IsTokenDivOperator(parTokenNode) &&
+                IsTokenConstantZero(parTokenNode.RightNode)
+                && IsTokenConstantZero(parTokenNode.LeftNode);
+        }
         public void CheckingDivisionByZero()
         {
             CheckDivisionByZero(_modifiedSyntaxTree);
@@ -49,9 +56,10 @@ namespace DevCompilersLW4
             {
                 if (!TokenNode<Token>.IsLeafToken(parRoot))
                 {
-                    if (IsDivisionByZero(parRoot))
+                    if (IsDivisionByZero(parRoot) || IsZeroDivideByZero(parRoot))
                     {
-                        Console.WriteLine("Div by zero");
+                        Console.WriteLine("Семантическая ошибка! Деление на константу 0 или констант 0 деление на константу 0");
+                        CanWriteSyntaxTreeModFileText = false;
                     }
                     else
                     {
