@@ -36,7 +36,7 @@ namespace DevCompilersLW1
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe LEX or lex inputExpr.txt [Tokens.txt] [symbols.txt] for lexical analysis\n" +
                     "programe.exe SYN or syn inputExpr.txt [Tokens.txt] [symbols.txt] [syntax_tree.txt] for syntaxical analysis\n");
             }*/
-            string expression = "var[f]+var2[i]*60"; //var1[i]*60+var2[f]
+            string expression = "var2[i]+0"; //var1[i]*60+var2[f]
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
             if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expression))
             {
@@ -51,7 +51,7 @@ namespace DevCompilersLW1
                     parser.ParseExpression();
                     //parser.PrintTokenNode();
                     //if(parser.is)
-                    SemanticErrorAnalyzer semantic = new SemanticErrorAnalyzer(parser.GetAbstractSyntaxTree(), syntactical.SymbolTable);
+                    SyntacticalTreeModificator semantic = new SyntacticalTreeModificator(parser.GetAbstractSyntaxTree(), syntactical.SymbolTable);
                     //semantic.GoToLast(parser.GetAbstractSyntaxTree());
                     //semantic.Create();
                     /*List<string> t = semantic.GetSemanticTreeTextList();
@@ -60,10 +60,10 @@ namespace DevCompilersLW1
                         Console.WriteLine(str);
                     }*/
                     Console.WriteLine();
-                    //semantic.PrintVerifiResult();
-                    semantic.CompareOut();
+                    //semantic.RealizeVerificationDifferentType();
+                    semantic.RealizeSyntaxTreeModification();
                     //semantic.Print2();
-                    //semantic.CompareOut();
+                    //semantic.RealizeSyntaxTreeModification();
                     List<string> t = semantic.GetSemanticTreeTextList();
                     foreach(string str in t)
                     {

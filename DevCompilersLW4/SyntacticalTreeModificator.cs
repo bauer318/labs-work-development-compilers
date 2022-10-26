@@ -6,84 +6,35 @@ using System.Text;
 
 namespace DevCompilersLW4
 {
-    public class SemanticErrorAnalyzer
+    public class SyntacticalTreeModificator
     {
-        private TokenNode<Token> _abstractSyntaxTree;
+        public TokenNode<Token> _abstractSyntaxTree { get; }
         private SymbolTable _symbolTable;
         private List<string> _astTexts = new List<string>();
         private int whiteSpaceCount = 0;
-        public TokenNode<Token> G { get; set; }
-        private List<TokenNode<Token>> l = new List<TokenNode<Token>>();
-        private int t = 0;
         private int countDifferentsOperandType = 0;
-        public SemanticErrorAnalyzer(TokenNode<Token> parAbstractSyntaxTree, SymbolTable parSymbolTable)
+        public SyntacticalTreeModificator(TokenNode<Token> parAbstractSyntaxTree, SymbolTable parSymbolTable)
         {
             _abstractSyntaxTree = parAbstractSyntaxTree;
             _symbolTable = parSymbolTable;
         }
-        public void Print()
+        
+        public void RealizeSyntaxTreeModification()
         {
-            Console.WriteLine("Root " + _abstractSyntaxTree.Value.Lexeme);
-        }
-        public List<string> GetSemanticTreeTextList()
-        {
-            //Create();
-            TraverserPreOrder("", "", _abstractSyntaxTree);
-            return _astTexts;
-        }
-        private void Create()
-        {
-            G = BuildSemanticTreeRecursive(_abstractSyntaxTree);
-        }
-        private TokenNode<Token> BuildSemanticTreeRecursive(TokenNode<Token> parNode)
-        {
-            if (TokenNode<Token>.IsLeafToken(parNode))
-            {
-                return new TokenNode<Token>(parNode.Value);
-            }
-            TokenNode<Token> next = new TokenNode<Token>(parNode.Value);
-            next.LeftNode = BuildSemanticTreeRecursive(parNode.LeftNode);
-            next.RightNode = BuildSemanticTreeRecursive(parNode.RightNode);
-            return next;
-        }
-        private void Create2(TokenNode<Token> parNode)
-        {
-            if (parNode != null)
-            {
-                
-                //Console.WriteLine(parNode.Value.Lexeme);
-                l.Add(parNode);
-                Create2(parNode.LeftNode);
-                Create2(parNode.RightNode);
-            }
-        }
-        public void Print2()
-        {
-            l = new List<TokenNode<Token>>();
-            Create2(_abstractSyntaxTree);
-            foreach (TokenNode<Token> t in l)
-            {
-                Console.WriteLine("lexeme " + t.Value.Lexeme + " type " + t.Value.TokenType);
-            }
-            Console.WriteLine("-----------------------");
-        }
-        public void CompareOut()
-        {
-            PrintVerifiResult();
+            RealizeVerificationDifferentType();
             if (countDifferentsOperandType > 0)
             {
-                Compare(_abstractSyntaxTree.LeftNode, _abstractSyntaxTree.RightNode);
-                CompareOut();
+                ModifieSyntaxtTree(_abstractSyntaxTree.LeftNode, _abstractSyntaxTree.RightNode);
+                RealizeSyntaxTreeModification();
             }
         }
-       
-        public void PrintVerifiResult()
+   
+        public void RealizeVerificationDifferentType()
         {
             countDifferentsOperandType = 0;
-            Verifie(_abstractSyntaxTree.LeftNode, _abstractSyntaxTree.RightNode);
-            //Console.WriteLine("Count dif " + countDifferentsOperandType);
+            CheckDifferentOperandType(_abstractSyntaxTree.LeftNode, _abstractSyntaxTree.RightNode);
         }
-        private TokenNode<Token> Verifie(TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
+        private TokenNode<Token> CheckDifferentOperandType(TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
         {
             TokenNode<Token> result = null;
             if(TokenNode<Token>.IsLeafToken(parLeftNode) && TokenNode<Token>.IsLeafToken(parRightNode))
@@ -98,25 +49,22 @@ namespace DevCompilersLW4
             {
                 if (TokenNode<Token>.IsLeafToken(parLeftNode))
                 {
-                    result = Verifie(parLeftNode, Verifie(parRightNode.LeftNode, parRightNode.RightNode));
+                    result = CheckDifferentOperandType(parLeftNode, CheckDifferentOperandType(parRightNode.LeftNode, parRightNode.RightNode));
                 }
                 else if(TokenNode<Token>.IsLeafToken(parRightNode))
                 {
-                    result = Verifie(parRightNode, Verifie(parLeftNode.LeftNode, parLeftNode.RightNode));
+                    result = CheckDifferentOperandType(parRightNode, CheckDifferentOperandType(parLeftNode.LeftNode, parLeftNode.RightNode));
                 }
             }
             return result;
         }
-        public TokenNode<Token> Compare(TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
+        private TokenNode<Token> ModifieSyntaxtTree(TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
         { 
-            t++;
             TokenNode<Token> nextComp = null;
              if(TokenNode<Token>.IsLeafToken(parLeftNode) && TokenNode<Token>.IsLeafToken(parRightNode))
             {
-                Console.WriteLine(t + " Enter left " + parLeftNode.Value.Lexeme + " right " + parRightNode.Value.Lexeme);
                 if (!TokenWorker.IsTokenOperandEqualType(parLeftNode.Value.TokenType,parRightNode.Value.TokenType))
                 {
-                    Console.WriteLine(t+" Dif type " + parLeftNode.Value.TokenType + " and " + parRightNode.Value.TokenType);
                     if (TokenWorker.IsTokenOperandDecimalType(parLeftNode.Value.TokenType))
                     {
                         //Int2Float for right node
@@ -142,7 +90,6 @@ namespace DevCompilersLW4
                 }
                 else
                 {
-                    Console.WriteLine(t+" Meme type " + parLeftNode.Value.TokenType + " and " + parRightNode.Value.TokenType);
                     return parLeftNode;
                 }
                 
@@ -151,19 +98,19 @@ namespace DevCompilersLW4
             {
                 if (TokenNode<Token>.IsLeafToken(parLeftNode))
                 {
-                    nextComp = Compare(parLeftNode,Compare(parRightNode.LeftNode, parRightNode.RightNode));
+                    nextComp = ModifieSyntaxtTree(parLeftNode,ModifieSyntaxtTree(parRightNode.LeftNode, parRightNode.RightNode));
                 }
                 else if (TokenNode<Token>.IsLeafToken(parRightNode))
                 {
-                    nextComp =Compare(Compare(parLeftNode.LeftNode, parLeftNode.RightNode), parRightNode);
+                    nextComp =ModifieSyntaxtTree(ModifieSyntaxtTree(parLeftNode.LeftNode, parLeftNode.RightNode), parRightNode);
                 }
             }
             return nextComp;
         }
-        
-        public void Run(TokenNode<Token> root)
+        public List<string> GetSemanticTreeTextList()
         {
-            BuildSemanticTreeRecursive(root);
+            TraverserPreOrder("", "", _abstractSyntaxTree);
+            return _astTexts;
         }
         private void TraverserPreOrder(string parPadding, string parPointer, TokenNode<Token> parAbstractSyntaxTree)
         {
