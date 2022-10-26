@@ -8,14 +8,14 @@ namespace DevCompilersLW4
 {
     public class SyntacticalTreeModificator
     {
-        public TokenNode<Token> _abstractSyntaxTree { get; }
+        public TokenNode<Token> SyntaxTreeModified { get; }
         private SymbolTable _symbolTable;
         private List<string> _astTexts = new List<string>();
         private int whiteSpaceCount = 0;
         private int countDifferentsOperandType = 0;
         public SyntacticalTreeModificator(TokenNode<Token> parAbstractSyntaxTree, SymbolTable parSymbolTable)
         {
-            _abstractSyntaxTree = parAbstractSyntaxTree;
+            SyntaxTreeModified = parAbstractSyntaxTree;
             _symbolTable = parSymbolTable;
         }
         
@@ -24,7 +24,7 @@ namespace DevCompilersLW4
             RealizeVerificationDifferentType();
             if (countDifferentsOperandType > 0)
             {
-                ModifieSyntaxtTree(_abstractSyntaxTree.LeftNode, _abstractSyntaxTree.RightNode);
+                ModifieSyntaxtTree(SyntaxTreeModified.LeftNode, SyntaxTreeModified.RightNode);
                 RealizeSyntaxTreeModification();
             }
         }
@@ -32,7 +32,7 @@ namespace DevCompilersLW4
         private void RealizeVerificationDifferentType()
         {
             countDifferentsOperandType = 0;
-            CheckDifferentOperandType(_abstractSyntaxTree.LeftNode, _abstractSyntaxTree.RightNode);
+            CheckDifferentOperandType(SyntaxTreeModified.LeftNode, SyntaxTreeModified.RightNode);
         }
         private TokenNode<Token> CheckDifferentOperandType(TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
         {
@@ -109,7 +109,7 @@ namespace DevCompilersLW4
         }
         public List<string> GetSemanticTreeTextList()
         {
-            TraverserPreOrder("", "", _abstractSyntaxTree);
+            TraverserPreOrder("", "", SyntaxTreeModified);
             return _astTexts;
         }
         private void TraverserPreOrder(string parPadding, string parPointer, TokenNode<Token> parAbstractSyntaxTree)

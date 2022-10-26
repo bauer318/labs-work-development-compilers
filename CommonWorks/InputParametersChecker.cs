@@ -15,7 +15,7 @@ namespace CommonWorks
         }
         public bool CheckInputData()
         {
-            if (!(_args.Length >= 2 && _args.Length <= 5))
+            if (!(_args.Length >= 2 && _args.Length <= 6))
             {
                 return false;
             }
@@ -48,6 +48,14 @@ namespace CommonWorks
                     return false;
                 }
             }
+            if (IsExistParameterWithIndex(5))
+            {
+                if (!IsCorrectTextFileName(_args[4].ToString()))
+                {
+                    Console.WriteLine("Incorrect input syntax tree modified's output text file name");
+                    return false;
+                }
+            }
             if (!IsExistTextFileInDirectory(_args[1].ToString()))
             {
                 Console.WriteLine("expresion's text file doesn't exite in the current directory");
@@ -72,10 +80,8 @@ namespace CommonWorks
         {
             switch (_args[0].ToString().ToLower())
             {
-                case "lex":
+                case "sem":
                     return 0;
-                case "syn":
-                    return 1;
                 default:
                     return -1;
             }

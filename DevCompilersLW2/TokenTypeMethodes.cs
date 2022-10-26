@@ -11,9 +11,9 @@ namespace DevCompilersLW2
             switch (parTokenType)
             {
                 case TokenType.CORRECT_INTEGER_IDENTIFICATOR:
-                    return "целого типа";
+                    return " целого типа";
                 default:
-                    return "вещественного типа";
+                    return " вещественного типа";
             }
         }
         public static string GetTokenTypeDescription(this TokenType parTokenType, Token parToken)

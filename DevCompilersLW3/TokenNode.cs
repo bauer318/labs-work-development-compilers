@@ -24,27 +24,6 @@ namespace DevCompilersLW3
             RightNode = null;
             ConvertedTokenNode = null;
         }
-        /// <summary>
-        /// Copy's contructor
-        /// </summary>
-        /// <param name="parTokenNode"></param>
-        public TokenNode(TokenNode<Token> parTokenNode)
-        {
-            this.Value = parTokenNode.Value;
-            this.LeftNode = parTokenNode.LeftNode;
-            this.RightNode = parTokenNode.RightNode;
-            this.ConvertedTokenNode = parTokenNode.ConvertedTokenNode;
-        }
-
-        /*public TokenNode<Token> Clone()
-        {
-            return new TokenNode<Token>(this);
-        }*/
-
-        public static bool IsTokenNodeOperator(TokenNode<Token> parTokenNode)
-        {
-            return parTokenNode.LeftNode != null && parTokenNode.RightNode !=null;
-        }
         public static bool IsLeafToken(TokenNode<Token> parToken)
         {
             return (parToken.LeftNode == null && parToken.RightNode == null)|

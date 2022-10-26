@@ -1,37 +1,40 @@
 ﻿using DevCompilersLW2;
 using DevCompilersLW3;
+using DevCompilersLW4;
 using System;
 
 namespace CommonWorks
 {
     public class AnalysisRegimeWorker
     {
-        public static void RealizeLexicalSyntaxicalAnalysis(string parExpression, InputParametersChecker parInputParametersChecker)
+        public static void RealizeSemanticAnalysis(string parExpression, InputParametersChecker parInputParametersChecker)
         {
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
-            switch (parInputParametersChecker.GetAnalysisRegime())
+            if (parInputParametersChecker.GetAnalysisRegime() == 0)
             {
-                case 0:
-                    if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression))
-                    {
-                        string tokenTextFileName = parInputParametersChecker.GetTextFileOrEmpty(2);
-                        string symbolTableTextFileName = parInputParametersChecker.GetTextFileOrEmpty(3);
-                        OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(tokenTextFileName, symbolTableTextFileName);
-                        outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
-                        outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
-                    }
-                    break;
-                case 1:
-                    lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression);
-                    SyntacticalErrorAnalyzer syntacticalErrorAnalyser = 
+                if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression))
+                {
+                    string tokenTextFileName = parInputParametersChecker.GetTextFileOrEmpty(2);
+                    string symbolTableTextFileName = parInputParametersChecker.GetTextFileOrEmpty(3);
+                    string syntaxTreeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(4);
+                    string syntaxTreeModTextFileName = parInputParametersChecker.GetTextFileOrEmpty(5);
+                    OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(tokenTextFileName, 
+                        symbolTableTextFileName, syntaxTreeTextFileName, syntaxTreeModTextFileName);
+                    outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
+                    outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
+                    SyntacticalErrorAnalyzer syntacticalErrorAnalyser =
                         new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
-                    TryToBuildSyntaxTree(syntacticalErrorAnalyser, parInputParametersChecker,lexicalErrorAnalyzer.CanBuildSyntaxTree);
-                    break;
+                    Parser parser = TryToBuildSyntaxTree(syntacticalErrorAnalyser, syntaxTreeTextFileName, lexicalErrorAnalyzer.CanBuildSyntaxTree);
+                    if (parser != null)
+                    {
+                        TryToBuildSyntaxModTree(parser, lexicalErrorAnalyzer, outputTextFileWriter);
+                    }
 
+                }
             }
         }
-        public static void TryToBuildSyntaxTree(SyntacticalErrorAnalyzer parSyntacticalErrorAnalyzer,
-            InputParametersChecker parInputParametersChecker,
+        private static Parser TryToBuildSyntaxTree(SyntacticalErrorAnalyzer parSyntacticalErrorAnalyzer,
+            string syntaxTreeTextFileName,
             bool parIsLexicalyCorrectExpression)
         {
             
@@ -39,9 +42,22 @@ namespace CommonWorks
             {
                 Parser parser = new Parser(parSyntacticalErrorAnalyzer);
                 parser.ParseExpression();
-                string syntaxTreeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(4);
                 OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(syntaxTreeTextFileName);
                 outputTextFileWriter.WriteAbstractSyntaxTreeTextFile(parser);
+                return parser;
+            }
+            return null;
+        }
+        public static void TryToBuildSyntaxModTree(Parser parParser, LexicalErrorAnalyzer parLexicalErrorAnalyzer, OutputTextFileWriter parOutputTextFileWriter)
+        {
+            SyntacticalTreeModificator syntacticalTreeModificator = new SyntacticalTreeModificator(parParser.GetAbstractSyntaxTree(),
+                parLexicalErrorAnalyzer.SymbolTable);
+            syntacticalTreeModificator.RealizeSyntaxTreeModification();
+            SemanticErrorAnalyzer semanticErrorAnalyzer = new SemanticErrorAnalyzer(syntacticalTreeModificator.SyntaxTreeModified);
+            semanticErrorAnalyzer.CheckingDivisionByZero();
+            if (semanticErrorAnalyzer.CanWriteSyntaxTreeModFileText)
+            {
+                parOutputTextFileWriter.WriteSyntaxTreeMdifiedTextFile(syntacticalTreeModificator);
             }
         }
     }

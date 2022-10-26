@@ -20,11 +20,11 @@ namespace DevCompilersLW1
                 string expresion = File.ReadAllText(args[1].ToString());
                 if(inputParametersChecker.GetAnalysisRegime()!=-1)
                 {
-                    AnalysisRegimeWorker.RealizeLexicalSyntaxicalAnalysis(expresion, inputParametersChecker);
+                    AnalysisRegimeWorker.RealizeSemanticAnalysis(expresion, inputParametersChecker);
                 }
                 else
                 {
-                    Console.WriteLine("Incorrect input work's regime\nTapes Lex or lex for Lexical analysis\nSyn or sys for syntaxical analysis");
+                    Console.WriteLine("Incorrect input work's regime\nTapes SEM or sem for Semantical analysis");
                 }
             }
             else if (args.Length == 0)
@@ -33,10 +33,10 @@ namespace DevCompilersLW1
             }
             else
             {
-                Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe LEX or lex inputExpr.txt [Tokens.txt] [symbols.txt] for lexical analysis\n" +
-                    "programe.exe SYN or syn inputExpr.txt [Tokens.txt] [symbols.txt] [syntax_tree.txt] for syntaxical analysis\n");
+                Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe SEM or sem inputExpr.txt [Tokens.txt] [symbols.txt] [syntax_tree.txt] " +
+                    "[syntax_tree_mod.txt] for semantic analysis");
             }*/
-            string expression = "2+0.0/0.0-5+var[]"; //var1[i]*60+var2[f]
+            string expression = "var[]+4-var3[f]*60.3+2"; //var1[i]*60+var2[f] var[] + 4 - var3[f]*60.3+var3[F]
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
             if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expression))
             {
@@ -52,16 +52,15 @@ namespace DevCompilersLW1
                     
                     semantic.RealizeSyntaxTreeModification();
                   
-                    List<string> t = semantic.GetSemanticTreeTextList();
+                   /* List<string> t = semantic.GetSemanticTreeTextList();
                     foreach(string str in t)
                     {
                         Console.WriteLine(str);
-                    }
-                    SemanticErrorAnalyzer semanticErrorAnalyzer = new SemanticErrorAnalyzer(semantic._abstractSyntaxTree);
-                    semanticErrorAnalyzer.CheckingDivisionByZero();
+                    }*/
+                    //SemanticErrorAnalyzer semanticErrorAnalyzer = new SemanticErrorAnalyzer(semantic.SyntaxTreeModified);
+                    //semanticErrorAnalyzer.CheckingDivisionByZero();
                    
-                }
-                
+                }   
             }
         }
     }

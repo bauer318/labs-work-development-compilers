@@ -1,5 +1,6 @@
 ﻿using DevCompilersLW2;
 using DevCompilersLW3;
+using DevCompilersLW4;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,8 +13,9 @@ namespace CommonWorks
         private string _tokenTextFileName;
         private string _symbolTableTextFileName;
         private string _syntaxTreeTextFileName;
+        private string _syntaxTreeModTextFileName;
 
-        public OutputTextFileWriter(string parTokenTextFileName, string parSymbolTableTextFileName)
+        public OutputTextFileWriter(string parTokenTextFileName, string parSymbolTableTextFileName, string parSyntaxTreeTextFileName)
         {
             _tokenTextFileName = string.IsNullOrEmpty(parTokenTextFileName)? "Tokens.txt":parTokenTextFileName;
             _symbolTableTextFileName = string.IsNullOrEmpty(parSymbolTableTextFileName)? "symbols.txt" :parSymbolTableTextFileName;
@@ -21,6 +23,13 @@ namespace CommonWorks
         public OutputTextFileWriter(string parSyntaxTreeTextFileName)
         {
             _syntaxTreeTextFileName = string.IsNullOrEmpty(parSyntaxTreeTextFileName)? "syntax_tree.txt" : parSyntaxTreeTextFileName;
+        }
+        public OutputTextFileWriter(string parTokenTextFileName, 
+            string parSymbolTableTextFileName, 
+            string parSyntaxTreeTextFileName,
+            string parSyntaxTreeModTextFileName) : this(parTokenTextFileName, parSymbolTableTextFileName,parSyntaxTreeTextFileName)
+        {
+            _syntaxTreeModTextFileName = string.IsNullOrEmpty(parSyntaxTreeModTextFileName) ? "syntax_tree_mod.txt" : parSyntaxTreeModTextFileName;   
         }
         public void WriteTokenTextFile(LexicalErrorAnalyzer parTokenizer)
         {
@@ -49,6 +58,16 @@ namespace CommonWorks
             {
                 foreach(string nodeText in parParser.GetSyntaxTreeNodeTextArray())
                 writer.WriteLine(nodeText);
+            }
+        }
+        public void WriteSyntaxTreeMdifiedTextFile(SyntacticalTreeModificator parSyntacticalTreeModificator)
+        {
+            using(StreamWriter writer = new StreamWriter(_syntaxTreeModTextFileName))
+            {
+                foreach(string nodeText in parSyntacticalTreeModificator.GetSemanticTreeTextList())
+                {
+                    writer.WriteLine(nodeText);
+                }
             }
         }
     }
