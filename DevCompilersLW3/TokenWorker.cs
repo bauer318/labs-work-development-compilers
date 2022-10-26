@@ -38,6 +38,19 @@ namespace DevCompilersLW3
             return result;
         }
         
+        public static bool IsTokenOperandEqualType(TokenType parLeftTokenType, TokenType parRightTokenType)
+        {
+            return (IsTokenOperandDecimalType(parLeftTokenType) && IsTokenOperandDecimalType(parRightTokenType)) ||
+                (IsTokenOperandIntegerType(parLeftTokenType) && IsTokenOperandIntegerType(parRightTokenType));
+        }
+        public static bool IsTokenOperandDecimalType(TokenType parTokenType)
+        {
+            return parTokenType == TokenType.CORRECT_DECIMAL_CONSTANT || parTokenType == TokenType.CORRECT_DECIMAL_IDENTIFICATOR;
+        }
+        public static bool IsTokenOperandIntegerType(TokenType parTokenType)
+        {
+            return parTokenType == TokenType.INTEGER_CONSTANT || parTokenType == TokenType.CORRECT_INTEGER_IDENTIFICATOR;
+        }
         public static bool IsTokenTypeOperator(Token parToken)
         {
             TokenType tokenType = parToken.TokenType;

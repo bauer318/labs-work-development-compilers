@@ -84,6 +84,8 @@ namespace DevCompilersLW2
                 case TokenType.CORRECT_DECIMAL_IDENTIFICATOR:
                 case TokenType.CORRECT_INTEGER_IDENTIFICATOR:
                     return "<id, " + parToken.AttributeValue + ">";
+                case TokenType.INT_2_FLOAT:
+                    return "Int2Float";
             }
             return "";
         }

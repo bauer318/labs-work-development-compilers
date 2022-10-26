@@ -107,6 +107,13 @@ namespace DevCompilersLW3
             TraverserPreOrder("","" ,AbstractSyntaxTree);
             return _astTexts;
         }
+        public void PrintTokenNode()
+        {
+            foreach(TokenNode<Token> t in _tokenNodes)
+            {
+                Console.WriteLine(t.LeftNode.Value.Lexeme+" "+t.Value.Lexeme+" "+t.RightNode.Value.Lexeme);
+            }
+        }
         
         private TokenNode<Token> BuildTreeRecursive(TokenNode<Token> parNode)
         {

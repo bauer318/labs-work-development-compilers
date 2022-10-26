@@ -36,7 +36,7 @@ namespace DevCompilersLW1
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe LEX or lex inputExpr.txt [Tokens.txt] [symbols.txt] for lexical analysis\n" +
                     "programe.exe SYN or syn inputExpr.txt [Tokens.txt] [symbols.txt] [syntax_tree.txt] for syntaxical analysis\n");
             }*/
-            string expression = "var1[i]+var2[f]*(60.3+var2[f])/var1[i]";
+            string expression = "var1[i]+var2[f]*60";
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
             if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expression))
             {
@@ -49,13 +49,26 @@ namespace DevCompilersLW1
                 {
                     Parser parser = new Parser(syntactical);
                     parser.ParseExpression();
+                    //parser.PrintTokenNode();
                     //if(parser.is)
                     SemanticErrorAnalyzer semantic = new SemanticErrorAnalyzer(parser.GetAbstractSyntaxTree(), syntactical.SymbolTable);
+                    //semantic.GoToLast(parser.GetAbstractSyntaxTree());
+                    //semantic.Create();
+                    /*List<string> t = semantic.GetSemanticTreeTextList();
+                    foreach (string str in t)
+                    {
+                        Console.WriteLine(str);
+                    }*/
+                    Console.WriteLine();
+                    semantic.CompareOut();
+                    //semantic.Print2();
+                    //semantic.CompareOut();
                     List<string> t = semantic.GetSemanticTreeTextList();
                     foreach(string str in t)
                     {
                         Console.WriteLine(str);
                     }
+                    //semantic.Run(parser.GetAbstractSyntaxTree());
                 }
                 
             }
