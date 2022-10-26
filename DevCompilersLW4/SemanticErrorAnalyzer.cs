@@ -26,8 +26,8 @@ namespace DevCompilersLW4
         }
         public List<string> GetSemanticTreeTextList()
         {
-            Create();
-            TraverserPreOrder("", "", G);
+            //Create();
+            TraverserPreOrder("", "", _abstractSyntaxTree);
             return _astTexts;
         }
         private void Create()
@@ -82,35 +82,40 @@ namespace DevCompilersLW4
             TokenNode<Token> nextComp = null;
              if(TokenNode<Token>.IsLeafToken(parLeftNode) && TokenNode<Token>.IsLeafToken(parRightNode))
             {
-                TokenNode<Token> currentTokenNode = parLeftNode;
+                
+                TokenNode<Token> convertedTokenNode = null;
                 if (!TokenWorker.IsTokenOperandEqualType(parLeftNode.Value.TokenType,parRightNode.Value.TokenType))
                 {
-                    
+                    Console.WriteLine("Dif type " + parLeftNode.Value.TokenType + " and " + parRightNode.Value.TokenType);
                     if (TokenWorker.IsTokenOperandDecimalType(parLeftNode.Value.TokenType))
                     {
                         //Int2Float for right node
-
+                        TokenNode<Token> temp = parRightNode.Clone() as TokenNode<Token>;
+                        convertedTokenNode = new TokenNode<Token>(new Token(temp.Value.TokenType, temp.Value.Lexeme, temp.Value.AttributeValue));
                         parRightNode.Value.TokenType = parLeftNode.Value.TokenType;
-                        currentTokenNode = parRightNode;
-                        parRightNode.Value = new Token(TokenType.INT_2_FLOAT, parRightNode.Value.Lexeme);
-                        return currentTokenNode;
-                        //parRightNode = new TokenNode<Token>(new Token(TokenType.INT_2_FLOAT, parRightNode.Value.Lexeme),currentTokenNode);
-                        //parRightNode.LeftNode = currentTokenNode;
+                        parRightNode.Value = new Token(TokenType.INT_2_FLOAT, convertedTokenNode.Value.Lexeme,convertedTokenNode.Value.AttributeValue);
+                        parRightNode.ConvertedTokenNode = convertedTokenNode;
+                        return parRightNode;
+                        
                         
                     }
                     else
                     {
                         //Int2Float for left node
+                        TokenNode<Token> temp = parLeftNode.Clone() as TokenNode<Token>;
+                        convertedTokenNode = new TokenNode<Token>(new Token(temp.Value.TokenType, temp.Value.Lexeme,temp.Value.AttributeValue));
                         parLeftNode.Value.TokenType = parRightNode.Value.TokenType;
-                        currentTokenNode = parLeftNode;
-                        parLeftNode.Value = new Token(TokenType.INT_2_FLOAT, parLeftNode.Value.Lexeme);
-                        //parLeftNode.LeftNode =new TokenNode<Token>(new Token(currentTokenNode.Value.TokenType,currentTokenNode.Value.Lexeme));
-                        //parLeftNode.RightNode = currentTokenNode;
-                        return currentTokenNode;
-                        //parLeftNode.LeftNode = currentTokenNode;
+                        parLeftNode.Value = new Token(TokenType.INT_2_FLOAT, convertedTokenNode.Value.Lexeme, convertedTokenNode.Value.AttributeValue);
+                        parLeftNode.ConvertedTokenNode = convertedTokenNode;
+                        return parLeftNode;       
                     }
                 }
-                //return currentTokenNode;
+                else
+                {
+                    //Console.WriteLine("Meme type " + parLeftNode.Value.TokenType + " and " + parRightNode.Value.TokenType);
+                    return parRightNode;
+                }
+                
             }
             else
             {
@@ -186,6 +191,12 @@ namespace DevCompilersLW4
                 string paddingForBoth = paddingBuilder.ToString();
                 string pointerForRight = " |---";
                 string pointerForLeft = " |---";
+                if (parAbstractSyntaxTree.Value.TokenType == TokenType.INT_2_FLOAT)
+                {
+                    parPointer = "     |---";
+                    _astTexts.Add(paddingForBoth.Remove(0,5)+ parPointer + 
+                    parAbstractSyntaxTree.ConvertedTokenNode.Value.TokenType.GetTokenNodeDescription(parAbstractSyntaxTree.ConvertedTokenNode.Value));
+                }
                 TraverserPreOrder(paddingForBoth, pointerForLeft, parAbstractSyntaxTree.LeftNode);
                 TraverserPreOrder(paddingForBoth, pointerForRight, parAbstractSyntaxTree.RightNode); ;
             }
