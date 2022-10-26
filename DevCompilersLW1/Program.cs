@@ -36,41 +36,30 @@ namespace DevCompilersLW1
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe LEX or lex inputExpr.txt [Tokens.txt] [symbols.txt] for lexical analysis\n" +
                     "programe.exe SYN or syn inputExpr.txt [Tokens.txt] [symbols.txt] [syntax_tree.txt] for syntaxical analysis\n");
             }*/
-            string expression = "var2[i]+0"; //var1[i]*60+var2[f]
+            string expression = "2+0/2-5+4"; //var1[i]*60+var2[f]
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
             if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expression))
             {
-               /* for(int i=0; i < lexicalErrorAnalyzer.Tokens.Count; i++)
-                {
-                    Console.WriteLine(lexicalErrorAnalyzer.Tokens[i].TokenType);
-                }*/
                SyntacticalErrorAnalyzer syntactical = new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
                 if (syntactical.IsSyntaxicalyCorrectExpression() && lexicalErrorAnalyzer.CanBuildSyntaxTree)
                 {
                     Parser parser = new Parser(syntactical);
                     parser.ParseExpression();
-                    //parser.PrintTokenNode();
-                    //if(parser.is)
+                    
                     SyntacticalTreeModificator semantic = new SyntacticalTreeModificator(parser.GetAbstractSyntaxTree(), syntactical.SymbolTable);
-                    //semantic.GoToLast(parser.GetAbstractSyntaxTree());
-                    //semantic.Create();
-                    /*List<string> t = semantic.GetSemanticTreeTextList();
-                    foreach (string str in t)
-                    {
-                        Console.WriteLine(str);
-                    }*/
+                    
                     Console.WriteLine();
-                    //semantic.RealizeVerificationDifferentType();
+                    
                     semantic.RealizeSyntaxTreeModification();
-                    //semantic.Print2();
-                    //semantic.RealizeSyntaxTreeModification();
+                  
                     List<string> t = semantic.GetSemanticTreeTextList();
                     foreach(string str in t)
                     {
                         Console.WriteLine(str);
                     }
-                    //semantic.PrintListToken();
-                    //semantic.Run(parser.GetAbstractSyntaxTree());
+                    SemanticErrorAnalyzer semanticErrorAnalyzer = new SemanticErrorAnalyzer(semantic._abstractSyntaxTree);
+                    semanticErrorAnalyzer.CheckingDivisionByZero();
+                   
                 }
                 
             }

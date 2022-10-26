@@ -7,26 +7,7 @@ namespace DevCompilersLW3
 {
     public static class TokenWorker
     {
-        public static bool IsCorrectEqualSignPosition(int parCurrentTokenIndex,List<Token> parTokens)
-        {
-            int res = 0;
-            for(var i = parCurrentTokenIndex-1; i >= 0; i--)
-            {
-                if(parTokens[i].TokenType==TokenType.CORRECT_DEFAULT_IDENTIFICATOR || parTokens[i].TokenType == TokenType.OPEN_PARENTHESIS)
-                {
-                    if(parTokens[i].TokenType == TokenType.CORRECT_DEFAULT_IDENTIFICATOR)
-                    {
-                        res++;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return res == 1;
-        }
-
+        
         public static bool IsTokenTypeOperatorLeft(int parCurrentTokenIndex, List<Token> parTokens)
         {
             bool result = false;

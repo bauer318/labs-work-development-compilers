@@ -29,7 +29,7 @@ namespace DevCompilersLW4
             }
         }
    
-        public void RealizeVerificationDifferentType()
+        private void RealizeVerificationDifferentType()
         {
             countDifferentsOperandType = 0;
             CheckDifferentOperandType(_abstractSyntaxTree.LeftNode, _abstractSyntaxTree.RightNode);
