@@ -14,7 +14,8 @@ namespace DevCompilersLW4
         private int whiteSpaceCount = 0;
         public TokenNode<Token> G { get; set; }
         private List<TokenNode<Token>> l = new List<TokenNode<Token>>();
-        int t = 0;
+        private int t = 0;
+        private int countDifferentsOperandType = 0;
         public SemanticErrorAnalyzer(TokenNode<Token> parAbstractSyntaxTree, SymbolTable parSymbolTable)
         {
             _abstractSyntaxTree = parAbstractSyntaxTree;
@@ -66,32 +67,61 @@ namespace DevCompilersLW4
             }
             Console.WriteLine("-----------------------");
         }
-        public void PrintType()
-        {
-            
-        }
         public void CompareOut()
         {
-            Compare(_abstractSyntaxTree.LeftNode, _abstractSyntaxTree.RightNode);
+            PrintVerifiResult();
+            if (countDifferentsOperandType > 0)
+            {
+                Compare(_abstractSyntaxTree.LeftNode, _abstractSyntaxTree.RightNode);
+                CompareOut();
+            }
         }
        
-        
+        public void PrintVerifiResult()
+        {
+            countDifferentsOperandType = 0;
+            Verifie(_abstractSyntaxTree.LeftNode, _abstractSyntaxTree.RightNode);
+            //Console.WriteLine("Count dif " + countDifferentsOperandType);
+        }
+        private TokenNode<Token> Verifie(TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
+        {
+            TokenNode<Token> result = null;
+            if(TokenNode<Token>.IsLeafToken(parLeftNode) && TokenNode<Token>.IsLeafToken(parRightNode))
+            {
+                if(!TokenWorker.IsTokenOperandEqualType(parLeftNode.Value.TokenType, parRightNode.Value.TokenType))
+                {
+                    countDifferentsOperandType++;
+                }
+                return parLeftNode;
+            }
+            else
+            {
+                if (TokenNode<Token>.IsLeafToken(parLeftNode))
+                {
+                    result = Verifie(parLeftNode, Verifie(parRightNode.LeftNode, parRightNode.RightNode));
+                }
+                else if(TokenNode<Token>.IsLeafToken(parRightNode))
+                {
+                    result = Verifie(parRightNode, Verifie(parLeftNode.LeftNode, parLeftNode.RightNode));
+                }
+            }
+            return result;
+        }
         public TokenNode<Token> Compare(TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
         { 
             t++;
             TokenNode<Token> nextComp = null;
              if(TokenNode<Token>.IsLeafToken(parLeftNode) && TokenNode<Token>.IsLeafToken(parRightNode))
             {
-                
-                TokenNode<Token> convertedTokenNode = null;
+                Console.WriteLine(t + " Enter left " + parLeftNode.Value.Lexeme + " right " + parRightNode.Value.Lexeme);
                 if (!TokenWorker.IsTokenOperandEqualType(parLeftNode.Value.TokenType,parRightNode.Value.TokenType))
                 {
-                    Console.WriteLine("Dif type " + parLeftNode.Value.TokenType + " and " + parRightNode.Value.TokenType);
+                    Console.WriteLine(t+" Dif type " + parLeftNode.Value.TokenType + " and " + parRightNode.Value.TokenType);
                     if (TokenWorker.IsTokenOperandDecimalType(parLeftNode.Value.TokenType))
                     {
                         //Int2Float for right node
                         TokenNode<Token> temp = parRightNode.Clone() as TokenNode<Token>;
-                        convertedTokenNode = new TokenNode<Token>(new Token(temp.Value.TokenType, temp.Value.Lexeme, temp.Value.AttributeValue));
+                        TokenNode<Token> convertedTokenNode = new TokenNode<Token>(new Token(temp.Value.TokenType, temp.Value.Lexeme, temp.Value.AttributeValue));
                         parRightNode.Value.TokenType = parLeftNode.Value.TokenType;
                         parRightNode.Value = new Token(TokenType.INT_2_FLOAT, convertedTokenNode.Value.Lexeme,convertedTokenNode.Value.AttributeValue);
                         parRightNode.ConvertedTokenNode = convertedTokenNode;
@@ -103,7 +133,7 @@ namespace DevCompilersLW4
                     {
                         //Int2Float for left node
                         TokenNode<Token> temp = parLeftNode.Clone() as TokenNode<Token>;
-                        convertedTokenNode = new TokenNode<Token>(new Token(temp.Value.TokenType, temp.Value.Lexeme,temp.Value.AttributeValue));
+                        TokenNode<Token> convertedTokenNode = new TokenNode<Token>(new Token(temp.Value.TokenType, temp.Value.Lexeme,temp.Value.AttributeValue));
                         parLeftNode.Value.TokenType = parRightNode.Value.TokenType;
                         parLeftNode.Value = new Token(TokenType.INT_2_FLOAT, convertedTokenNode.Value.Lexeme, convertedTokenNode.Value.AttributeValue);
                         parLeftNode.ConvertedTokenNode = convertedTokenNode;
@@ -112,8 +142,8 @@ namespace DevCompilersLW4
                 }
                 else
                 {
-                    //Console.WriteLine("Meme type " + parLeftNode.Value.TokenType + " and " + parRightNode.Value.TokenType);
-                    return parRightNode;
+                    Console.WriteLine(t+" Meme type " + parLeftNode.Value.TokenType + " and " + parRightNode.Value.TokenType);
+                    return parLeftNode;
                 }
                 
             }
@@ -125,52 +155,10 @@ namespace DevCompilersLW4
                 }
                 else if (TokenNode<Token>.IsLeafToken(parRightNode))
                 {
-                    nextComp =Compare(parRightNode, Compare(parLeftNode.LeftNode, parLeftNode.RightNode));
+                    nextComp =Compare(Compare(parLeftNode.LeftNode, parLeftNode.RightNode), parRightNode);
                 }
             }
             return nextComp;
-        }
-        //private TokenType()
-        private TokenType TP(TokenNode<Token> parNode)
-        {
-            if (TokenNode<Token>.IsLeafToken(parNode))
-            {
-                return parNode.Value.TokenType;
-            }
-            return TokenType.INVALID;
-        }
-        public void GoToLast(TokenNode<Token> parNode)
-        {
-            t++;
-            Console.Write(t + " " + parNode.Value.Lexeme);
-            if (parNode.LeftNode != null)
-            {
-                Console.Write(" " + parNode.LeftNode.Value.Lexeme);
-            }
-            if (parNode.RightNode != null)
-            {
-                Console.Write(" " + parNode.RightNode.Value.Lexeme);
-            }
-            Console.WriteLine();
-            if (!IsLastFirstNode(parNode))
-            {
-                if (!TokenNode<Token>.IsLeafToken(parNode.LeftNode))
-                {
-                    GoToLast(parNode.LeftNode);
-                }
-                if (!TokenNode<Token>.IsLeafToken(parNode.RightNode))
-                {
-                    GoToLast(parNode.RightNode);
-                }
-            }
-            
-        }
-      
-        private bool IsLastFirstNode(TokenNode<Token> parNode)
-        {
-            
-            return TokenWorker.IsOperand(parNode.LeftNode.Value.TokenType) &&
-                TokenWorker.IsOperand(parNode.RightNode.Value.TokenType);
         }
         
         public void Run(TokenNode<Token> root)
