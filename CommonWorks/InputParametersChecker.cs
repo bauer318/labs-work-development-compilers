@@ -80,8 +80,12 @@ namespace CommonWorks
         {
             switch (_args[0].ToString().ToLower())
             {
-                case "sem":
+                case "lex":
                     return 0;
+                case "syn":
+                    return 1;
+                case "sem":
+                    return 2;
                 default:
                     return -1;
             }

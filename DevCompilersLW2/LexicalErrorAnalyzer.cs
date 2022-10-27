@@ -25,7 +25,7 @@ namespace DevCompilersLW2
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_DECIMAL_CONSTANT, "^[0-9.]*\\.*\\..*\\..*[0-9.]*$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_CONSTANT, "^\\d+\\.{1}\\d+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_DEFAULT_IDENTIFICATOR, "^[0-9]+[_a-zA-Z0-9]+(\\[i\\])*(\\[f\\])*$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DEFAULT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*\\[\\]$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DEFAULT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*(\\[\\])*$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_INTEGER_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*\\[i\\]$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*\\[f\\]$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_TYPE_IDENTIFICATOR, 
@@ -149,7 +149,8 @@ namespace DevCompilersLW2
                                 TokenType predTokenType = SymbolTableWorker.GetVariableTypeById(predTokenId);
                                 if (predTokenType != match.TokenType)
                                 {
-                                    Console.WriteLine("Семантическая ошибка! Разные типы для идентификатора " + currentText + " на позиции " + parExpresion.IndexOf(currentText));
+                                    Console.WriteLine("Лексическая ошибка! Разные типы для идентификаторов " + SymbolTableWorker.GetVariableNameById(predTokenId) +
+                                        " и " + currentText + " на позиции " + parExpresion.IndexOf(currentText));
                                     result = false;
                                 }
                             }
