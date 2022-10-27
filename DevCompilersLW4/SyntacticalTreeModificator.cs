@@ -21,12 +21,12 @@ namespace DevCompilersLW4
         
         public void RealizeSyntaxTreeModification()
         {
-            RealizeVerificationDifferentType();
-            if (countDifferentsOperandType > 0)
-            {
+            //RealizeVerificationDifferentType();
+            /*if (countDifferentsOperandType > 0)
+            {*/
                 ModifieSyntaxtTree(SyntaxTreeModified.LeftNode, SyntaxTreeModified.RightNode);
-                RealizeSyntaxTreeModification();
-            }
+                //RealizeSyntaxTreeModification();
+            /*}*/
         }
    
         private void RealizeVerificationDifferentType()
@@ -108,7 +108,7 @@ namespace DevCompilersLW4
                 }
                 else
                 {
-                    return parLeftNode;
+                    return parRightNode;
                 }
                 
             }

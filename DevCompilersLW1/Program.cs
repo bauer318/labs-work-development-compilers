@@ -20,7 +20,7 @@ namespace DevCompilersLW1
                 string expresion = File.ReadAllText(args[1].ToString());
                 if(inputParametersChecker.GetAnalysisRegime()!=-1)
                 {
-                    AnalysisRegimeWorker.RealizeSemanticAnalysis(expresion, inputParametersChecker);
+                    AnalysisRegimeWorker.RealizeLexicalSyntacticalSemanticAnalysis(expresion, inputParametersChecker);
                 }
                 else
                 {

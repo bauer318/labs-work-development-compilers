@@ -57,14 +57,14 @@ namespace DevCompilersLW2
                 case TokenType.CLOSE_SQUARE_BRAKET:
                     return "Семантическая ошибка! Пустые квадратный(е) скобки для типов " + "\"" + parCurrentLexeme + "\"" + " на позиции " + currentPosition;
                 case TokenType.INCORRECT_TYPE_IDENTIFICATOR:
-                    return "Семантическая ошибка! Непральный тип для идентификатора <<" + parCurrentLexeme + ">> на позиции " + currentPosition;
+                    return "Лексическая ошибка! Непральный тип для идентификатора <<" + parCurrentLexeme + ">> на позиции " + currentPosition;
                 case TokenType.IDENTIFICATOR_WITHOUT_TYPE:
-                    return "Семантическая ошибка! Не указан тип для идентификатора <<" + parCurrentLexeme + ">> на позиции " + currentPosition;
+                    return "Лексическая ошибка! Не указан тип для идентификатора <<" + parCurrentLexeme + ">> на позиции " + currentPosition;
                 default:
                     if (parCurrentLexeme.Length == 1)
                         return "Лексическая ошибка! Недопустимый символ " + "\"" + parCurrentLexeme + "\"" + " на позиции " + currentPosition;
                     else
-                        return "Семантическая ошибка! Неправильный идентификатор или тпи переменной <<" + parCurrentLexeme+">> на позиции "+currentPosition;
+                        return "Синтакчическая ошибка! Неправильный идентификатор или тпи переменной <<" + parCurrentLexeme+">> на позиции "+currentPosition;
             }
         }
         public static string GetTokenNodeDescription(this TokenType parTokenType,Token parToken)

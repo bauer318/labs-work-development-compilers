@@ -7,38 +7,48 @@ namespace CommonWorks
 {
     public class AnalysisRegimeWorker
     {
-        public static void RealizeSemanticAnalysis(string parExpression, InputParametersChecker parInputParametersChecker)
+        public static void RealizeLexicalSyntacticalSemanticAnalysis(string parExpression, InputParametersChecker parInputParametersChecker)
         {
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
+            string tokenTextFileName = parInputParametersChecker.GetTextFileOrEmpty(2);
+            string symbolTableTextFileName = parInputParametersChecker.GetTextFileOrEmpty(3);
+            string syntaxTreeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(4);
+            string syntaxTreeModTextFileName = parInputParametersChecker.GetTextFileOrEmpty(5);
+            OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(tokenTextFileName,
+                        symbolTableTextFileName, syntaxTreeTextFileName, syntaxTreeModTextFileName);
+            Parser parser = null;
+            SyntacticalErrorAnalyzer syntacticalErrorAnalyser = null;
             switch (parInputParametersChecker.GetAnalysisRegime())
             {
                 case 0:
+                    if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression))
+                    {
+                        outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
+                        outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
+                    }
                     break;
-                    
-            }
-            if (parInputParametersChecker.GetAnalysisRegime() == 0)
-            {
-                if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression))
-                {
-                    string tokenTextFileName = parInputParametersChecker.GetTextFileOrEmpty(2);
-                    string symbolTableTextFileName = parInputParametersChecker.GetTextFileOrEmpty(3);
-                    string syntaxTreeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(4);
-                    string syntaxTreeModTextFileName = parInputParametersChecker.GetTextFileOrEmpty(5);
-                    OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(tokenTextFileName, 
-                        symbolTableTextFileName, syntaxTreeTextFileName, syntaxTreeModTextFileName);
-                    outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
-                    outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
-                    SyntacticalErrorAnalyzer syntacticalErrorAnalyser =
-                        new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
-                    Parser parser = TryToBuildSyntaxTree(syntacticalErrorAnalyser, syntaxTreeTextFileName, lexicalErrorAnalyzer.CanBuildSyntaxTree);
+                case 1:
+                    bool go =lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression);
+                    syntacticalErrorAnalyser = new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
+                    if (go)
+                    {
+                        parser = TryToBuildSyntaxTree(syntacticalErrorAnalyser, syntaxTreeTextFileName, lexicalErrorAnalyzer.CanBuildSyntaxTree);
+                    }
+                    break;
+                case 2:
+                    lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression);
+                    syntacticalErrorAnalyser = new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
+                    parser = TryToBuildSyntaxTree(syntacticalErrorAnalyser, syntaxTreeTextFileName, lexicalErrorAnalyzer.CanBuildSyntaxTree);
                     if (parser != null)
                     {
+                        outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
+                        outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
                         TryToBuildSyntaxModTree(parser, lexicalErrorAnalyzer, outputTextFileWriter);
                     }
+                    break;
 
-                }
             }
-        }
+          }
         private static Parser TryToBuildSyntaxTree(SyntacticalErrorAnalyzer parSyntacticalErrorAnalyzer,
             string syntaxTreeTextFileName,
             bool parIsLexicalyCorrectExpression)

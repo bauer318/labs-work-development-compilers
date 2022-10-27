@@ -25,11 +25,11 @@ namespace DevCompilersLW2
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_DECIMAL_CONSTANT, "^[0-9.]*\\.*\\..*\\..*[0-9.]*$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_CONSTANT, "^\\d+\\.{1}\\d+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_DEFAULT_IDENTIFICATOR, "^[0-9]+[_a-zA-Z0-9]+(\\[i\\])*(\\[f\\])*$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DEFAULT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*(\\[\\])*$"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DEFAULT_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_INTEGER_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*\\[i\\]$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CORRECT_DECIMAL_IDENTIFICATOR, "^[_a-zA-Z]+[0-9]*\\[f\\]$"));
-            _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_TYPE_IDENTIFICATOR, 
-                "(^([_a-zA-Z]+[0-9]*)(\\[+[^i]+[_a-zA-Z0-9]*\\]+$|\\[+[^f]+[_a-zA-Z0-9]*\\]+|\\[+\\]+)$)"));
+            _tokenDefinitions.Add(new TokenDefinition(TokenType.INCORRECT_TYPE_IDENTIFICATOR,
+                "(^([_a-zA-Z]+[0-9]*)(\\[+[^i]+[_a-zA-Z0-9]*\\]+$|\\[+[^f]+[_a-zA-Z0-9]*\\]+|\\[+\\]+)$)|^\\[i\\]$|^\\[f\\]$|^\\[\\]$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.OPEN_SQUARE_BRAKET, "^\\[+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.CLOSE_SQUARE_BRAKET, "^\\]+$"));
             _tokenDefinitions.Add(new TokenDefinition(TokenType.IDENTIFICATOR_WITHOUT_TYPE, "^[_a-zA-Z]+[0-9]*$"));
@@ -38,7 +38,8 @@ namespace DevCompilersLW2
         }
         public string[] SplitExpresion(string parExpresion)
         {
-            return PutWhitespace(RemoveAllWhitespace(parExpresion)).Split(new char[] { ' ' });
+            return PutWhitespace(parExpresion).Split(new char[] { ' ' });
+            //return parExpresion.Split(new char[] { ' ' });
         }
         public string RemoveAllWhitespace(string parExpresion)
         {
@@ -52,6 +53,7 @@ namespace DevCompilersLW2
                 string currentText = parExpresion.ElementAt(i).ToString();
                 if (IsExpresionSeparator(currentText))
                 {
+                    //continue;
                     result += " " + currentText + " ";
                 }
                 else
