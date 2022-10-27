@@ -71,6 +71,11 @@ namespace DevCompilersLW4
                         {
                             CheckDivisionByZero(parRoot.LeftNode);
                         }
+                        else
+                        {
+                            CheckDivisionByZero(parRoot.RightNode);
+                            CheckDivisionByZero(parRoot.LeftNode);
+                        }
                     }
                 }
             }

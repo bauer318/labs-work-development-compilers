@@ -55,6 +55,24 @@ namespace DevCompilersLW4
                 {
                     result = CheckDifferentOperandType(parRightNode, CheckDifferentOperandType(parLeftNode.LeftNode, parLeftNode.RightNode));
                 }
+                /*
+                 Case when tree is composed only by operator like <->
+                                                                   |----<*>
+                                                                   |----</>
+                 But for each next operator there is at least one operand like
+                                                                   <->
+                                                                    |----<*>
+                                                                          |----<id,5>
+                                                                          |----<id,4>
+                                                                    |----<->
+                                                                          |----<2>
+                                                                          |----<2.8>
+                 */
+                else 
+                {
+                    result = CheckDifferentOperandType(CheckDifferentOperandType(parRightNode.LeftNode, parRightNode.RightNode),
+                        CheckDifferentOperandType(parLeftNode.LeftNode, parLeftNode.RightNode));
+                }
             }
             return result;
         }
@@ -103,6 +121,25 @@ namespace DevCompilersLW4
                 else if (TokenNode<Token>.IsLeafToken(parRightNode))
                 {
                     nextComp =ModifieSyntaxtTree(ModifieSyntaxtTree(parLeftNode.LeftNode, parLeftNode.RightNode), parRightNode);
+                }
+                /*
+                 Case when tree is composed only by operator like <->
+                                                                   |----<*>
+                                                                   |----</>
+                 But for each next operator there is at least one operand like
+                                                                   <->
+                                                                    |----<*>
+                                                                          |----<id,5>
+                                                                          |----<id,4>
+                                                                    |----<->
+                                                                          |----<2>
+                                                                          |----<2.8>
+                 */
+                else
+                { 
+                    nextComp = ModifieSyntaxtTree(ModifieSyntaxtTree(parLeftNode.LeftNode, parLeftNode.RightNode), 
+                        ModifieSyntaxtTree(parRightNode.LeftNode, parRightNode.RightNode));
+                    
                 }
             }
             return nextComp;

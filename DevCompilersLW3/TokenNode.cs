@@ -26,8 +26,9 @@ namespace DevCompilersLW3
         }
         public static bool IsLeafToken(TokenNode<Token> parToken)
         {
-            return (parToken.LeftNode == null && parToken.RightNode == null)|
-                IsConvertedToken(parToken);
+                return (parToken.LeftNode == null && parToken.RightNode == null) |
+                    IsConvertedToken(parToken);
+            
         }
         public static bool IsConvertedToken(TokenNode<Token> parTokenNode)
         {

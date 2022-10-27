@@ -14,7 +14,7 @@ namespace DevCompilersLW1
     {
         static void Main(string[] args)
         {
-            /*InputParametersChecker inputParametersChecker = new InputParametersChecker(args);
+            InputParametersChecker inputParametersChecker = new InputParametersChecker(args);
             if (inputParametersChecker.CheckInputData())
             {
                 string expresion = File.ReadAllText(args[1].ToString());
@@ -35,33 +35,8 @@ namespace DevCompilersLW1
             {
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe SEM or sem inputExpr.txt [Tokens.txt] [symbols.txt] [syntax_tree.txt] " +
                     "[syntax_tree_mod.txt] for semantic analysis");
-            }*/
-            string expression = "var[]+4-var3[f]*60.3+2"; //var1[i]*60+var2[f] var[] + 4 - var3[f]*60.3+var3[F]
-            LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
-            if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(expression))
-            {
-               SyntacticalErrorAnalyzer syntactical = new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
-                if (syntactical.IsSyntaxicalyCorrectExpression() && lexicalErrorAnalyzer.CanBuildSyntaxTree)
-                {
-                    Parser parser = new Parser(syntactical);
-                    parser.ParseExpression();
-                    
-                    SyntacticalTreeModificator semantic = new SyntacticalTreeModificator(parser.GetAbstractSyntaxTree(), syntactical.SymbolTable);
-                    
-                    Console.WriteLine();
-                    
-                    semantic.RealizeSyntaxTreeModification();
-                  
-                   /* List<string> t = semantic.GetSemanticTreeTextList();
-                    foreach(string str in t)
-                    {
-                        Console.WriteLine(str);
-                    }*/
-                    //SemanticErrorAnalyzer semanticErrorAnalyzer = new SemanticErrorAnalyzer(semantic.SyntaxTreeModified);
-                    //semanticErrorAnalyzer.CheckingDivisionByZero();
-                   
-                }   
             }
+            
         }
     }
 }
