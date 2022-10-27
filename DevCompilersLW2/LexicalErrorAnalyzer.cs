@@ -125,8 +125,15 @@ namespace DevCompilersLW2
                             attributeValue++;
                             tokenLexemes.Add(match.Lexeme);
                             attributeVariables.Add(new AttributeVariable(attributeValue, match.Lexeme));
+                            Tokens.Add(new Token(match.TokenType, match.Lexeme, attributeValue));
                         }
-                        Tokens.Add(new Token(match.TokenType, match.Lexeme, attributeValue));
+                        else
+                        {
+                            SymbolTable symbol = new SymbolTable(attributeVariables);
+                            var predId = symbol.GetVariableIdByName(match.Lexeme);
+                            Tokens.Add(new Token(match.TokenType, match.Lexeme, predId));
+                        }
+                        
                         break;
                     default:
                         Tokens.Add(new Token(match.TokenType, match.Lexeme));

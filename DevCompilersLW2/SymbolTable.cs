@@ -35,5 +35,16 @@ namespace DevCompilersLW2
             }
             return string.Empty;
         }
+        public int GetVariableIdByName(string parName)
+        {
+            for (var i = 0; i < _attributeVariables.Count; i++)
+            {
+                if (_attributeVariables[i].Name.Equals(parName))
+                {
+                    return _attributeVariables[i].Id;
+                }
+            }
+            return -1;
+        }
     }
 }
