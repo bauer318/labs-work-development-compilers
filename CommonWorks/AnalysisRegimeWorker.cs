@@ -10,6 +10,12 @@ namespace CommonWorks
         public static void RealizeSemanticAnalysis(string parExpression, InputParametersChecker parInputParametersChecker)
         {
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
+            switch (parInputParametersChecker.GetAnalysisRegime())
+            {
+                case 0:
+                    break;
+                    
+            }
             if (parInputParametersChecker.GetAnalysisRegime() == 0)
             {
                 if (lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression))
