@@ -20,14 +20,14 @@ namespace DevCompilersLW4
         }
         private bool IsTokenConstantZero(TokenNode<Token> parTokenNode)
         {
-            if(parTokenNode.Value.TokenType==TokenType.INTEGER_CONSTANT ||
+            if (parTokenNode.Value.TokenType == TokenType.INTEGER_CONSTANT ||
                 parTokenNode.Value.TokenType == TokenType.CORRECT_DECIMAL_CONSTANT)
             {
                 return IsLexemeConstantZero(parTokenNode.Value.Lexeme);
             }
-            if(parTokenNode.Value.TokenType == TokenType.INT_2_FLOAT)
+            if (parTokenNode.Value.TokenType == TokenType.INT_2_FLOAT)
             {
-                TokenNode<Token> convertedTokenNode = parTokenNode.ConvertedTokenNode;
+                TokenNode<Token> convertedTokenNode = parTokenNode.LeftNode;
                 return IsLexemeConstantZero(convertedTokenNode.Value.Lexeme);
             }
             return false;

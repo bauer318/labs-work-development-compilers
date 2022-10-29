@@ -21,6 +21,7 @@ namespace DevCompilersLW3
         
         public static bool IsTokenOperandEqualType(TokenType parLeftTokenType, TokenType parRightTokenType)
         {
+            //Console.WriteLine(+parLeftTokenType + " and " + parRightTokenType);
             return (IsTokenOperandDecimalType(parLeftTokenType) && IsTokenOperandDecimalType(parRightTokenType)) ||
                 (IsTokenOperandIntegerType(parLeftTokenType) && IsTokenOperandIntegerType(parRightTokenType));
         }
