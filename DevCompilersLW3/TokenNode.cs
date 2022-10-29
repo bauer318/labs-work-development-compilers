@@ -24,6 +24,13 @@ namespace DevCompilersLW3
             RightNode = null;
             ConvertedTokenNode = null;
         }
+        public TokenNode(Token parValue, TokenNode<Token> parLeftNode)
+        {
+            Value = parValue;
+            LeftNode = parLeftNode;
+            RightNode = null;
+            ConvertedTokenNode = null;
+        }
         public static bool IsLeafToken(TokenNode<Token> parToken)
         {
                 return (parToken.LeftNode == null && parToken.RightNode == null) |

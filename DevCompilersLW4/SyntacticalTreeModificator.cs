@@ -12,137 +12,88 @@ namespace DevCompilersLW4
         private SymbolTable _symbolTable;
         private List<string> _astTexts = new List<string>();
         private int whiteSpaceCount = 0;
-        private int countDifferentsOperandType = 0;
         public SyntacticalTreeModificator(TokenNode<Token> parAbstractSyntaxTree, SymbolTable parSymbolTable)
         {
             SyntaxTreeModified = parAbstractSyntaxTree;
             _symbolTable = parSymbolTable;
         }
-        
+
+        private TokenType GetTokenNodeType(TokenNode<Token> parNode)
+        {
+            if (TokenNode<Token>.IsLeafToken(parNode))
+            {
+                return parNode.Value.TokenType;
+            }
+            else
+            {
+                return GetOperatorResultType(parNode);
+            }
+            
+        }
+        private TokenType GetOperatorResultType(TokenNode<Token> parNode)
+        {
+            TokenNode<Token> leftNode = parNode.LeftNode;
+            TokenNode<Token> rightNode = parNode.RightNode;
+            if(TokenNode<Token>.IsLeafToken(leftNode) && TokenNode<Token>.IsLeafToken(rightNode))
+            {
+                if (!TokenWorker.IsTokenOperandEqualType(leftNode.Value.TokenType, rightNode.Value.TokenType))
+                {
+                    if (TokenWorker.IsTokenOperandDecimalType(leftNode.Value.TokenType))
+                    {
+                        TokenNode<Token> temp = rightNode.Clone() as TokenNode<Token>;
+                        rightNode.Value = new Token(TokenType.INT_2_FLOAT, temp.Value.Lexeme, temp.Value.AttributeValue);
+                        rightNode.LeftNode = temp;
+                        rightNode.RightNode = null;
+                    }
+                    else 
+                    {
+                        TokenNode<Token> temp = leftNode.Clone() as TokenNode<Token>;
+                        leftNode.Value = new Token(TokenType.INT_2_FLOAT, temp.Value.Lexeme, temp.Value.AttributeValue);
+                        leftNode.LeftNode = temp;
+                        leftNode.RightNode = null;
+                        
+                    }
+                }
+                    return leftNode.Value.TokenType;
+            }
+            else
+            {
+                if (TokenNode<Token>.IsLeafToken(leftNode))
+                {
+                    return GetOperatorResultType(rightNode);
+                }else if (TokenNode<Token>.IsLeafToken(rightNode))
+                {
+                    return GetOperatorResultType(leftNode);
+                }
+                else
+                {
+                    return CompareTokenType(parNode);
+                }
+            }
+        }
+        private TokenType CompareTokenType(TokenNode<Token> parNode)
+        {
+            TokenType leftType = GetTokenNodeType(parNode.LeftNode);
+            TokenType rightType = GetTokenNodeType(parNode.RightNode);
+            if (!TokenWorker.IsTokenOperandEqualType(leftType, rightType))
+            {
+     
+                if (TokenWorker.IsTokenOperandDecimalType(leftType))
+                {
+                    TokenNode<Token> temp = parNode.RightNode.Clone() as TokenNode<Token>;
+                    parNode.RightNode = new TokenNode<Token>(new Token(TokenType.INT_2_FLOAT, temp.Value.Lexeme, temp.Value.AttributeValue), temp);
+                }
+                else if(TokenWorker.IsTokenOperandDecimalType(rightType))
+                {
+                    TokenNode<Token> temp = parNode.LeftNode.Clone() as TokenNode<Token>;
+                    parNode.LeftNode = new TokenNode<Token>(new Token(TokenType.INT_2_FLOAT, temp.Value.Lexeme, temp.Value.AttributeValue), temp);
+                }
+            }
+                return leftType;
+        }
         public void RealizeSyntaxTreeModification()
         {
-            //RealizeVerificationDifferentType();
-            /*if (countDifferentsOperandType > 0)
-            {*/
-                ModifieSyntaxtTree(SyntaxTreeModified.LeftNode, SyntaxTreeModified.RightNode);
-                //RealizeSyntaxTreeModification();
-            /*}*/
-        }
-   
-        private void RealizeVerificationDifferentType()
-        {
-            countDifferentsOperandType = 0;
-            CheckDifferentOperandType(SyntaxTreeModified.LeftNode, SyntaxTreeModified.RightNode);
-        }
-        private TokenNode<Token> CheckDifferentOperandType(TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
-        {
-            TokenNode<Token> result = null;
-            if(TokenNode<Token>.IsLeafToken(parLeftNode) && TokenNode<Token>.IsLeafToken(parRightNode))
-            {
-                if(!TokenWorker.IsTokenOperandEqualType(parLeftNode.Value.TokenType, parRightNode.Value.TokenType))
-                {
-                    countDifferentsOperandType++;
-                }
-                return parLeftNode;
-            }
-            else
-            {
-                if (TokenNode<Token>.IsLeafToken(parLeftNode))
-                {
-                    result = CheckDifferentOperandType(parLeftNode, CheckDifferentOperandType(parRightNode.LeftNode, parRightNode.RightNode));
-                }
-                else if(TokenNode<Token>.IsLeafToken(parRightNode))
-                {
-                    result = CheckDifferentOperandType(parRightNode, CheckDifferentOperandType(parLeftNode.LeftNode, parLeftNode.RightNode));
-                }
-                /*
-                 Case when tree is composed only by operator like <->
-                                                                   |----<*>
-                                                                   |----</>
-                 But for each next operator there is at least one operand like
-                                                                   <->
-                                                                    |----<*>
-                                                                          |----<id,5>
-                                                                          |----<id,4>
-                                                                    |----<->
-                                                                          |----<2>
-                                                                          |----<2.8>
-                 */
-                else 
-                {
-                    result = CheckDifferentOperandType(CheckDifferentOperandType(parRightNode.LeftNode, parRightNode.RightNode),
-                        CheckDifferentOperandType(parLeftNode.LeftNode, parLeftNode.RightNode));
-                }
-            }
-            return result;
-        }
-        private TokenNode<Token> ModifieSyntaxtTree(TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
-        { 
-            TokenNode<Token> nextComp = null;
-             if(TokenNode<Token>.IsLeafToken(parLeftNode) && TokenNode<Token>.IsLeafToken(parRightNode))
-            {
-                if (!TokenWorker.IsTokenOperandEqualType(parLeftNode.Value.TokenType,parRightNode.Value.TokenType))
-                {
-                    if (TokenWorker.IsTokenOperandDecimalType(parLeftNode.Value.TokenType))
-                    {
-                        //Int2Float for right node
-                        TokenNode<Token> temp = parRightNode.Clone() as TokenNode<Token>;
-                        TokenNode<Token> convertedTokenNode = new TokenNode<Token>(new Token(temp.Value.TokenType, temp.Value.Lexeme, temp.Value.AttributeValue));
-                        parRightNode.Value.TokenType = parLeftNode.Value.TokenType;
-                        parRightNode.Value = new Token(TokenType.INT_2_FLOAT, convertedTokenNode.Value.Lexeme,convertedTokenNode.Value.AttributeValue);
-                        parRightNode.ConvertedTokenNode = convertedTokenNode;
-                        return parRightNode;
-                        
-                        
-                    }
-                    else
-                    {
-                        //Int2Float for left node
-                        TokenNode<Token> temp = parLeftNode.Clone() as TokenNode<Token>;
-                        TokenNode<Token> convertedTokenNode = new TokenNode<Token>(new Token(temp.Value.TokenType, temp.Value.Lexeme,temp.Value.AttributeValue));
-                        parLeftNode.Value.TokenType = parRightNode.Value.TokenType;
-                        parLeftNode.Value = new Token(TokenType.INT_2_FLOAT, convertedTokenNode.Value.Lexeme, convertedTokenNode.Value.AttributeValue);
-                        parLeftNode.ConvertedTokenNode = convertedTokenNode;
-                        return parLeftNode;       
-                    }
-                }
-                else
-                {
-                    return parRightNode;
-                }
-                
-            }
-            else
-            {
-                if (TokenNode<Token>.IsLeafToken(parLeftNode))
-                {
-                    nextComp = ModifieSyntaxtTree(parLeftNode,ModifieSyntaxtTree(parRightNode.LeftNode, parRightNode.RightNode));
-                }
-                else if (TokenNode<Token>.IsLeafToken(parRightNode))
-                {
-                    nextComp =ModifieSyntaxtTree(ModifieSyntaxtTree(parLeftNode.LeftNode, parLeftNode.RightNode), parRightNode);
-                }
-                /*
-                 Case when tree is composed only by operator like <->
-                                                                   |----<*>
-                                                                   |----</>
-                 But for each next operator there is at least one operand like
-                                                                   <->
-                                                                    |----<*>
-                                                                          |----<id,5>
-                                                                          |----<id,4>
-                                                                    |----<->
-                                                                          |----<2>
-                                                                          |----<2.8>
-                 */
-                else
-                { 
-                    nextComp = ModifieSyntaxtTree(ModifieSyntaxtTree(parLeftNode.LeftNode, parLeftNode.RightNode), 
-                        ModifieSyntaxtTree(parRightNode.LeftNode, parRightNode.RightNode));
-                    
-                }
-            }
-            return nextComp;
+            CompareTokenType(SyntaxTreeModified);
         }
         public List<string> GetSemanticTreeTextList()
         {
@@ -163,12 +114,6 @@ namespace DevCompilersLW4
                 string paddingForBoth = paddingBuilder.ToString();
                 string pointerForRight = " |---";
                 string pointerForLeft = " |---";
-                if (parAbstractSyntaxTree.Value.TokenType == TokenType.INT_2_FLOAT)
-                {
-                    parPointer = "     |---";
-                    _astTexts.Add(paddingForBoth.Remove(0,5)+ parPointer + 
-                    parAbstractSyntaxTree.ConvertedTokenNode.Value.TokenType.GetTokenNodeDescription(parAbstractSyntaxTree.ConvertedTokenNode.Value));
-                }
                 TraverserPreOrder(paddingForBoth, pointerForLeft, parAbstractSyntaxTree.LeftNode);
                 TraverserPreOrder(paddingForBoth, pointerForRight, parAbstractSyntaxTree.RightNode); ;
             }
