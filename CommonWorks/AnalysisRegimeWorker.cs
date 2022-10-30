@@ -68,7 +68,7 @@ namespace CommonWorks
         {
             SyntacticalTreeModificator syntacticalTreeModificator = new SyntacticalTreeModificator(parParser.GetAbstractSyntaxTree(),
                 parLexicalErrorAnalyzer.SymbolTable);
-            syntacticalTreeModificator.RealizeSyntaxTreeModification();
+            syntacticalTreeModificator.RealizeTopBottomSyntaxTreeModification();
             SemanticErrorAnalyzer semanticErrorAnalyzer = new SemanticErrorAnalyzer(syntacticalTreeModificator.SyntaxTreeModified);
             semanticErrorAnalyzer.CheckingDivisionByZero();
             if (semanticErrorAnalyzer.CanWriteSyntaxTreeModFileText)

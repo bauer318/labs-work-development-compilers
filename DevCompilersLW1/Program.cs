@@ -14,7 +14,7 @@ namespace DevCompilersLW1
     {
         static void Main(string[] args)
         {
-            /*InputParametersChecker inputParametersChecker = new InputParametersChecker(args);
+            InputParametersChecker inputParametersChecker = new InputParametersChecker(args);
             if (inputParametersChecker.CheckInputData())
             {
                 string expresion = File.ReadAllText(args[1].ToString());
@@ -35,35 +35,7 @@ namespace DevCompilersLW1
             {
                 Console.WriteLine("Incorrect input data\nCorrect format input data:\nprogram.exe SEM or sem inputExpr.txt [Tokens.txt] [symbols.txt] [syntax_tree.txt] " +
                     "[syntax_tree_mod.txt] for semantic analysis");
-            }*/
-
-            string expr = "((2+7)*2.5)+(7-8)/2";//   (8+4)*(5+2)/9.5   (8+4)*(5+2.5)/9
-            //string expr = "(8+4)*(5+2)/9.5"; //(8+4.4)*(5+2.5)/9
-            LexicalErrorAnalyzer lex = new LexicalErrorAnalyzer();
-            if (lex.IsLexicalyCorrectExpresion(expr))
-            {
-                SyntacticalErrorAnalyzer syn = new SyntacticalErrorAnalyzer(lex.Tokens, lex.SymbolTable);
-                if(syn.IsSyntaxicalyCorrectExpression() && lex.CanBuildSyntaxTree)
-                {
-                    Parser parser = new Parser(syn);
-                    parser.ParseExpression();
-                    SyntacticalTreeModificator treeMod = new SyntacticalTreeModificator(parser.GetAbstractSyntaxTree(), lex.SymbolTable);
-                    treeMod.V();
-                    //treeMod.Comp(treeMod.SyntaxTreeModified);
-                    //treeMod.RealizeSyntaxTreeModification();
-                    List<string> str = treeMod.GetSemanticTreeTextList();
-                    foreach(string s in str)
-                    {
-                        Console.WriteLine(s);
-                    }
-                    //SemanticErrorAnalyzer semanticErrorAnalyzer = new SemanticErrorAnalyzer(treeMod.SyntaxTreeModified);
-                   // semanticErrorAnalyzer.CheckingDivisionByZero();
-                }
-                
-                
-                
             }
-
         }
         
     }

@@ -22,12 +22,6 @@ namespace DevCompilersLW3
             LeftNode = null;
             RightNode = null;
         }
-        public TokenNode(Token parValue, TokenNode<Token> parLeftNode)
-        {
-            Value = parValue;
-            LeftNode = parLeftNode;
-            RightNode = null;
-        }
         public static bool IsLeafToken(TokenNode<Token> parToken)
         {
             if (parToken == null)

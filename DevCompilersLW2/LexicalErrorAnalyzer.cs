@@ -39,7 +39,6 @@ namespace DevCompilersLW2
         public string[] SplitExpresion(string parExpresion)
         {
             return PutWhitespace(parExpresion).Split(new char[] { ' ' });
-            //return parExpresion.Split(new char[] { ' ' });
         }
         public string RemoveAllWhitespace(string parExpresion)
         {
@@ -53,7 +52,6 @@ namespace DevCompilersLW2
                 string currentText = parExpresion.ElementAt(i).ToString();
                 if (IsExpresionSeparator(currentText))
                 {
-                    //continue;
                     result += " " + currentText + " ";
                 }
                 else
@@ -141,6 +139,7 @@ namespace DevCompilersLW2
                             attributeValue++;
                             tokenLexemes.Add(match.Lexeme);
                             attributeVariables.Add(new AttributeVariable(attributeValue, match.Lexeme,match.TokenType));
+                            Tokens.Add(new Token(match.TokenType, match.Lexeme, attributeValue));
                         }
                         else
                         {
@@ -155,11 +154,11 @@ namespace DevCompilersLW2
                                         " и " + currentText + " на позиции " + parExpresion.IndexOf(currentText));
                                     result = false;
                                 }
+                                else
+                                {
+                                    Tokens.Add(new Token(match.TokenType, match.Lexeme, predTokenId));
+                                }
                             }
-                        }
-                        if (result)
-                        {
-                            Tokens.Add(new Token(match.TokenType, match.Lexeme, attributeValue));
                         }
                         break;
                     default:
