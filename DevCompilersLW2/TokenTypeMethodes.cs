@@ -146,5 +146,15 @@ namespace DevCompilersLW2
                     return "UNKNOWN";
             }
         }
+        public static string GetPostFixTokenNodeDescription(this TokenType parTokenType, Token parToken)
+        {
+            switch (parTokenType)
+            {
+                case TokenType.INT_2_FLOAT:
+                    return "<i2f>";
+                default:
+                    return GetTokenNodeDescription(parTokenType, parToken);
+            }
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace DevCompilersLW1
                     "[syntax_tree_mod.txt] for semantic analysis");
             }*/
             LexicalErrorAnalyzer lex = new LexicalErrorAnalyzer();
-            string expr = "(a+b)*(c+d)/2.5"; // 9-(5+2)   A[f] + B * 60 + B
+            string expr = "(a+b)*(c+d)-25"; //   9-(5+2)
             if (lex.IsLexicalyCorrectExpresion(expr))
             {
                 SyntacticalErrorAnalyzer syn = new SyntacticalErrorAnalyzer(lex.Tokens, lex.SymbolTable);
@@ -60,16 +60,22 @@ namespace DevCompilersLW1
                         Console.WriteLine(str);
                     }
                     IntermediateCodeGenerator gen = new IntermediateCodeGenerator(synT.SyntaxTreeModified,synT.SymboleTable);
-                    Console.WriteLine("Portable code");
+                  /* Console.WriteLine("Portable code");
                     foreach(string str in gen.GetPortableCodeText())
                     {
                         Console.WriteLine(str);
-                    }
+                    }*/
                     Console.WriteLine("Symbol table");
-                    foreach(string str in gen.GetPortableCodeSymboleTableText())
+                    foreach(string str in gen.GetSymboleTableText())
                     {
                         Console.WriteLine(str);
                     }
+                    Console.WriteLine("Post fix");
+                    foreach(string str in gen.GetPostFixExpressionText())
+                    {
+                        Console.Write(str);
+                    }
+                    
                 }
             }
         }

@@ -12,11 +12,13 @@ namespace DevCompilersLW5
         public SymbolTable SymbolTable { get; }
         public List<PortableCode> PortableCodes {get; }
         private int _lastVariableId;
+        public List<Token> PostFixExpressionSequence { get; }
         public IntermediateCodeGenerator(TokenNode<Token> parSemanticTree, SymbolTable parSymboleTable)
         {
             SemanticTree = parSemanticTree;
             SymbolTable = parSymboleTable;
             PortableCodes = new List<PortableCode>();
+            PostFixExpressionSequence = new List<Token>();
             InitFirstPortableCodeResultId();
         }
        
@@ -24,24 +26,33 @@ namespace DevCompilersLW5
         {
             _lastVariableId = SymbolTable.AttributeVariables.Count;
         }
-        public void GoOne(TokenNode<Token> parSemanticTree)
+        private void AddPostFixExpression(TokenNode<Token> parSemanticTree)
         {
-            //i++;
             if(parSemanticTree != null)
             {
                 if (!TokenNode<Token>.IsLeafToken(parSemanticTree))
                 {
                     if(parSemanticTree.LeftNode != null)
                     {
-                        GoOne(parSemanticTree.LeftNode);
+                        AddPostFixExpression(parSemanticTree.LeftNode);
                     }
                     if(parSemanticTree.RightNode != null)
                     {
-                        GoOne(parSemanticTree.RightNode);
+                        AddPostFixExpression(parSemanticTree.RightNode);
                     }
                 }
-               Console.WriteLine("value " + parSemanticTree.Value.Lexeme+ " type "+parSemanticTree.Value.TokenType);
+                PostFixExpressionSequence.Add(parSemanticTree.Value);
             }
+        }
+        public List<string> GetPostFixExpressionText()
+        {
+            List<string> result = new List<string>();
+            AddPostFixExpression(SemanticTree);
+            foreach(Token token in PostFixExpressionSequence)
+            {
+                result.Add(TokenTypeMethodes.GetPostFixTokenNodeDescription(token.TokenType, token));
+            }
+            return result;
         }
         private void AddPortableCodeResultInSymbolTable()
         {
@@ -95,7 +106,7 @@ namespace DevCompilersLW5
             }
             return result;
         }
-        public List<string> GetPortableCodeSymboleTableText()
+        public List<string> GetSymboleTableText()
         {
             List<string> result = new List<string>();
             foreach (AttributeVariable attribute in SymbolTable.AttributeVariables)
@@ -103,6 +114,10 @@ namespace DevCompilersLW5
                 result.Add(TokenTypeMethodes.GetPortableCodeTokenSymboleTableDescription(attribute.TokenType, attribute));
             }
             return result;
+        }
+        public void Go()
+        {
+            Console.WriteLine(SymbolTable.AttributeVariables.Count);
         }
     }
 }
