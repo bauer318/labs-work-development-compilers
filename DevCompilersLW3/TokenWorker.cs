@@ -21,7 +21,6 @@ namespace DevCompilersLW3
         
         public static bool IsTokenOperandEqualType(TokenType parLeftTokenType, TokenType parRightTokenType)
         {
-            //Console.WriteLine(+parLeftTokenType + " and " + parRightTokenType);
             return (IsTokenOperandDecimalType(parLeftTokenType) && IsTokenOperandDecimalType(parRightTokenType)) ||
                 (IsTokenOperandIntegerType(parLeftTokenType) && IsTokenOperandIntegerType(parRightTokenType));
         }
@@ -121,6 +120,64 @@ namespace DevCompilersLW3
         public static void PrintMessage(string parMessage)
         {
             Console.WriteLine("Синтаксическая ошибка! " + parMessage);
+        }
+        private static TokenNode<Token> GetTokenOperatorResultType(TokenNode<Token> parLeftNode, TokenNode<Token> parRightNode)
+        {
+            TokenNode<Token> result = new TokenNode<Token>(new Token(TokenType.INVALID, "CONVERTED"));
+            if (TokenNode<Token>.IsLeafToken(parLeftNode) && TokenNode<Token>.IsLeafToken(parRightNode))
+            {
+                if (!TokenWorker.IsTokenOperandEqualType(parLeftNode.Value.TokenType, parRightNode.Value.TokenType))
+                {
+                    result = new TokenNode<Token>(new Token(TokenType.INT_2_FLOAT, "CONVERTED"));
+                }
+                else
+                {
+                    result = parLeftNode;
+                }
+            }
+            else
+            {
+                if (TokenNode<Token>.IsLeafToken(parLeftNode))
+                {
+                    if(parRightNode != null)
+                    result = GetTokenOperatorResultType(parLeftNode, GetTokenOperatorResultType(parRightNode.LeftNode, parRightNode.RightNode));
+                }
+                else if (TokenNode<Token>.IsLeafToken(parRightNode))
+                {
+                    result = GetTokenOperatorResultType(GetTokenOperatorResultType(parLeftNode.LeftNode, parLeftNode.RightNode), parRightNode);
+
+                }
+                else
+                {
+                    if (parRightNode != null)
+                        result = GetTokenOperatorResultType(GetTokenOperatorResultType(parLeftNode.LeftNode, parLeftNode.RightNode),
+                            GetTokenOperatorResultType(parRightNode.LeftNode, parRightNode.RightNode));
+                    else
+                        result = GetTokenOperatorResultType(parLeftNode.LeftNode, parLeftNode.RightNode);
+                }
+            }
+
+            return result;
+        }
+        public static TokenType GetTokenNodeType(TokenNode<Token> parNode)
+        {
+            if (TokenNode<Token>.IsLeafToken(parNode) || parNode.Value.TokenType == TokenType.INT_2_FLOAT)
+            {
+                return parNode.Value.TokenType;
+            }
+            else
+            {
+                return GetTokenOperatorResultType(parNode.LeftNode, parNode.RightNode).Value.TokenType;
+            }
+
+        }
+        public static string GetPortableCodeResultLexeme(int parId)
+        {
+            return "T" + parId;
+        }
+        public static string GetPortableCodeNodeDescription(Token parToken)
+        {
+            return parToken.AttributeValue == 0 ? parToken.Lexeme : "<id," + parToken.AttributeValue.ToString() + ">"; ;
         }
     }
 }

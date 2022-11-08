@@ -111,5 +111,40 @@ namespace DevCompilersLW2
                     return "[целый]";
             }
         }
+        public static string GetOperationCodeDesignation(this TokenType parTokenType)
+        {
+            switch (parTokenType)
+            {
+                case TokenType.ADDITION_SIGN:
+                    return "add";
+                case TokenType.MULTIPLICATION_SIGN:
+                    return "mul";
+                case TokenType.DIVISION_SIGN:
+                    return "div";
+                case TokenType.SOUSTRACTION_SIGN:
+                    return "sub";
+                case TokenType.INT_2_FLOAT:
+                    return "i2f";
+                default:
+                    return "UNKNOWN";
+            }
+        }
+        public static string GetPortableCodeTokenSymboleTableDescription(this TokenType parTokenType, AttributeVariable parAttributeVariable)
+        {
+            string nodeAndLexeme = "<id," + parAttributeVariable.Id + "> - " + parAttributeVariable.Name;
+            switch (parTokenType)
+            {
+                case TokenType.INTEGER_CONSTANT:
+                case TokenType.CORRECT_INTEGER_IDENTIFICATOR:
+                case TokenType.CORRECT_DEFAULT_IDENTIFICATOR:
+                    return nodeAndLexeme + ", integer";
+                case TokenType.CORRECT_DECIMAL_CONSTANT:
+                case TokenType.CORRECT_DECIMAL_IDENTIFICATOR:
+                case TokenType.INT_2_FLOAT:
+                    return nodeAndLexeme + ", float";
+                default:
+                    return "UNKNOWN";
+            }
+        }
     }
 }

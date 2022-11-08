@@ -11,7 +11,8 @@
           "CommonWorks": "1.0.0",
           "DevCompilersLW2": "1.0.0",
           "DevCompilersLW3": "1.0.0",
-          "DevCompilersLW4": "1.0.0"
+          "DevCompilersLW4": "1.0.0",
+          "DevCompilersLW5": "1.0.0"
         },
         "runtime": {
           "DevCompilersLW1.dll": {}
@@ -47,6 +48,15 @@
         "runtime": {
           "DevCompilersLW4.dll": {}
         }
+      },
+      "DevCompilersLW5/1.0.0": {
+        "dependencies": {
+          "DevCompilersLW2": "1.0.0",
+          "DevCompilersLW3": "1.0.0"
+        },
+        "runtime": {
+          "DevCompilersLW5.dll": {}
+        }
       }
     }
   },
@@ -72,6 +82,11 @@
       "sha512": ""
     },
     "DevCompilersLW4/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DevCompilersLW5/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

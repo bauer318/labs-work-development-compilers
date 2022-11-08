@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "DevCompilersLW5/1.0.0": {
+        "dependencies": {
+          "DevCompilersLW2": "1.0.0",
+          "DevCompilersLW3": "1.0.0"
+        },
+        "runtime": {
+          "DevCompilersLW5.dll": {}
+        }
+      },
+      "DevCompilersLW2/1.0.0": {
+        "runtime": {
+          "DevCompilersLW2.dll": {}
+        }
+      },
+      "DevCompilersLW3/1.0.0": {
+        "dependencies": {
+          "DevCompilersLW2": "1.0.0"
+        },
+        "runtime": {
+          "DevCompilersLW3.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DevCompilersLW5/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DevCompilersLW2/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DevCompilersLW3/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

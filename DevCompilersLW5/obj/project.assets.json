@@ -1,11 +1,49 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {}
+    ".NETCoreApp,Version=v3.1": {
+      "DevCompilersLW2/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/DevCompilersLW2.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DevCompilersLW2.dll": {}
+        }
+      },
+      "DevCompilersLW3/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "DevCompilersLW2": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/DevCompilersLW3.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DevCompilersLW3.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "DevCompilersLW2/1.0.0": {
+      "type": "project",
+      "path": "../DevCompilersLW2/DevCompilersLW2.csproj",
+      "msbuildProject": "../DevCompilersLW2/DevCompilersLW2.csproj"
+    },
+    "DevCompilersLW3/1.0.0": {
+      "type": "project",
+      "path": "../DevCompilersLW3/DevCompilersLW3.csproj",
+      "msbuildProject": "../DevCompilersLW3/DevCompilersLW3.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": []
+    ".NETCoreApp,Version=v3.1": [
+      "DevCompilersLW2 >= 1.0.0",
+      "DevCompilersLW3 >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Bauer\\.nuget\\packages\\": {}
@@ -33,7 +71,14 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW2\\DevCompilersLW2.csproj": {
+              "projectPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW2\\DevCompilersLW2.csproj"
+            },
+            "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW3\\DevCompilersLW3.csproj": {
+              "projectPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW3\\DevCompilersLW3.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

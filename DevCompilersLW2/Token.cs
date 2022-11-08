@@ -7,8 +7,8 @@ namespace DevCompilersLW2
     public class Token
     {
         public TokenType TokenType { get; set; }
-        public readonly string Lexeme ;
-        public readonly int AttributeValue;
+        public string Lexeme { get; set; }
+        public int AttributeValue { get; set; }
         public Token(TokenType parTokenType, string parLexeme,int parAttributeValue = 0)
         {
             TokenType = parTokenType;
