@@ -1,6 +1,7 @@
 ﻿using DevCompilersLW2;
 using DevCompilersLW3;
 using DevCompilersLW4;
+using DevCompilersLW5;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,8 @@ namespace CommonWorks
         private string _symbolTableTextFileName;
         private string _syntaxTreeTextFileName;
         private string _syntaxTreeModTextFileName;
+        private string _portableCodeTextFileName;
+        private string _postfixTextFileName;
 
         public OutputTextFileWriter(string parTokenTextFileName, string parSymbolTableTextFileName, string parSyntaxTreeTextFileName)
         {
@@ -30,6 +33,16 @@ namespace CommonWorks
             string parSyntaxTreeModTextFileName) : this(parTokenTextFileName, parSymbolTableTextFileName,parSyntaxTreeTextFileName)
         {
             _syntaxTreeModTextFileName = string.IsNullOrEmpty(parSyntaxTreeModTextFileName) ? "syntax_tree_mod.txt" : parSyntaxTreeModTextFileName;   
+        }
+        public OutputTextFileWriter(string parTokenTextFileName,
+            string parSymbolTableTextFileName,
+            string parSyntaxTreeTextFileName,
+            string parSyntaxTreeModTextFileName,
+            string parPortableCodeTextFileName,
+            string parPostfixTextFileName) : this(parTokenTextFileName, parSymbolTableTextFileName, parSyntaxTreeTextFileName, parSyntaxTreeModTextFileName)
+        {
+            _portableCodeTextFileName = string.IsNullOrEmpty(parPortableCodeTextFileName) ? "portable_code.txt" : parPortableCodeTextFileName;
+            _postfixTextFileName = string.IsNullOrEmpty(parPostfixTextFileName) ? "postfix.txt" : parPostfixTextFileName;
         }
         public void WriteTokenTextFile(LexicalErrorAnalyzer parTokenizer)
         {
@@ -67,6 +80,36 @@ namespace CommonWorks
                 foreach(string nodeText in parSyntacticalTreeModificator.GetSemanticTreeTextList())
                 {
                     writer.WriteLine(nodeText);
+                }
+            }
+        }
+        public void WritePortableCodeTextFile(IntermediateCodeGenerator intermediateCodeGenerator)
+        {
+            using(StreamWriter writer = new StreamWriter(_portableCodeTextFileName))
+            {
+                foreach(string treeAddressCode in intermediateCodeGenerator.GetPortableCodeText())
+                {
+                    writer.WriteLine(treeAddressCode);
+                }
+            }
+        }
+        public void WritePostfixExpressionTextFile(IntermediateCodeGenerator intermediateCodeGenerator)
+        {
+            using(StreamWriter writer = new StreamWriter(_postfixTextFileName))
+            {
+                foreach(string tokenInPostfixExpression in intermediateCodeGenerator.GetPostFixExpressionText())
+                {
+                    writer.Write(tokenInPostfixExpression);
+                }
+            }
+        }
+        public void WritePortableCodeSymbolTable(IntermediateCodeGenerator intermediateCodeGenerator)
+        {
+            using(StreamWriter writer = new StreamWriter(_symbolTableTextFileName))
+            {
+                foreach(string symboleTable in intermediateCodeGenerator.GetSymboleTableText())
+                {
+                    writer.WriteLine(symboleTable);
                 }
             }
         }

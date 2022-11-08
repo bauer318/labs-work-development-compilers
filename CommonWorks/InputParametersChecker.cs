@@ -15,7 +15,7 @@ namespace CommonWorks
         }
         public bool CheckInputData()
         {
-            if (!(_args.Length >= 2 && _args.Length <= 6))
+            if (!(_args.Length >= 2 && _args.Length <= 7))
             {
                 return false;
             }
@@ -56,6 +56,14 @@ namespace CommonWorks
                     return false;
                 }
             }
+            if (IsExistParameterWithIndex(6))
+            {
+                if (!IsCorrectTextFileName(_args[5].ToString()))
+                {
+                    Console.WriteLine("Incorrect input portable code or postfix's output text file name");
+                    return false;
+                }
+            }
             if (!IsExistTextFileInDirectory(_args[1].ToString()))
             {
                 Console.WriteLine("expresion's text file doesn't exite in the current directory");
@@ -86,6 +94,10 @@ namespace CommonWorks
                     return 1;
                 case "sem":
                     return 2;
+                case "gen1":
+                    return 3;
+                case "gen2":
+                    return 4;
                 default:
                     return -1;
             }

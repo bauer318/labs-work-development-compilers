@@ -1,6 +1,7 @@
 ﻿using DevCompilersLW2;
 using DevCompilersLW3;
 using DevCompilersLW4;
+using DevCompilersLW5;
 using System;
 
 namespace CommonWorks
@@ -14,10 +15,13 @@ namespace CommonWorks
             string symbolTableTextFileName = parInputParametersChecker.GetTextFileOrEmpty(3);
             string syntaxTreeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(4);
             string syntaxTreeModTextFileName = parInputParametersChecker.GetTextFileOrEmpty(5);
+            string portableCodeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(6);
+            string postfixExpressionTextFileName = parInputParametersChecker.GetTextFileOrEmpty(6);
             OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(tokenTextFileName,
-                        symbolTableTextFileName, syntaxTreeTextFileName, syntaxTreeModTextFileName);
+                        symbolTableTextFileName, syntaxTreeTextFileName, syntaxTreeModTextFileName,portableCodeTextFileName,postfixExpressionTextFileName);
             Parser parser = null;
             SyntacticalErrorAnalyzer syntacticalErrorAnalyser = null;
+            SyntacticalTreeModificator syntacticalTreeModificator = null;
             switch (parInputParametersChecker.GetAnalysisRegime())
             {
                 case 0:
@@ -46,6 +50,29 @@ namespace CommonWorks
                         TryToBuildSyntaxModTree(parser, lexicalErrorAnalyzer, outputTextFileWriter);
                     }
                     break;
+                case 3:
+                case 4:
+                    lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression);
+                    syntacticalErrorAnalyser = new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
+                    parser = TryToBuildSyntaxTree(syntacticalErrorAnalyser, syntaxTreeTextFileName, lexicalErrorAnalyzer.CanBuildSyntaxTree);
+                    if(parser != null)
+                    syntacticalTreeModificator = TryToBuildSyntaxModTree(parser, lexicalErrorAnalyzer, outputTextFileWriter);
+                    if(syntacticalTreeModificator != null)
+                    {
+                        IntermediateCodeGenerator intermediateCodeGenerator = GenerateIntermediateCode(syntacticalTreeModificator);
+                        switch (parInputParametersChecker.GetAnalysisRegime())
+                        {
+                            case 3:
+                                outputTextFileWriter.WritePortableCodeTextFile(intermediateCodeGenerator);
+                                break;
+                            default:
+                                outputTextFileWriter.WritePostfixExpressionTextFile(intermediateCodeGenerator);
+                                break;
+                        }
+                        outputTextFileWriter.WritePortableCodeSymbolTable(intermediateCodeGenerator);
+                    }
+                    
+                    break;
 
             }
           }
@@ -64,7 +91,7 @@ namespace CommonWorks
             }
             return null;
         }
-        public static void TryToBuildSyntaxModTree(Parser parParser, LexicalErrorAnalyzer parLexicalErrorAnalyzer, OutputTextFileWriter parOutputTextFileWriter)
+        private static SyntacticalTreeModificator TryToBuildSyntaxModTree(Parser parParser, LexicalErrorAnalyzer parLexicalErrorAnalyzer, OutputTextFileWriter parOutputTextFileWriter)
         {
             SyntacticalTreeModificator syntacticalTreeModificator = new SyntacticalTreeModificator(parParser.GetAbstractSyntaxTree(),
                 parLexicalErrorAnalyzer.SymbolTable);
@@ -74,7 +101,14 @@ namespace CommonWorks
             if (semanticErrorAnalyzer.CanWriteSyntaxTreeModFileText)
             {
                 parOutputTextFileWriter.WriteSyntaxTreeMdifiedTextFile(syntacticalTreeModificator);
+                return syntacticalTreeModificator;
             }
+            return null;   
+        }
+        private static IntermediateCodeGenerator GenerateIntermediateCode(SyntacticalTreeModificator parSyntacticalTreeModificator)
+        {
+            return new IntermediateCodeGenerator(parSyntacticalTreeModificator.SyntaxTreeModified,
+                            parSyntacticalTreeModificator.SymboleTable);
         }
     }
 }

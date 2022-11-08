@@ -115,9 +115,5 @@ namespace DevCompilersLW5
             }
             return result;
         }
-        public void Go()
-        {
-            Console.WriteLine(SymbolTable.AttributeVariables.Count);
-        }
     }
 }

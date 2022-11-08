@@ -22,7 +22,8 @@
         "dependencies": {
           "DevCompilersLW2": "1.0.0",
           "DevCompilersLW3": "1.0.0",
-          "DevCompilersLW4": "1.0.0"
+          "DevCompilersLW4": "1.0.0",
+          "DevCompilersLW5": "1.0.0"
         },
         "runtime": {
           "CommonWorks.dll": {}
