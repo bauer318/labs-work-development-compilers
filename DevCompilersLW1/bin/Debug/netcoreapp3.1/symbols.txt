@@ -1,0 +1,3 @@
+<id,1> - Q, integer
+<id,2> - gh, float
+<id,3> - bn, integer
