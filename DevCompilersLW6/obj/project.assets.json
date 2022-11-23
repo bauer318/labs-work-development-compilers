@@ -1,0 +1,141 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "DevCompilersLW2/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/DevCompilersLW2.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DevCompilersLW2.dll": {}
+        }
+      },
+      "DevCompilersLW3/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "DevCompilersLW2": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/DevCompilersLW3.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DevCompilersLW3.dll": {}
+        }
+      },
+      "DevCompilersLW5/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "DevCompilersLW2": "1.0.0",
+          "DevCompilersLW3": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/DevCompilersLW5.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DevCompilersLW5.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DevCompilersLW2/1.0.0": {
+      "type": "project",
+      "path": "../DevCompilersLW2/DevCompilersLW2.csproj",
+      "msbuildProject": "../DevCompilersLW2/DevCompilersLW2.csproj"
+    },
+    "DevCompilersLW3/1.0.0": {
+      "type": "project",
+      "path": "../DevCompilersLW3/DevCompilersLW3.csproj",
+      "msbuildProject": "../DevCompilersLW3/DevCompilersLW3.csproj"
+    },
+    "DevCompilersLW5/1.0.0": {
+      "type": "project",
+      "path": "../DevCompilersLW5/DevCompilersLW5.csproj",
+      "msbuildProject": "../DevCompilersLW5/DevCompilersLW5.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "DevCompilersLW5 >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Bauer\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW6\\DevCompilersLW6.csproj",
+      "projectName": "DevCompilersLW6",
+      "projectPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW6\\DevCompilersLW6.csproj",
+      "packagesPath": "C:\\Users\\Bauer\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW6\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Bauer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "projectReferences": {
+            "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW5\\DevCompilersLW5.csproj": {
+              "projectPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW5\\DevCompilersLW5.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.10, 3.1.10]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[3.1.0, 3.1.0]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[3.1.0, 3.1.0]"
+          }
+        ],
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\5.0.407\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

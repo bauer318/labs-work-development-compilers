@@ -179,5 +179,9 @@ namespace DevCompilersLW3
         {
             return parToken.AttributeValue == 0 ? parToken.Lexeme : "<id," + parToken.AttributeValue.ToString() + ">"; ;
         }
+        public static bool IsTokenConstantType(Token parToken)
+        {
+            return parToken.TokenType == TokenType.CORRECT_DECIMAL_CONSTANT || parToken.TokenType == TokenType.INTEGER_CONSTANT;
+        }
     }
 }

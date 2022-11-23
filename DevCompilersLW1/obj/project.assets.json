@@ -67,6 +67,19 @@
         "runtime": {
           "bin/placeholder/DevCompilersLW5.dll": {}
         }
+      },
+      "DevCompilersLW6/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "DevCompilersLW5": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/DevCompilersLW6.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DevCompilersLW6.dll": {}
+        }
       }
     }
   },
@@ -95,6 +108,11 @@
       "type": "project",
       "path": "../DevCompilersLW5/DevCompilersLW5.csproj",
       "msbuildProject": "../DevCompilersLW5/DevCompilersLW5.csproj"
+    },
+    "DevCompilersLW6/1.0.0": {
+      "type": "project",
+      "path": "../DevCompilersLW6/DevCompilersLW6.csproj",
+      "msbuildProject": "../DevCompilersLW6/DevCompilersLW6.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -103,7 +121,8 @@
       "DevCompilersLW2 >= 1.0.0",
       "DevCompilersLW3 >= 1.0.0",
       "DevCompilersLW4 >= 1.0.0",
-      "DevCompilersLW5 >= 1.0.0"
+      "DevCompilersLW5 >= 1.0.0",
+      "DevCompilersLW6 >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -147,6 +166,9 @@
             },
             "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW5\\DevCompilersLW5.csproj": {
               "projectPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW5\\DevCompilersLW5.csproj"
+            },
+            "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW6\\DevCompilersLW6.csproj": {
+              "projectPath": "C:\\Users\\Bauer\\source\\repos\\DevCompilersLW1\\DevCompilersLW6\\DevCompilersLW6.csproj"
             }
           }
         }
