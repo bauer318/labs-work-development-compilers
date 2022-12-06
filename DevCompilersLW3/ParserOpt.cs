@@ -71,6 +71,31 @@ namespace DevCompilersLW3
             return lexeme.Equals("1") || lexeme.Equals("1.0");
         }
         
+        private bool IsDecimalTokenVariable(TokenNode<Token> tokenNode)
+        {
+            return tokenNode.Value.TokenType == TokenType.CORRECT_DECIMAL_IDENTIFICATOR;
+        }
+        private bool IsIntegerTokenConstant(TokenNode<Token> tokenNode)
+        {
+            return tokenNode.Value.TokenType == TokenType.INTEGER_CONSTANT;
+        }
+        private TokenNode<Token> ConvertIntegerTokenConstantToFloat(TokenNode<Token> tokenNode)
+        {
+            string doubleLexeme = tokenNode.Value.Lexeme + ".0";
+            return new TokenNode<Token>(new Token(TokenType.CORRECT_DECIMAL_CONSTANT, doubleLexeme));
+        }
+
+        private TokenNode<Token> RealizeConvertTokenConstantToFloatIfNecessary(TokenNode<Token> leftNode, TokenNode<Token> rightNode)
+        {
+            if (IsDecimalTokenVariable(leftNode) && IsIntegerTokenConstant(rightNode))
+            {
+                return ConvertIntegerTokenConstantToFloat(rightNode);
+            }
+            return rightNode;
+            
+        }
+
+
         private TokenNode<Token> GetTokenNodeResultAdditionOperation(TokenNode<Token> leftNode, TokenNode<Token> rightNode)
         {
             Token leafToken = null;
@@ -106,6 +131,8 @@ namespace DevCompilersLW3
                 }
                 else
                 {
+                    leftNode = RealizeConvertTokenConstantToFloatIfNecessary(rightNode,leftNode);
+                    rightNode = RealizeConvertTokenConstantToFloatIfNecessary(leftNode, rightNode);
                     Token tokenPlus = new Token(TokenType.ADDITION_SIGN, "+");
                     result = new TokenNode<Token>(tokenPlus, leftNode, rightNode);
                 }
@@ -149,6 +176,8 @@ namespace DevCompilersLW3
                 }
                 else
                 {
+                    leftNode = RealizeConvertTokenConstantToFloatIfNecessary(rightNode, leftNode);
+                    rightNode = RealizeConvertTokenConstantToFloatIfNecessary(leftNode, rightNode);
                     Token tokenMinus = new Token(TokenType.ADDITION_SIGN, "-");
                     result = new TokenNode<Token>(tokenMinus, leftNode, rightNode);
                 }
@@ -192,6 +221,8 @@ namespace DevCompilersLW3
                 }
                 else
                 {
+                    leftNode = RealizeConvertTokenConstantToFloatIfNecessary(rightNode, leftNode);
+                    rightNode = RealizeConvertTokenConstantToFloatIfNecessary(leftNode, rightNode);
                     Token tokenMul = new Token(TokenType.ADDITION_SIGN, "*");
                     result = new TokenNode<Token>(tokenMul, leftNode, rightNode);
                 }
@@ -232,11 +263,12 @@ namespace DevCompilersLW3
             {
                 if (IsNeutralElementMulDiv(rightNode))
                 {
-                    Console.WriteLine("Is neutral div " + leftNode.Value.Lexeme + " and " + rightNode.Value.Lexeme);
                     result = leftNode;
                 }
                 else
                 {
+                    leftNode = RealizeConvertTokenConstantToFloatIfNecessary(rightNode, leftNode);
+                    rightNode = RealizeConvertTokenConstantToFloatIfNecessary(leftNode, rightNode);
                     Token tokenDiv = new Token(TokenType.ADDITION_SIGN, "/");
                     result = new TokenNode<Token>(tokenDiv, leftNode, rightNode);
                 }

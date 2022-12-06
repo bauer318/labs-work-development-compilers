@@ -39,7 +39,7 @@ namespace DevCompilersLW1
                     "[syntax_tree_mod.txt] for semantic analysis");
             }*/
             LexicalErrorAnalyzer lex = new LexicalErrorAnalyzer();
-            string expr = "A+1-B*(3.4-6/2.5)"; //   9-(5+2) (a+b)*(c+d)-25/0   A + B * (60 - 6/(2+2)) 
+            string expr = "A+B[f]*(60-6/2)"; //   9-(5+2) (a+b)*(c+d)-25/0   A + B * (60 - 6/(2+2)) 
             if (lex.IsLexicalyCorrectExpresion(expr))
             {
                 SyntacticalErrorAnalyzer syn = new SyntacticalErrorAnalyzer(lex.Tokens, lex.SymbolTable);
