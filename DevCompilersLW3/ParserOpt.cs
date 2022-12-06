@@ -88,6 +88,10 @@ namespace DevCompilersLW3
             }
             return factor;
         }
+        private bool IsDecimalTokenConstant(TokenNode<Token> tokenNode)
+        {
+            return tokenNode.Value.TokenType == TokenType.CORRECT_DECIMAL_CONSTANT;
+        }
         private TokenNode<Token> GetOpAdd(TokenNode<Token> leftNode, TokenNode<Token> rightNode)
         {
             Token leafToken = null;
