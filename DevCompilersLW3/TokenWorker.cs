@@ -29,6 +29,10 @@ namespace DevCompilersLW3
             return parTokenType == TokenType.CORRECT_DECIMAL_CONSTANT || parTokenType == TokenType.CORRECT_DECIMAL_IDENTIFICATOR ||
                 parTokenType == TokenType.INT_2_FLOAT;
         }
+        public static bool IsConstantType(TokenType parTokenType)
+        {
+            return parTokenType == TokenType.CORRECT_DECIMAL_CONSTANT || parTokenType == TokenType.INTEGER_CONSTANT;
+        }
         public static bool IsTokenOperandIntegerType(TokenType parTokenType)
         {
             return parTokenType == TokenType.INTEGER_CONSTANT || parTokenType == TokenType.CORRECT_INTEGER_IDENTIFICATOR;
@@ -39,7 +43,8 @@ namespace DevCompilersLW3
             return tokenType == TokenType.ADDITION_SIGN ||
                     tokenType == TokenType.DIVISION_SIGN ||
                     tokenType == TokenType.MULTIPLICATION_SIGN ||
-                    tokenType == TokenType.SOUSTRACTION_SIGN;
+                    tokenType == TokenType.SOUSTRACTION_SIGN || parToken.Lexeme.Equals("+")
+                    || parToken.Lexeme.Equals("-") || parToken.Lexeme.Equals("/") || parToken.Lexeme.Equals("*");
         }
         public static bool IsOperand(TokenType parTokenType)
         {
@@ -182,6 +187,25 @@ namespace DevCompilersLW3
         public static bool IsTokenConstantType(Token parToken)
         {
             return parToken.TokenType == TokenType.CORRECT_DECIMAL_CONSTANT || parToken.TokenType == TokenType.INTEGER_CONSTANT;
+        }
+        public static String GetCodeOperationByTokenLexeme(String lexeme)
+        {
+            switch (lexeme)
+            {
+                case "/":
+                    return "div";
+
+                case "+":
+                    return "add";
+
+                case "-":
+                    return "sub";
+
+                case "*":
+                    return "mul";
+                default:
+                    return "inknown";
+            }
         }
     }
 }

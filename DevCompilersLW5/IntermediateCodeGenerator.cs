@@ -13,6 +13,7 @@ namespace DevCompilersLW5
         public List<PortableCode> PortableCodes {get; }
         private int _lastVariableId;
         public List<Token> PostFixExpressionSequence { get; }
+        private int id = 1;
         public IntermediateCodeGenerator(TokenNode<Token> parSemanticTree, SymbolTable parSymboleTable)
         {
             SemanticTree = parSemanticTree;
@@ -85,7 +86,8 @@ namespace DevCompilersLW5
                         operands.Add(parSemanticTree.RightNode.Value);
                         CreatePortableCodeList(parSemanticTree.RightNode);
                     }
-                    PortableCodes.Add(new PortableCode(operationCode, result, operands));
+                    PortableCodes.Add(new PortableCode(operationCode, result, operands,id));
+                    id++;
                 } 
             }
         }
