@@ -66,7 +66,7 @@ namespace CommonWorks
                 }
             }
         }
-        public void WriteAbstractSyntaxTreeTextFile(Parser parParser)
+        public void WriteAbstractSyntaxTreeTextFile(ParserBase parParser)
         {
             using (StreamWriter writer = new StreamWriter(_syntaxTreeTextFileName))
             {

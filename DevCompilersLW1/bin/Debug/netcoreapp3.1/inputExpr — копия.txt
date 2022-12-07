@@ -1,0 +1,2 @@
+(Q - 67 * gh[f]) / 5.78 - Q[i] * 56 - bn
+source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1

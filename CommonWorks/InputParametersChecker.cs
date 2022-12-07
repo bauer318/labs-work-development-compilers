@@ -8,9 +8,13 @@ namespace CommonWorks
     public class InputParametersChecker
     {
         string[] _args;
+        public int index;
+        public bool needOptimize;
 
         public InputParametersChecker(string[] parArgs)
         {
+            index = 1;
+            needOptimize = false;
             _args = parArgs;
         }
         public bool CheckInputData()
@@ -19,52 +23,60 @@ namespace CommonWorks
             {
                 return false;
             }
-            if (!IsCorrectTextFileName(_args[1].ToString()))
+            if (IsExistParameterWithIndex(1))
+            {
+                needOptimize = _args[1].ToString().ToLower().Equals("opt");
+                if (needOptimize)
+                {
+                    index = 2;
+                }
+            }
+            if (!IsCorrectTextFileName(_args[index].ToString()))
             {
                 Console.WriteLine("Incorrect input expresion's text file name");
                 return false;
             }
-            if (IsExistParameterWithIndex(2))
+            if (IsExistParameterWithIndex(index+1))
             {
-                if (!IsCorrectTextFileName(_args[2].ToString()))
+                if (!IsCorrectTextFileName(_args[index+1].ToString()))
                 {
                     Console.WriteLine("Incorrect input Tokens's output text file name");
                     return false;
                 }
             }
-            if (IsExistParameterWithIndex(3))
+            if (IsExistParameterWithIndex(index+2))
             {
-                if (!IsCorrectTextFileName(_args[3].ToString()))
+                if (!IsCorrectTextFileName(_args[index+2].ToString()))
                 {
                     Console.WriteLine("Incorrect input symbol table's output text file name");
                     return false;
                 }
             }
-            if (IsExistParameterWithIndex(4))
+            if (IsExistParameterWithIndex(index+3))
             {
-                if (!IsCorrectTextFileName(_args[3].ToString()))
+                if (!IsCorrectTextFileName(_args[index+2].ToString()))
                 {
                     Console.WriteLine("Incorrect input syntax tree's output text file name");
                     return false;
                 }
             }
-            if (IsExistParameterWithIndex(5))
+            if (IsExistParameterWithIndex(index+4))
             {
-                if (!IsCorrectTextFileName(_args[4].ToString()))
+                if (!IsCorrectTextFileName(_args[index+3].ToString()))
                 {
                     Console.WriteLine("Incorrect input syntax tree modified's output text file name");
                     return false;
                 }
             }
-            if (IsExistParameterWithIndex(6))
+            if (IsExistParameterWithIndex(index+5))
             {
-                if (!IsCorrectTextFileName(_args[5].ToString()))
+                if (!IsCorrectTextFileName(_args[index+4].ToString()))
                 {
                     Console.WriteLine("Incorrect input portable code or postfix's output text file name");
                     return false;
                 }
             }
-            if (!IsExistTextFileInDirectory(_args[1].ToString()))
+            if (!IsExistTextFileInDirectory(_args[index].ToString()))
             {
                 Console.WriteLine("expresion's text file doesn't exite in the current directory");
                 return false;
@@ -82,6 +94,10 @@ namespace CommonWorks
         {
             string result = IsExistParameterWithIndex(parIndex) ? _args[parIndex].ToString() : string.Empty;
             return result;
+        }
+        public bool NeedOptimize()
+        {
+            return false;
         }
 
         public int GetAnalysisRegime()

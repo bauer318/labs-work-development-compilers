@@ -10,7 +10,6 @@ namespace DevCompilersLW3
         public ParserOpt(SyntacticalErrorAnalyzer parSyntacticalErrorAnalyzer):base(parSyntacticalErrorAnalyzer)
         {
         }
-
         public override TokenNode<Token> ParseExpression()
         {
             TokenNode<Token> result = Factor();
@@ -95,7 +94,6 @@ namespace DevCompilersLW3
             
         }
 
-
         private TokenNode<Token> GetTokenNodeResultAdditionOperation(TokenNode<Token> leftNode, TokenNode<Token> rightNode)
         {
             Token leafToken = null;
@@ -178,7 +176,7 @@ namespace DevCompilersLW3
                 {
                     leftNode = RealizeConvertTokenConstantToFloatIfNecessary(rightNode, leftNode);
                     rightNode = RealizeConvertTokenConstantToFloatIfNecessary(leftNode, rightNode);
-                    Token tokenMinus = new Token(TokenType.ADDITION_SIGN, "-");
+                    Token tokenMinus = new Token(TokenType.SOUSTRACTION_SIGN, "-");
                     result = new TokenNode<Token>(tokenMinus, leftNode, rightNode);
                 }
                 
@@ -223,12 +221,10 @@ namespace DevCompilersLW3
                 {
                     leftNode = RealizeConvertTokenConstantToFloatIfNecessary(rightNode, leftNode);
                     rightNode = RealizeConvertTokenConstantToFloatIfNecessary(leftNode, rightNode);
-                    Token tokenMul = new Token(TokenType.ADDITION_SIGN, "*");
+                    Token tokenMul = new Token(TokenType.MULTIPLICATION_SIGN, "*");
                     result = new TokenNode<Token>(tokenMul, leftNode, rightNode);
                 }
-                
             }
-           
             return result;
         }
         private TokenNode<Token> GetTokenNodeResultDivisionOperation(TokenNode<Token> leftNode, TokenNode<Token> rightNode)
@@ -269,13 +265,13 @@ namespace DevCompilersLW3
                 {
                     leftNode = RealizeConvertTokenConstantToFloatIfNecessary(rightNode, leftNode);
                     rightNode = RealizeConvertTokenConstantToFloatIfNecessary(leftNode, rightNode);
-                    Token tokenDiv = new Token(TokenType.ADDITION_SIGN, "/");
+                    Token tokenDiv = new Token(TokenType.DIVISION_SIGN, "/");
                     result = new TokenNode<Token>(tokenDiv, leftNode, rightNode);
                 }
                 
             }
-            
             return result;
         }
+
     }
 }

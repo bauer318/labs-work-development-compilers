@@ -8,18 +8,20 @@ namespace CommonWorks
 {
     public class AnalysisRegimeWorker
     {
+        private static InputParametersChecker inputParametersChecker;
         public static void RealizeLexicalSyntacticalSemanticAnalysis(string parExpression, InputParametersChecker parInputParametersChecker)
         {
+            inputParametersChecker = parInputParametersChecker;
             LexicalErrorAnalyzer lexicalErrorAnalyzer = new LexicalErrorAnalyzer();
-            string tokenTextFileName = parInputParametersChecker.GetTextFileOrEmpty(2);
-            string symbolTableTextFileName = parInputParametersChecker.GetTextFileOrEmpty(3);
-            string syntaxTreeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(4);
-            string syntaxTreeModTextFileName = parInputParametersChecker.GetTextFileOrEmpty(5);
-            string portableCodeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(6);
-            string postfixExpressionTextFileName = parInputParametersChecker.GetTextFileOrEmpty(6);
+            string tokenTextFileName = parInputParametersChecker.GetTextFileOrEmpty(parInputParametersChecker.index+1);
+            string symbolTableTextFileName = parInputParametersChecker.GetTextFileOrEmpty(parInputParametersChecker.index + 2);
+            string syntaxTreeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(parInputParametersChecker.index + 3);
+            string syntaxTreeModTextFileName = parInputParametersChecker.GetTextFileOrEmpty(parInputParametersChecker.index + 4);
+            string portableCodeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(parInputParametersChecker.index + 5);
+            string postfixExpressionTextFileName = parInputParametersChecker.GetTextFileOrEmpty(parInputParametersChecker.index + 5);
             OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(tokenTextFileName,
                         symbolTableTextFileName, syntaxTreeTextFileName, syntaxTreeModTextFileName,portableCodeTextFileName,postfixExpressionTextFileName);
-            Parser parser = null;
+            ParserBase parser = null;
             SyntacticalErrorAnalyzer syntacticalErrorAnalyser = null;
             SyntacticalTreeModificator syntacticalTreeModificator = null;
             switch (parInputParametersChecker.GetAnalysisRegime())
@@ -76,14 +78,18 @@ namespace CommonWorks
 
             }
           }
-        private static Parser TryToBuildSyntaxTree(SyntacticalErrorAnalyzer parSyntacticalErrorAnalyzer,
+        private static ParserBase TryToBuildSyntaxTree(SyntacticalErrorAnalyzer parSyntacticalErrorAnalyzer,
             string syntaxTreeTextFileName,
             bool parIsLexicalyCorrectExpression)
         {
             
             if (parSyntacticalErrorAnalyzer.IsSyntaxicalyCorrectExpression() && parIsLexicalyCorrectExpression)
             {
-                Parser parser = new Parser(parSyntacticalErrorAnalyzer);
+                ParserBase parser = new Parser(parSyntacticalErrorAnalyzer);
+                if (inputParametersChecker.needOptimize)
+                {
+                    parser = new ParserOpt(parSyntacticalErrorAnalyzer);
+                }
                 parser.ParseExpression();
                 OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(syntaxTreeTextFileName);
                 outputTextFileWriter.WriteAbstractSyntaxTreeTextFile(parser);
@@ -91,7 +97,7 @@ namespace CommonWorks
             }
             return null;
         }
-        private static SyntacticalTreeModificator TryToBuildSyntaxModTree(Parser parParser, LexicalErrorAnalyzer parLexicalErrorAnalyzer, OutputTextFileWriter parOutputTextFileWriter)
+        private static SyntacticalTreeModificator TryToBuildSyntaxModTree(ParserBase parParser, LexicalErrorAnalyzer parLexicalErrorAnalyzer, OutputTextFileWriter parOutputTextFileWriter)
         {
             SyntacticalTreeModificator syntacticalTreeModificator = new SyntacticalTreeModificator(parParser.GetAbstractSyntaxTree(),
                 parLexicalErrorAnalyzer.SymbolTable);
