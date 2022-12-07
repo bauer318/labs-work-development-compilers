@@ -233,7 +233,9 @@ namespace DevCompilersLW3
             TokenNode<Token> result = null;
             if(rightNode.Value.Lexeme.Equals("0.0") || rightNode.Value.Lexeme.Equals("0"))
             {
-                throw new ArithmeticException("Division by zero");
+                Console.WriteLine("Division by zero");
+                DivideByZeroRunTimeException = true;
+                return new TokenNode<Token>(new Token(TokenType.INTEGER_CONSTANT, "1"));
                 
             }
             if (TokenWorker.IsConstantType(leftNode.Value.TokenType) && TokenWorker.IsConstantType(rightNode.Value.TokenType))

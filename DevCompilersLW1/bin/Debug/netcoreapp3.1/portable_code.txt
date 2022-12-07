@@ -1,3 +1,2 @@
-i2f <id,3> <id,1>
-mul <id,4> <id,2> 57.0
-add2 <id,5> <id,3> <id,4>
+mul <id,3> <id,2> 66
+add2 <id,4> <id,1> <id,3>

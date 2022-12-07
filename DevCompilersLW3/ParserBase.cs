@@ -18,8 +18,11 @@ namespace DevCompilersLW3
         public TokenNode<Token> AbstractSyntaxTree = null;
         public List<string> _astTexts = new List<string>();
 
+        public bool DivideByZeroRunTimeException { get; set; }
+
         public ParserBase(SyntacticalErrorAnalyzer parSyntacticalErrorAnalyzer)
         {
+            DivideByZeroRunTimeException = false;
             _tokens = parSyntacticalErrorAnalyzer.Tokens;
             GetNextToken();
         }

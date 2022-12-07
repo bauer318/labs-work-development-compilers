@@ -1,2 +1,4 @@
 <id,1> - A, integer
-<id,2> - B, float
+<id,2> - B, integer
+<id,3> - T1, integer
+<id,4> - T2, integer

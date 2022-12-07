@@ -9,6 +9,7 @@
     <ProjectReference Include="..\DevCompilersLW3\DevCompilersLW3.csproj" />
     <ProjectReference Include="..\DevCompilersLW4\DevCompilersLW4.csproj" />
     <ProjectReference Include="..\DevCompilersLW5\DevCompilersLW5.csproj" />
+    <ProjectReference Include="..\DevCompilersLW6\DevCompilersLW6.csproj" />
   </ItemGroup>
 
 </Project>

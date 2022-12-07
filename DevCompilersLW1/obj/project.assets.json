@@ -9,7 +9,8 @@
           "DevCompilersLW2": "1.0.0",
           "DevCompilersLW3": "1.0.0",
           "DevCompilersLW4": "1.0.0",
-          "DevCompilersLW5": "1.0.0"
+          "DevCompilersLW5": "1.0.0",
+          "DevCompilersLW6": "1.0.0"
         },
         "compile": {
           "bin/placeholder/CommonWorks.dll": {}

@@ -45,7 +45,7 @@ namespace CommonWorks
                     lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression);
                     syntacticalErrorAnalyser = new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
                     parser = TryToBuildSyntaxTree(syntacticalErrorAnalyser, syntaxTreeTextFileName, lexicalErrorAnalyzer.CanBuildSyntaxTree);
-                    if (parser != null)
+                    if (parser != null && !parser.DivideByZeroRunTimeException)
                     {
                         outputTextFileWriter.WriteTokenTextFile(lexicalErrorAnalyzer);
                         outputTextFileWriter.WriteSymbolTableTextFile(lexicalErrorAnalyzer);
@@ -57,7 +57,7 @@ namespace CommonWorks
                     lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression);
                     syntacticalErrorAnalyser = new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
                     parser = TryToBuildSyntaxTree(syntacticalErrorAnalyser, syntaxTreeTextFileName, lexicalErrorAnalyzer.CanBuildSyntaxTree);
-                    if(parser != null)
+                    if(parser != null && !parser.DivideByZeroRunTimeException)
                     syntacticalTreeModificator = TryToBuildSyntaxModTree(parser, lexicalErrorAnalyzer, outputTextFileWriter);
                     if(syntacticalTreeModificator != null)
                     {
@@ -91,8 +91,11 @@ namespace CommonWorks
                     parser = new ParserOpt(parSyntacticalErrorAnalyzer);
                 }
                 parser.ParseExpression();
-                OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(syntaxTreeTextFileName);
-                outputTextFileWriter.WriteAbstractSyntaxTreeTextFile(parser);
+                if (!parser.DivideByZeroRunTimeException)
+                {
+                    OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(syntaxTreeTextFileName);
+                    outputTextFileWriter.WriteAbstractSyntaxTreeTextFile(parser);
+                }
                 return parser;
             }
             return null;
