@@ -116,7 +116,7 @@ namespace DevCompilersLW2
             switch (parTokenType)
             {
                 case TokenType.ADDITION_SIGN:
-                    return "add2";
+                    return "add";
                 case TokenType.MULTIPLICATION_SIGN:
                     return "mul";
                 case TokenType.DIVISION_SIGN:
