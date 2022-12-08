@@ -1,2 +1,4 @@
-mul <id,3> <id,2> 66
-add2 <id,4> <id,1> <id,3>
+i2f <id,4> <id,1>
+add <id,5> <id,4> -171.2
+mul <id,6> <id,2> 65.0
+sub <id,7> <id,5> <id,6>

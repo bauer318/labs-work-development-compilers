@@ -217,6 +217,14 @@ namespace DevCompilersLW3
                 {
                     result = leftNode;
                 }
+                else if (IsNeutralElementSubAdd(rightNode))
+                {
+                    result = rightNode;
+                }
+                else if (IsNeutralElementSubAdd(leftNode))
+                {
+                    result = leftNode;
+                }
                 else
                 {
                     leftNode = RealizeConvertTokenConstantToFloatIfNecessary(rightNode, leftNode);
