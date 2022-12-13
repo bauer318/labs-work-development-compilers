@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DevCompilersLW2
 {
+    [System.Serializable]
     public class SymbolTable
     {
 

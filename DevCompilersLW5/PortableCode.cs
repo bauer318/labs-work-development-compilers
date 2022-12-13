@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DevCompilersLW5
 {
+    [System.Serializable]
     public class PortableCode
     {
         public string OperationCode { get; set; }

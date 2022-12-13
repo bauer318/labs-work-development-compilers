@@ -41,6 +41,28 @@ namespace DevCompilersLW2
             }
             return 0;
         }
+        public static AttributeVariable GetAttributeVariableById(int parId)
+        {
+            for (var i = 0; i < SymbolTable.AttributeVariables.Count; i++)
+            {
+                if (SymbolTable.AttributeVariables[i].Id == parId)
+                {
+                    return SymbolTable.AttributeVariables[i];
+                }
+            }
+            return null;
+        }
+        public static AttributeVariable GetAttributeVariableByName(string parName)
+        {
+            for (var i = 0; i < SymbolTable.AttributeVariables.Count; i++)
+            {
+                if (SymbolTable.AttributeVariables[i].Name.Equals(parName))
+                {
+                    return SymbolTable.AttributeVariables[i];
+                }
+            }
+            return null;
+        }
 
     }
 }

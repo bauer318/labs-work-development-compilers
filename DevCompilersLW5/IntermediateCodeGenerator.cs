@@ -61,8 +61,10 @@ namespace DevCompilersLW5
             foreach(PortableCode portableCode in PortableCodes)
             {
                 portableCode.Result.AttributeValue = ++_lastVariableId;
-                SymbolTable.AttributeVariables.Add(new AttributeVariable(portableCode.Result.AttributeValue,
-                    TokenWorker.GetPortableCodeResultLexeme(++portableCodeResultLexemeIndex),portableCode.Result.TokenType));
+                AttributeVariable attributeVariable = new AttributeVariable(portableCode.Result.AttributeValue,
+                    TokenWorker.GetPortableCodeResultLexeme(++portableCodeResultLexemeIndex), portableCode.Result.TokenType);
+                attributeVariable.IsTempVariable = true;
+                SymbolTable.AttributeVariables.Add(attributeVariable);
             }
         }
         private void CreatePortableCodeList(TokenNode<Token> parSemanticTree)

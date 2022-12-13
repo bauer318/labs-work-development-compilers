@@ -1,2 +1,5 @@
 source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1
-DevCompilersLW1.exe lex inputExpr.txt
+DevCompilersLW1.exe gen3 inputExpr.txt
+
+source\repos\DevCompilersLW1\Interpreter\bin\Debug\netcoreapp3.1
+Interpreter.exe post_code.bin

@@ -1,7 +1,0 @@
-<id,1> - A, integer
-<id,2> - Bn, float
-<id,3> - un, integer
-<id,4> - T1, float
-<id,5> - T2, float
-<id,6> - T3, float
-<id,7> - T4, float

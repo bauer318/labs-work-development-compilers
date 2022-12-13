@@ -2,14 +2,16 @@
 using DevCompilersLW3;
 using DevCompilersLW4;
 using DevCompilersLW5;
+using DevCompilersLW7;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace CommonWorks
 {
-    public class OutputTextFileWriter
+    public class OutputFileWriter
     {
         private string _tokenTextFileName;
         private string _symbolTableTextFileName;
@@ -17,24 +19,25 @@ namespace CommonWorks
         private string _syntaxTreeModTextFileName;
         private string _portableCodeTextFileName;
         private string _postfixTextFileName;
+        private string _binaryFileName = @"C:\Users\Bauer\source\repos\DevCompilersLW1\Interpreter\bin\Debug\netcoreapp3.1\post_code.bin";
 
-        public OutputTextFileWriter(string parTokenTextFileName, string parSymbolTableTextFileName, string parSyntaxTreeTextFileName)
+        public OutputFileWriter(string parTokenTextFileName, string parSymbolTableTextFileName, string parSyntaxTreeTextFileName)
         {
             _tokenTextFileName = string.IsNullOrEmpty(parTokenTextFileName)? "Tokens.txt":parTokenTextFileName;
             _symbolTableTextFileName = string.IsNullOrEmpty(parSymbolTableTextFileName)? "symbols.txt" :parSymbolTableTextFileName;
         }
-        public OutputTextFileWriter(string parSyntaxTreeTextFileName)
+        public OutputFileWriter(string parSyntaxTreeTextFileName)
         {
             _syntaxTreeTextFileName = string.IsNullOrEmpty(parSyntaxTreeTextFileName)? "syntax_tree.txt" : parSyntaxTreeTextFileName;
         }
-        public OutputTextFileWriter(string parTokenTextFileName, 
+        public OutputFileWriter(string parTokenTextFileName, 
             string parSymbolTableTextFileName, 
             string parSyntaxTreeTextFileName,
             string parSyntaxTreeModTextFileName) : this(parTokenTextFileName, parSymbolTableTextFileName,parSyntaxTreeTextFileName)
         {
             _syntaxTreeModTextFileName = string.IsNullOrEmpty(parSyntaxTreeModTextFileName) ? "syntax_tree_mod.txt" : parSyntaxTreeModTextFileName;   
         }
-        public OutputTextFileWriter(string parTokenTextFileName,
+        public OutputFileWriter(string parTokenTextFileName,
             string parSymbolTableTextFileName,
             string parSyntaxTreeTextFileName,
             string parSyntaxTreeModTextFileName,
@@ -113,6 +116,14 @@ namespace CommonWorks
                     writer.WriteLine(symboleTable);
                 }
             }
+        }
+        public void WriteBinaryFile(BinaryGenerator binaryGenerator)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream fileStream = new FileStream(_binaryFileName, FileMode.OpenOrCreate);
+            formatter.Serialize(fileStream, binaryGenerator.PortableCodes);
+            formatter.Serialize(fileStream, binaryGenerator.SymbolTable);
+            fileStream.Close();
         }
     }
 }

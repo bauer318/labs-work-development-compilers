@@ -2,6 +2,7 @@
 using DevCompilersLW3;
 using DevCompilersLW4;
 using DevCompilersLW5;
+using DevCompilersLW7;
 using System;
 
 namespace CommonWorks
@@ -19,7 +20,7 @@ namespace CommonWorks
             string syntaxTreeModTextFileName = parInputParametersChecker.GetTextFileOrEmpty(parInputParametersChecker.index + 4);
             string portableCodeTextFileName = parInputParametersChecker.GetTextFileOrEmpty(parInputParametersChecker.index + 5);
             string postfixExpressionTextFileName = parInputParametersChecker.GetTextFileOrEmpty(parInputParametersChecker.index + 5);
-            OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(tokenTextFileName,
+            OutputFileWriter outputTextFileWriter = new OutputFileWriter(tokenTextFileName,
                         symbolTableTextFileName, syntaxTreeTextFileName, syntaxTreeModTextFileName,portableCodeTextFileName,postfixExpressionTextFileName);
             ParserBase parser = null;
             SyntacticalErrorAnalyzer syntacticalErrorAnalyser = null;
@@ -73,11 +74,36 @@ namespace CommonWorks
                         }
                         outputTextFileWriter.WritePortableCodeSymbolTable(intermediateCodeGenerator);
                     }
-                    
+                    break;
+                case 5:
+                    lexicalErrorAnalyzer.IsLexicalyCorrectExpresion(parExpression);
+                    syntacticalErrorAnalyser = new SyntacticalErrorAnalyzer(lexicalErrorAnalyzer.Tokens, lexicalErrorAnalyzer.SymbolTable);
+                    parser = TryToBuildSyntaxTree(syntacticalErrorAnalyser, syntaxTreeTextFileName, lexicalErrorAnalyzer.CanBuildSyntaxTree);
+                    if (parser != null && !parser.DivideByZeroRunTimeException)
+                        syntacticalTreeModificator = TryToBuildSyntaxModTree(parser, lexicalErrorAnalyzer, outputTextFileWriter);
+                    IntermediateCodeGenerator intermediateCode = GeneratesIntermediateCode(syntacticalTreeModificator, parInputParametersChecker, outputTextFileWriter);
+                    if(intermediateCode != null)
+                    {
+                        BinaryGenerator binaryGenerator = new BinaryGenerator(intermediateCode.PortableCodes,
+                            intermediateCode.SymbolTable);
+                        outputTextFileWriter.WriteBinaryFile(binaryGenerator);
+                    }
                     break;
 
             }
           }
+        private static IntermediateCodeGenerator GeneratesIntermediateCode(SyntacticalTreeModificator syntacticalTreeModificator,
+            InputParametersChecker parInputParametersChecker, OutputFileWriter outputFileWriter)
+        {
+            IntermediateCodeGenerator intermediateCodeGenerator = null;
+            if (syntacticalTreeModificator != null)
+            {
+                intermediateCodeGenerator = GenerateIntermediateCode(syntacticalTreeModificator);
+                outputFileWriter.WritePortableCodeTextFile(intermediateCodeGenerator);
+                outputFileWriter.WritePortableCodeSymbolTable(intermediateCodeGenerator);
+            }
+            return intermediateCodeGenerator;
+        }
         private static ParserBase TryToBuildSyntaxTree(SyntacticalErrorAnalyzer parSyntacticalErrorAnalyzer,
             string syntaxTreeTextFileName,
             bool parIsLexicalyCorrectExpression)
@@ -93,14 +119,14 @@ namespace CommonWorks
                 parser.ParseExpression();
                 if (!parser.DivideByZeroRunTimeException)
                 {
-                    OutputTextFileWriter outputTextFileWriter = new OutputTextFileWriter(syntaxTreeTextFileName);
+                    OutputFileWriter outputTextFileWriter = new OutputFileWriter(syntaxTreeTextFileName);
                     outputTextFileWriter.WriteAbstractSyntaxTreeTextFile(parser);
                 }
                 return parser;
             }
             return null;
         }
-        private static SyntacticalTreeModificator TryToBuildSyntaxModTree(ParserBase parParser, LexicalErrorAnalyzer parLexicalErrorAnalyzer, OutputTextFileWriter parOutputTextFileWriter)
+        private static SyntacticalTreeModificator TryToBuildSyntaxModTree(ParserBase parParser, LexicalErrorAnalyzer parLexicalErrorAnalyzer, OutputFileWriter parOutputTextFileWriter)
         {
             SyntacticalTreeModificator syntacticalTreeModificator = new SyntacticalTreeModificator(parParser.GetAbstractSyntaxTree(),
                 parLexicalErrorAnalyzer.SymbolTable);

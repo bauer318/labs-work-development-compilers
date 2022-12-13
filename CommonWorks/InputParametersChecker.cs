@@ -114,6 +114,8 @@ namespace CommonWorks
                     return 3;
                 case "gen2":
                     return 4;
+                case "gen3":
+                    return 5;
                 default:
                     return -1;
             }

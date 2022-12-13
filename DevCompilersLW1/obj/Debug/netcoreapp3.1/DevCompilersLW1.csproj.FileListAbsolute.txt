@@ -25,3 +25,5 @@ C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp
 C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1\DevCompilersLW5.pdb
 C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1\DevCompilersLW6.dll
 C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1\DevCompilersLW6.pdb
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1\DevCompilersLW7.dll
+C:\Users\Bauer\source\repos\DevCompilersLW1\DevCompilersLW1\bin\Debug\netcoreapp3.1\DevCompilersLW7.pdb
